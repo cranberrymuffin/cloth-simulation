@@ -22,12 +22,20 @@ win32 {
 }
 
 SOURCES += ui/mainwindow.cpp \
+    cloth/solver.cpp \
+    cloth/state.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
+    models/cube.cpp \
+    particle/particle.cpp \
     ui/view.cpp \
     ui/viewformat.cpp
 
 HEADERS += ui/mainwindow.h \
+    cloth/solver.h \
+    cloth/state.h \
+    models/cube.h \
+    particle/particle.h \
     ui_mainwindow.h \
     glew-1.10.0/include/GL/glew.h \
     ui/view.h \
