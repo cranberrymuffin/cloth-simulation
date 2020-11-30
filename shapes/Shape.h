@@ -34,16 +34,9 @@ public:
 
     virtual ~Shape();
     void draw();
-    virtual void buildFace(int param1,int param2, int param3);
+
     virtual void buildShape(int param1,int param2, int param3) = 0;
 
-    virtual glm::vec4 getNormalAtHit(glm::vec4 p){return glm::vec4();};
-
-    virtual glm::vec2 getTextureAtHit(glm::vec4 p){return glm::vec2();};
-
-    const std::vector<Vertex>& getVertices(){return m_vertices;};
-
-    void getBoungdingBox(glm::vec3& min,glm::vec3& max);
 
 protected:
     /** builds the VAO, pretty much the same as from lab 1 */

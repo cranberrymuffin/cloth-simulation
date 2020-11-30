@@ -24,11 +24,6 @@ win32 {
 SOURCES += ui/mainwindow.cpp \
     cloth/solver.cpp \
     cloth/state.cpp \
-    datatype/FBO.cpp \
-    datatype/IBO.cpp \
-    datatype/VAO.cpp \
-    datatype/VBO.cpp \
-    datatype/VBOAttribMarker.cpp \
     gl/GLDebug.cpp \
     gl/datatype/FBO.cpp \
     gl/datatype/IBO.cpp \
@@ -44,11 +39,13 @@ SOURCES += ui/mainwindow.cpp \
     gl/textures/TextureParameters.cpp \
     gl/textures/TextureParametersBuilder.cpp \
     gl/util/FullScreenQuad.cpp \
+    lib/RGBA.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
     models/cube.cpp \
     particle/particle.cpp \
     shapes/Shape.cpp \
+    ui/Settings.cpp \
     ui/view.cpp \
     ui/viewformat.cpp
 
@@ -56,11 +53,6 @@ HEADERS += ui/mainwindow.h \
     cloth/solver.h \
     cloth/state.h \
     common/common.h \
-    datatype/FBO.h \
-    datatype/IBO.h \
-    datatype/VAO.h \
-    datatype/VBO.h \
-    datatype/VBOAttribMarker.h \
     gl/GLDebug.h \
     gl/datatype/FBO.h \
     gl/datatype/IBO.h \
@@ -77,9 +69,12 @@ HEADERS += ui/mainwindow.h \
     gl/textures/TextureParameters.h \
     gl/textures/TextureParametersBuilder.h \
     gl/util/FullScreenQuad.h \
+    lib/CS123SceneData.h \
+    lib/RGBA.h \
     models/cube.h \
     particle/particle.h \
     shapes/Shape.h \
+    ui/Settings.h \
     ui_mainwindow.h \
     glew-1.10.0/include/GL/glew.h \
     ui/view.h \
@@ -106,6 +101,9 @@ QMAKE_CXXFLAGS_WARN_ON += -Waddress -Warray-bounds -Wc++0x-compat -Wchar-subscri
                           -Wvolatile-register-var -Wno-extra
 
 QMAKE_CXXFLAGS += -g
+QMAKE_LFLAGS += -no-pie
+QMAKE_CXXFLAGS += -std=c++14
+CONFIG += c++14
 
 # QMAKE_CXX_FLAGS_WARN_ON += -Wunknown-pragmas -Wunused-function -Wmain
 
