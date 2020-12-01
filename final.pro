@@ -22,6 +22,9 @@ win32 {
 }
 
 SOURCES += ui/mainwindow.cpp \
+    camera/CamtransCamera.cpp \
+    camera/OrbitingCamera.cpp \
+    camera/QuaternionCamera.cpp \
     cloth/solver.cpp \
     cloth/state.cpp \
     gl/GLDebug.cpp \
@@ -50,6 +53,10 @@ SOURCES += ui/mainwindow.cpp \
     ui/viewformat.cpp
 
 HEADERS += ui/mainwindow.h \
+    camera/Camera.h \
+    camera/CamtransCamera.h \
+    camera/OrbitingCamera.h \
+    camera/QuaternionCamera.h \
     cloth/solver.h \
     cloth/state.h \
     common/common.h \
@@ -74,6 +81,7 @@ HEADERS += ui/mainwindow.h \
     models/cube.h \
     particle/particle.h \
     shapes/Shape.h \
+    tinyobjloader/tiny_obj_loader.h \
     ui/Settings.h \
     ui_mainwindow.h \
     glew-1.10.0/include/GL/glew.h \
@@ -115,6 +123,8 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
+    resources/models/cornell_box.mtl \
+    resources/models/cube.mtl \
     shaders/normals/normals.vert \
     shaders/normals/normals.frag \
     shaders/normals/normals.gsh \
