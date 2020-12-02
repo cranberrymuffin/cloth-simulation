@@ -161,8 +161,8 @@ function tick() {
     drawScene();
 
     if ( animated ) {
-        var timeStep = 0.001;
-        var n = Math.ceil(0.01/timeStep);
+        var timeStep = 0.0026;
+        var n = Math.ceil(0.026/timeStep);
         for ( var i = 0; i < n; ++i ) simulate(timeStep);
         computeNormals();
         updateBuffers();
