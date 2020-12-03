@@ -4,9 +4,14 @@
 #include <QApplication>
 #include <QKeyEvent>
 #include <iostream>
+#include <scenegraph/SceneviewScene.h>
+#include "gl/GLDebug.h"
+
+using namespace CS123::GL;
 
 View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
-    m_time(), m_timer(), m_captureMouse(false)
+    m_time(), m_timer(), m_captureMouse(false), m_currentScene(nullptr),
+    m_defaultPerspectiveCamera(new CamtransCamera())
 {
     // View needs all mouse move events, not just mouse drag events
     setMouseTracking(true);
@@ -40,21 +45,36 @@ void View::initializeGL() {
         std::cerr << "Something is very wrong, glew initialization failed." << std::endl;
     }
     std::cout << "Using GLEW " <<  glewGetString( GLEW_VERSION ) << std::endl;
-
+    initializeScene();
     // Start a timer that will try to get 60 frames per second (the actual
     // frame rate depends on the operating system and other running programs)
     m_time.start();
     m_timer.start(1000 / 60);
 
-    glEnable(GL_DEPTH_TEST);
+    checkError();
+    std::cout << "View::initializeGL() 1" << std::endl;
     glEnable(GL_CULL_FACE);
+
+    glEnable(GL_DEPTH_TEST);
+    checkError();
+    std::cout << "View::initializeGL() 1" << std::endl;
+    glEnable(GL_CULL_FACE);
+    checkError();
+    std::cout << "View::initializeGL() 2" << std::endl;
     glCullFace(GL_BACK);
+    checkError();
+    std::cout << "View::initializeGL() 3" << std::endl;
     glFrontFace(GL_CCW);
+    checkError();
+    std::cout << "View::initializeGL() 4" << std::endl;
 }
 
 void View::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    float ratio = static_cast<QGuiApplication *>(QCoreApplication::instance())->devicePixelRatio();
+    glViewport(0, 0, width() * ratio, height() * ratio);
+    m_defaultPerspectiveCamera->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
+    m_currentScene->render(m_defaultPerspectiveCamera.get());
     // TODO: Implement the demo rendering here
 }
 
@@ -101,6 +121,11 @@ void View::keyReleaseEvent(QKeyEvent *event) {
 
 }
 
+void View::initializeScene()
+{
+     m_currentScene = std::make_unique<SceneviewScene>();
+}
+
 void View::tick() {
     // Get the number of seconds since the last tick (variable update rate)
     float seconds = m_time.restart() * 0.001f;
@@ -109,4 +134,18 @@ void View::tick() {
 
     // Flag this view for repainting (Qt will call paintGL() soon after)
     update();
+}
+
+void View::loadSceneviewSceneFromParser(CS123XmlSceneParser &parser)
+{
+   // m_currentScene = std::make_unique<SceneviewScene>();
+    Scene::parse(m_currentScene.get(), &parser);
+    //m_settingsDirty = true;
+
+    std::cout <<"HERE 2" << std::endl;
+}
+
+CamtransCamera *View::getCamtransCamera()
+{
+    return m_defaultPerspectiveCamera.get();
 }

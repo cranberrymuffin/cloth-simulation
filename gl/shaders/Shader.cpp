@@ -133,7 +133,8 @@ void Shader::setUniformArrayByIndex(const std::string &name, const glm::vec2 &ve
 }
 
 void Shader::setUniformArrayByIndex(const std::string &name, const glm::vec3 &vec3, size_t index) {
-    glUniform3fv(m_uniformArrays[std::make_tuple(name, index)], 1, glm::value_ptr(vec3));
+    GLuint n = m_uniformArrays[std::make_tuple(name, index)];
+    glUniform3fv(n, 1, glm::value_ptr(vec3));
 }
 
 void Shader::setUniformArrayByIndex(const std::string &name, const glm::vec4 &vec4, size_t index) {

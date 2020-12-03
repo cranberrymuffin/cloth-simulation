@@ -5,6 +5,11 @@
 #include <qgl.h>
 #include <QTime>
 #include <QTimer>
+#include <lib/CS123XmlSceneParser.h>
+#include "camera/CamtransCamera.h"
+
+class OpenGLScene;
+class SceneviewScene;
 
 class View : public QGLWidget {
     Q_OBJECT
@@ -12,6 +17,8 @@ class View : public QGLWidget {
 public:
     View(QWidget *parent);
     ~View();
+    void loadSceneviewSceneFromParser(CS123XmlSceneParser &parser);
+    CamtransCamera* getCamtransCamera();
 
 private:
     QTime m_time;
@@ -28,6 +35,10 @@ private:
 
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void initializeScene();
+
+     std::unique_ptr<OpenGLScene> m_currentScene;
+    std::unique_ptr<CamtransCamera> m_defaultPerspectiveCamera;
 
 private slots:
     void tick();

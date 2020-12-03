@@ -33,14 +33,14 @@ public:
     Shape();
 
     virtual ~Shape();
-    void draw();
-
+    virtual void draw();
+    virtual void buildFace(int param1,int param2, int param3);
     virtual void buildShape(int param1,int param2, int param3) = 0;
 
 
 protected:
     /** builds the VAO, pretty much the same as from lab 1 */
-    void buildVAO();
+    virtual void buildVAO();
 
 
 
@@ -53,7 +53,13 @@ protected:
 
 
 
+    int _param1;
+    int _param2;
+    int _param3;
 
+    int numXPoints;
+    int numYPoints;
+    int numZPoints;
 
 
 

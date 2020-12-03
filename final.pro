@@ -42,13 +42,30 @@ SOURCES += ui/mainwindow.cpp \
     gl/textures/TextureParameters.cpp \
     gl/textures/TextureParametersBuilder.cpp \
     gl/util/FullScreenQuad.cpp \
+    lib/CS123XmlSceneParser.cpp \
     lib/RGBA.cpp \
+    lib/ResourceLoader.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
     models/cube.cpp \
     particle/particle.cpp \
+    scenegraph/OpenGLScene.cpp \
+    scenegraph/Scene.cpp \
+    scenegraph/SceneObject.cpp \
+    scenegraph/SceneObjectMaterial.cpp \
+    scenegraph/SceneviewScene.cpp \
+    scenegraph/Shapebuilder.cpp \
+    shapes/Cap.cpp \
+    shapes/Cone.cpp \
+    shapes/Cylinder.cpp \
+    shapes/LoadedShape.cpp \
+    shapes/Plane.cpp \
     shapes/Shape.cpp \
+    shapes/Sphere.cpp \
+    shapes/Surface.cpp \
+    shapes/cubeshape.cpp \
     ui/Settings.cpp \
+    ui/SupportCanvas3D.cpp \
     ui/view.cpp \
     ui/viewformat.cpp
 
@@ -76,13 +93,31 @@ HEADERS += ui/mainwindow.h \
     gl/textures/TextureParameters.h \
     gl/textures/TextureParametersBuilder.h \
     gl/util/FullScreenQuad.h \
+    lib/CS123ISceneParser.h \
     lib/CS123SceneData.h \
+    lib/CS123XmlSceneParser.h \
     lib/RGBA.h \
+    lib/ResourceLoader.h \
     models/cube.h \
     particle/particle.h \
+    scenegraph/OpenGLScene.h \
+    scenegraph/Scene.h \
+    scenegraph/SceneObject.h \
+    scenegraph/SceneObjectMaterial.h \
+    scenegraph/SceneviewScene.h \
+    scenegraph/Shapebuilder.h \
+    shapes/Cap.h \
+    shapes/Cone.h \
+    shapes/Cylinder.h \
+    shapes/LoadedShape.h \
+    shapes/Plane.h \
     shapes/Shape.h \
+    shapes/Sphere.h \
+    shapes/Surface.h \
+    shapes/cubeshape.h \
     tinyobjloader/tiny_obj_loader.h \
     ui/Settings.h \
+    ui/SupportCanvas3D.h \
     ui_mainwindow.h \
     glew-1.10.0/include/GL/glew.h \
     ui/view.h \
@@ -125,9 +160,19 @@ RESOURCES += \
 DISTFILES += \
     resources/models/cornell_box.mtl \
     resources/models/cube.mtl \
+    shaders/fullscreenquad/fullscreenquad.frag \
+    shaders/fullscreenquad/fullscreenquad.vert \
+    shaders/normals/normals.frag \
+    shaders/normals/normals.gsh \
+    shaders/normals/normals.vert \
     shaders/normals/normals.vert \
     shaders/normals/normals.frag \
     shaders/normals/normals.gsh \
+    shaders/normals/normalsArrow.frag \
+    shaders/normals/normalsArrow.gsh \
     shaders/normals/normalsArrow.gsh \
     shaders/normals/normalsArrow.frag \
-    shaders/normals/normalsArrow.vert
+    shaders/normals/normalsArrow.vert \
+    shaders/normals/normalsArrow.vert \
+    shaders/wireframe/wireframe.frag \
+    shaders/wireframe/wireframe.vert
