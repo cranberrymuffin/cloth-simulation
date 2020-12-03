@@ -3,3 +3,4 @@ final.pro.user
 debug/
 *.Debug
 *.Release
+Makefile
