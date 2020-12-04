@@ -28,6 +28,8 @@ public:
     DRAW_METHOD drawMethod();
     void unbind();
 
+    void updateVBO(const float *data,int sizeInFloats);
+    VBO* getVBO();
 private:
     std::unique_ptr<VBO> m_VBO;
 
@@ -36,6 +38,7 @@ private:
     GLuint m_numVertices;
     int m_size;
     GLenum m_triangleLayout;
+    GLuint m_vbohandle;
 };
 
 }}

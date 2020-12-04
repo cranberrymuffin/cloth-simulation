@@ -2,6 +2,7 @@
 
 #include "VBO.h"
 #include "IBO.h"
+#include "gl/GLDebug.h"
 
 namespace CS123 { namespace GL {
 
@@ -12,12 +13,18 @@ VAO::VAO(const VBO &vbo, int numberOfVerticesToRender) :
     m_size(0),
     m_triangleLayout(vbo.triangleLayout())
 {
+
+  //  m_vbohandle = vbo.m_handle;
     glGenVertexArrays(1, &m_handle);
 
+    //m_VBO = std::make_unique<VBO>(*&vbo);
+    m_vbohandle = vbo.m_handle;
     bind();
     vbo.bindAndEnable();
     unbind();
-    vbo.unbind();
+   // vbo.unbind();
+
+
 }
 
 VAO::VAO(const VBO &vbo, const IBO &ibo, int numberOfVerticesToRender) :
@@ -33,6 +40,7 @@ VAO::VAO(const VBO &vbo, const IBO &ibo, int numberOfVerticesToRender) :
     // about them if you're curious!
     // This constructor should be almost identical to the one above,
     // just also bind the IBO after binding the vbo (and unbind it)
+
 }
 
 VAO::VAO(VAO &&that) :
@@ -88,6 +96,23 @@ void VAO::bind() {
 
 void VAO::unbind() {
     glBindVertexArray(0);
+}
+
+void VAO::updateVBO(const float *data,int sizeInFloats)
+{
+  //   glBindVertexArray(m_handle);
+     checkError();
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbohandle);
+     checkError();
+    glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat),
+                 &data[0], GL_DYNAMIC_DRAW);
+      checkError();
+   // glBindVertexArray(0);
+}
+
+VBO *VAO::getVBO()
+{
+    return m_VBO.get();
 }
 
 }}

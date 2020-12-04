@@ -48,7 +48,9 @@ SOURCES += ui/mainwindow.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
     models/cube.cpp \
+    particle/Particle.cpp \
     particle/particle.cpp \
+    scenegraph/DynamicSceneObject.cpp \
     scenegraph/OpenGLScene.cpp \
     scenegraph/Scene.cpp \
     scenegraph/SceneObject.cpp \
@@ -56,10 +58,13 @@ SOURCES += ui/mainwindow.cpp \
     scenegraph/SceneviewScene.cpp \
     scenegraph/Shapebuilder.cpp \
     shapes/Cap.cpp \
+    shapes/Cloth.cpp \
+    shapes/ClothParticle.cpp \
     shapes/Cone.cpp \
     shapes/Cylinder.cpp \
     shapes/LoadedShape.cpp \
     shapes/Plane.cpp \
+    shapes/PlaneShape.cpp \
     shapes/Shape.cpp \
     shapes/Sphere.cpp \
     shapes/Surface.cpp \
@@ -99,7 +104,9 @@ HEADERS += ui/mainwindow.h \
     lib/RGBA.h \
     lib/ResourceLoader.h \
     models/cube.h \
+    particle/Particle.h \
     particle/particle.h \
+    scenegraph/DynamicSceneObject.h \
     scenegraph/OpenGLScene.h \
     scenegraph/Scene.h \
     scenegraph/SceneObject.h \
@@ -107,10 +114,13 @@ HEADERS += ui/mainwindow.h \
     scenegraph/SceneviewScene.h \
     scenegraph/Shapebuilder.h \
     shapes/Cap.h \
+    shapes/Cloth.h \
+    shapes/ClothParticle.h \
     shapes/Cone.h \
     shapes/Cylinder.h \
     shapes/LoadedShape.h \
     shapes/Plane.h \
+    shapes/PlaneShape.h \
     shapes/Shape.h \
     shapes/Sphere.h \
     shapes/Surface.h \

@@ -1,6 +1,7 @@
 #include "VBO.h"
 
 #include "gl/datatype/VBOAttribMarker.h"
+#include "gl/GLDebug.h"
 
 namespace CS123 { namespace GL {
 
@@ -13,19 +14,33 @@ unsigned int calculateFloatsPerVertex(const std::vector<VBOAttribMarker> &marker
     return max;
 }
 
-VBO::VBO(const float *data, int sizeInFloats, std::vector<VBOAttribMarker> markers, GEOMETRY_LAYOUT layout) :
+VBO::VBO(const float *data, int sizeInFloats, std::vector<VBOAttribMarker> markers, GEOMETRY_LAYOUT layout, GLenum usage) :
     m_handle(-1),
     m_markers(markers),
     m_bufferSizeInFloats(sizeInFloats),
     m_numberOfFloatsPerVertex(calculateFloatsPerVertex(markers)),
     m_stride(m_numberOfFloatsPerVertex * sizeof(GLfloat)),
-    m_triangleLayout(layout)
+    m_triangleLayout(layout),
+    m_usage(usage)
 {
     glGenBuffers(1, &m_handle);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_handle);
-    glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat), &data[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat),
+                 &data[0], usage);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+VBO::VBO(const VBO & that):m_handle(that.m_handle),
+    m_markers(std::move(that.m_markers)),
+    m_bufferSizeInFloats(that.m_bufferSizeInFloats),
+    m_numberOfFloatsPerVertex(that.m_numberOfFloatsPerVertex),
+    m_stride(that.m_stride),
+    m_triangleLayout(that.m_triangleLayout),
+    m_usage(that.m_usage)
+{
+
+
 }
 
 // This is called a copy constructor, you don't have to worry about it
@@ -35,7 +50,8 @@ VBO::VBO(VBO &&that) :
     m_bufferSizeInFloats(that.m_bufferSizeInFloats),
     m_numberOfFloatsPerVertex(that.m_numberOfFloatsPerVertex),
     m_stride(that.m_stride),
-    m_triangleLayout(that.m_triangleLayout)
+    m_triangleLayout(that.m_triangleLayout),
+     m_usage(that.m_usage)
 {
     that.m_handle = 0;
 }
@@ -50,7 +66,7 @@ VBO& VBO::operator=(VBO &&that) {
     m_numberOfFloatsPerVertex = that.m_numberOfFloatsPerVertex;
     m_stride = that.m_stride;
     m_triangleLayout = that.m_triangleLayout;
-
+    m_usage = that.m_usage;
     that.m_handle = 0;
 
     return *this;
@@ -76,6 +92,15 @@ void VBO::bindAndEnable() const {
 
 void VBO::unbind() const {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void VBO::updateBuffer(const float *data,int sizeInFloats)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, m_handle);
+     checkError();
+    glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat),
+                 &data[0], m_usage);
+      checkError();
 }
 
 int VBO::numberOfFloatsPerVertex() const {

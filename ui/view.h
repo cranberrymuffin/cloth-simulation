@@ -39,6 +39,7 @@ private:
 
      std::unique_ptr<OpenGLScene> m_currentScene;
     std::unique_ptr<CamtransCamera> m_defaultPerspectiveCamera;
+    bool firstFrame;
 
 private slots:
     void tick();

@@ -46,6 +46,8 @@ public:
     // pointer.  This will be used during the "modeler" lab, so don't worry about it for now.
     void setSelection(int x, int y);
 
+    void update(float deltaTime);
+
 private:
 
 
@@ -69,6 +71,7 @@ private:
     std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
     glm::mat4x4 m_lookat;
     glm::mat4x4 m_projection;
+    SceneObject* m_cloth;
 
 };
 

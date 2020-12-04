@@ -9,6 +9,8 @@
 #include "lib/ResourceLoader.h"
 #include "gl/shaders/CS123Shader.h"
 #include "lib/ResourceLoader.h"
+#include "shapes/Cloth.h"
+#include "shapes/PlaneShape.h"
 using namespace CS123::GL;
 
 
@@ -17,7 +19,7 @@ SceneviewScene::SceneviewScene()
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     initializeSceneLight();
     loadPhongShader();
-    glm::vec3 eye(0.0,0.0,3.0);
+    glm::vec3 eye(0.0,0.0,5.0);
     glm::vec3 fwd(0.0,0.0,-1.0);
     glm::vec3 up(0.0,1.0,0.0);
 
@@ -33,10 +35,18 @@ SceneviewScene::SceneviewScene()
   //  std::string inputfile = "D:/cs1230/cs1230-final-project/resources/models/cornell_box.obj";
 //
     //ResourceLoader::readObjFile(m_sceneObjects,inputfile );
+    Material m;
+
+    Shape *clothShape = new Cloth(7,7,1,1,1,0.3);
+   // Shape* buildShape = new PlaneShape(5,1,1);
+    m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
+    m_cloth->setWorldMatrix(glm::mat4x4());
+    m_sceneObjects.push_back(m_cloth);
 }
 
 SceneviewScene::~SceneviewScene()
 {
+
 }
 
 void SceneviewScene::loadPhongShader() {
@@ -210,6 +220,11 @@ void SceneviewScene::renderGeometry() {
 
 void SceneviewScene::settingsChanged() {
     // TODO: [SCENEVIEW] Fill this in if applicable.
+}
+
+void SceneviewScene::update(float deltaTime)
+{
+  m_cloth->step(deltaTime);
 }
 
 void SceneviewScene::initializeSceneLight()

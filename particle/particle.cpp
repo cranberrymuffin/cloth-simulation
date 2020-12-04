@@ -1,6 +1,6 @@
-#include "particle.h"
+//#include "Particle.h"
 
-Particle::Particle(glm::vec4 position, glm::vec4 velocity, float mass)
-{
+//Particle::Particle()
+//{
 
-}
+//}

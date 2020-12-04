@@ -23,8 +23,9 @@ public:
      * @param markers List of VBOAttribMarkers that describe how the data is laid out.
      * @param layout Layout of the vertex data.
      */
-    VBO(const float *data, int sizeInFloats, std::vector<VBOAttribMarker> markers, GEOMETRY_LAYOUT layout = LAYOUT_TRIANGLES);
-    VBO(const VBO&) = delete;
+    VBO(const float *data, int sizeInFloats, std::vector<VBOAttribMarker> markers,
+        GEOMETRY_LAYOUT layout = LAYOUT_TRIANGLES,GLenum usage =GL_STATIC_DRAW);
+    VBO(const VBO&) ;
     VBO& operator=(const VBO&) = delete;
     VBO(VBO &&that);
     VBO& operator=(VBO &&);
@@ -37,15 +38,18 @@ public:
 
     void unbind() const;
 
+    void updateBuffer(const float *data,int sizeInFloats);
+   GLuint m_handle;
 private:
-    void bind() const;
 
-    GLuint m_handle;
+     void bind() const;
+    //GLuint m_handle;
     std::vector<VBOAttribMarker> m_markers;
     int m_bufferSizeInFloats;
     int m_numberOfFloatsPerVertex;
     GLuint m_stride;
     GEOMETRY_LAYOUT m_triangleLayout;
+    GLenum m_usage;
 };
 
 }}

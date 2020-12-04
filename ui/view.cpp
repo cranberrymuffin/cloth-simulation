@@ -26,6 +26,8 @@ View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
 
     // The update loop is implemented using a timer
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(tick()));
+
+    firstFrame = true;
 }
 
 View::~View()
@@ -127,12 +129,19 @@ void View::initializeScene()
 }
 
 void View::tick() {
+
     // Get the number of seconds since the last tick (variable update rate)
     float seconds = m_time.restart() * 0.001f;
 
+    if(firstFrame)
+    {
+        firstFrame = false;
+        return;
+    }
     // TODO: Implement the demo update here
-
+    m_currentScene->update(seconds);
     // Flag this view for repainting (Qt will call paintGL() soon after)
+
     update();
 }
 

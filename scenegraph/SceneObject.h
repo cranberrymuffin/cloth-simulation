@@ -53,7 +53,7 @@ public:
     Shape& getShape();
 
 
-
+    virtual void step(float deltaT);
 
 
     SceneObjectMaterial& getObjectMaterial();

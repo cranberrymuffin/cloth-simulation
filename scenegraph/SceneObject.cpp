@@ -157,6 +157,11 @@ void SceneObject::setShape(Shape *shape)
      return *m_Shape;
  }
 
+ void SceneObject::step(float deltaT)
+ {
+  m_Shape->update(deltaT);
+ }
+
  SceneObjectMaterial& SceneObject::getObjectMaterial()
  {
      return m_Material;

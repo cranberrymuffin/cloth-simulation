@@ -35,6 +35,7 @@ public:
 
     static void parse(Scene *sceneToFill, CS123ISceneParser *parser);
 
+    virtual void update(float deltaTime){};
 
 protected:
 

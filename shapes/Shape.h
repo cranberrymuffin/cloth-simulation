@@ -37,6 +37,7 @@ public:
     virtual void buildFace(int param1,int param2, int param3);
     virtual void buildShape(int param1,int param2, int param3) = 0;
 
+    virtual void update(float deltaT){};
 
 protected:
     /** builds the VAO, pretty much the same as from lab 1 */
