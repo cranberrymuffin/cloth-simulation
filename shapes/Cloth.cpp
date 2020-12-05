@@ -302,10 +302,10 @@ void Cloth::update(float deltaTime)
 
             int index = getParticleIndexFromCoordinates(i, j);
 
-            glm::vec3 f_gravity = glm::vec3(0, -9.8, 0) * particles[index].m_mass;
+            glm::vec3 f_gravity = glm::vec3(0, -1.9, 0) * particles[index].m_mass;
             glm::vec3 f_damping = particles[index].m_velocity * -Cd;
             glm::vec3 f_viscous = Cv * glm::dot(particles[index].m_normal, Ufluid - particles[index].m_velocity) * particles[index].m_normal;
-            glm::vec3 f_spring = getStructuralSpringForce(i, j) + getShearSpringForce(i, j) + getFlexionSpringForce(i, j);
+            glm::vec3 f_spring = getStructuralSpringForce(i, j);// + getShearSpringForce(i, j) + getFlexionSpringForce(i, j);
 
             particles[index].m_force = f_gravity + f_damping + f_viscous + f_spring;
             particles[index].step(deltaTime);

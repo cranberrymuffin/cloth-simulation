@@ -42,7 +42,7 @@ public:
     const float L_structural;
     const float L_shear;
     const float L_flexion;
-    const glm::vec3 Ufluid = glm::vec3(0,0,1);
+    const glm::vec3 Ufluid = glm::vec3(0,1,0);
 };
 
 #endif // CLOTH_H
