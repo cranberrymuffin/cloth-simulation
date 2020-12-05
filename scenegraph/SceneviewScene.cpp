@@ -62,14 +62,22 @@ SceneviewScene::SceneviewScene()
     m_globalData.ka =0.5;
     m_globalData.ks =0.5;
 
+    //m_lights.clear();
 
     LightData l;
     l.type = LightType::LIGHT_POINT;
     l.pos = glm::vec4(0.0,1.0,0.5,1.0);
     l.color = glm::vec4(1.0,1.0,1.0,1.0);
     l.id = 0;
-    m_lights.clear();
+
+    LightData l2;
+    l2.type = LightType::LIGHT_DIRECTIONAL;
+    l2.dir = glm::vec4(0.0,-1.0,-1.0,1.0);
+    l2.color = glm::vec4(0.8,0.8,0.8,1.0);
+    l2.id = 1;
+
     m_lights.push_back(l);
+   // m_lights.push_back(l2);
 
 }
 

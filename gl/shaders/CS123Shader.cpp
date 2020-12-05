@@ -71,7 +71,7 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
    // if (ignoreLight) color.r = color.g = color.b = 0;
     std::cout<<"CS123Shader::setLight 1" << std::endl;
     checkError();
-    //setUniformArrayByIndex("lightTypes", lightType, light.id);
+    setUniformArrayByIndex("lightTypes", lightType, light.id);
     std::cout<<"CS123Shader::setLight 2" << std::endl;
     checkError();
     setUniformArrayByIndex("lightColors", glm::vec3(color.r, color.g, color.b), light.id);

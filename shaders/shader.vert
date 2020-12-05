@@ -15,8 +15,10 @@ out vec2 texCoord;
 
 
 const int MAX_LIGHTS = 10;
+uniform int lightTypes[MAX_LIGHTS];
 uniform vec3 lightPositions[MAX_LIGHTS];    // For point lights
 uniform vec3 lightColors[MAX_LIGHTS];
+uniform vec3 lightDirections[MAX_LIGHTS];
 
 uniform vec3 ambient_color;
 uniform vec3 diffuse_color;
@@ -29,7 +31,14 @@ void main() {
     texCoord = in_texCoord;
     color = ambient_color ;
      for (int i = 0; i < MAX_LIGHTS; i++) {
-       vec4 vertexToLight = normalize(v * vec4(lightPositions[i], 1) - position_cameraSpace);
+         vec4 vertexToLight = vec4(0);
+         if (lightTypes[i] == 0) {
+             vertexToLight = normalize(v * vec4(lightPositions[i], 1) - position_cameraSpace);
+         } else if (lightTypes[i] == 1) {
+             // Dir Light
+             vertexToLight = normalize(v * vec4(-lightDirections[i], 0));
+         }
+
        float diffuseIntensity = max(0.0, dot(vertexToLight, normal_cameraSpace));
        color += max(vec3(0), lightColors[i] * diffuse_color * diffuseIntensity);
 
