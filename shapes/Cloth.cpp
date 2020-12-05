@@ -11,49 +11,32 @@ using namespace CS123::GL;
 
 Cloth::Cloth(float resolution, int particleWidth, int particleHeight):
     m_resolution(resolution),
-    L_structural(4.0/(resolution - 1)),
-    L_shear(sqrt(2.0) * 4.0/(resolution - 1)),
-    L_flexion(2.0 * (4.0/(resolution - 1)))
+    L_structural(4.f/(resolution - 1.f)),
+    L_shear(sqrt(2.f) * 4.f/(resolution - 1.f)),
+    L_flexion(8.f /(resolution - 1.f))
 {
     particles.clear();
-
+    particles.reserve(resolution * resolution);
     numXPoints = resolution;
     numYPoints = resolution;
 
-    float particleMass = 5.0;
-    float incrementX = (1.0f/(float)numXPoints);
-    float incrementY = (1.0f/(float)numYPoints);
-
-    /*
-        X ---> -0.5 to 0.5
-      Y
-      |
-      |
-      \/
-
-      */
+    float particleMass = 1.f;
 
     for(int j = 0; j < numXPoints; j++) {
         for(int i = 0; i< numYPoints; i++) {
-            float x = (1.f/numXPoints) * i - 0.5f;
-            float y = 0.5f - ((1.f/numYPoints) * j);
+            float x = -1.f + 2.f*j/(resolution - 1.f);
+            float y = -1.f + 2.f*i/(resolution - 1.f);
 
-            ClothParticle clothParticle = ClothParticle(
-                                            glm::vec3(x,y,0),
-                                            particleMass,
-                                            glm::vec2(x, y)
-                                          );
-            particles.push_back(clothParticle);
-
-            std::cout<<x<<std::endl;
-            std::cout<<y<<std::endl;
+            particles[getParticleIndexFromCoordinates(i, j)] = ClothParticle(glm::vec3(x,y,0), particleMass, glm::vec2(x/(particleWidth-1), y/(particleHeight-1)));
         }
     }
 
-      particles[0].isStatic= true;
-      particles[numXPoints*(numYPoints-1)].isStatic= true;
+    computeNormals();
 
-      buildShape(0, 0, 0);
+    particles[getParticleIndexFromCoordinates(numXPoints - 1,0)].isStatic= true;
+    particles[getParticleIndexFromCoordinates(numXPoints - 1, numYPoints - 1)].isStatic= true;
+
+    buildShape(0, 0, 0);
 }
 
 void Cloth::buildShape(int param1, int param2, int param3)
@@ -69,9 +52,8 @@ void Cloth::buildShape(int param1, int param2, int param3)
     {
         for ( int j = 0; j < numYPoints; ++j )
         {
-            glm::vec3 pos = particles[i*numYPoints+j].m_pos;
-            m_vertices.push_back(pos);
-            m_normals.push_back(Normal(0,0,-1.0));
+            m_vertices.push_back(particles[getParticleIndexFromCoordinates(i, j)].m_pos);
+            m_normals.push_back(particles[getParticleIndexFromCoordinates(i, j)].m_normal);
             m_uv.push_back(glm::vec2(0));
         }
     }
@@ -90,19 +72,19 @@ void Cloth::buildFace(int param1,int param2, int param3)
     {
         for(int j = 0 ; j < numYPoints - 1; j++)
         {
-           int firstPoint = i + j * numXPoints;
-           int secondPoint =(i + j * numXPoints )+ 1;
-           int thirdPoint = (i + j * numXPoints )+ 1+ numXPoints;
-
+           int thirdPoint = getParticleIndexFromCoordinates(i, j);
+           int secondPoint = getParticleIndexFromCoordinates(i, j + 1);
+           int firstPoint = getParticleIndexFromCoordinates(i+1, j + 1);
+           int fourthPoint = getParticleIndexFromCoordinates(i+1, j);
 
            // here I am creating the triangles and sending them as vertex data
            Vertex v1 = m_vertices[firstPoint];
            Vertex v2 = m_vertices[secondPoint];
            Vertex v3 = m_vertices[thirdPoint];
 
-           Vertex n1 = m_normals[firstPoint ];
-           Vertex n2 = m_normals[secondPoint];
-           Vertex n3 = m_normals[thirdPoint];
+           //glm::vec3 n1 = particles[firstPoint].m_normal;
+           //glm::vec3 n2 = particles[secondPoint].m_normal;
+           //glm::vec3 n3 = particles[thirdPoint].m_normal;
 
            //getTextCoordinates(); ??
 
@@ -113,60 +95,58 @@ void Cloth::buildFace(int param1,int param2, int param3)
            m_vertexData.push_back(v1.x);
            m_vertexData.push_back(v1.y);
            m_vertexData.push_back(v1.z);
-          /* m_vertexData.push_back(n1.x);
-           m_vertexData.push_back(n1.y);
-           m_vertexData.push_back(n1.z);
-           m_vertexData.push_back(t1.x);
+           //m_vertexData.push_back(n1.x);
+           //m_vertexData.push_back(n1.y);
+           //m_vertexData.push_back(n1.z);
+          /* m_vertexData.push_back(t1.x);
            m_vertexData.push_back(t1.y)*/;
 
            m_vertexData.push_back(v2.x);
            m_vertexData.push_back(v2.y);
            m_vertexData.push_back(v2.z);
-//           m_vertexData.push_back(n2.x);
-//           m_vertexData.push_back(n2.y);
-//           m_vertexData.push_back(n2.z);
+           //m_vertexData.push_back(n2.x);
+           //m_vertexData.push_back(n2.y);
+           //m_vertexData.push_back(n2.z);
 //           m_vertexData.push_back(t2.x);
 //           m_vertexData.push_back(t2.y);
 
            m_vertexData.push_back(v3.x);
            m_vertexData.push_back(v3.y);
            m_vertexData.push_back(v3.z);
-//           m_vertexData.push_back(n3.x);
-//           m_vertexData.push_back(n3.y);
-//           m_vertexData.push_back(n3.z);
+           //m_vertexData.push_back(n3.x);
+           //m_vertexData.push_back(n3.y);
+           //m_vertexData.push_back(n3.z);
 //           m_vertexData.push_back(t3.x);
 //           m_vertexData.push_back(t3.y);
 
-           int fourth =(i + j * numXPoints) + numXPoints;
-
-           Vertex v4 = m_vertices[fourth];
-           Vertex n4 = m_normals[fourth];
-           TextureCoord t4 = m_uv[fourth];
+           Vertex v4 = m_vertices[fourthPoint];
+           Vertex n4 = m_normals[fourthPoint];
+           TextureCoord t4 = m_uv[fourthPoint];
 
            m_vertexData.push_back(v1.x);
            m_vertexData.push_back(v1.y);
            m_vertexData.push_back(v1.z);
-//           m_vertexData.push_back(n1.x);
-//           m_vertexData.push_back(n1.y);
-//           m_vertexData.push_back(n1.z);
+           //m_vertexData.push_back(n1.x);
+           //m_vertexData.push_back(n1.y);
+           //m_vertexData.push_back(n1.z);
 //           m_vertexData.push_back(t1.x);
 //           m_vertexData.push_back(t1.y);
 
            m_vertexData.push_back(v3.x);
            m_vertexData.push_back(v3.y);
            m_vertexData.push_back(v3.z);
-//           m_vertexData.push_back(n3.x);
-//           m_vertexData.push_back(n3.y);
-//           m_vertexData.push_back(n3.z);
+           //m_vertexData.push_back(n3.x);
+           //m_vertexData.push_back(n3.y);
+           //m_vertexData.push_back(n3.z);
 //           m_vertexData.push_back(t3.x);
 //           m_vertexData.push_back(t3.y);
 
            m_vertexData.push_back(v4.x);
            m_vertexData.push_back(v4.y);
            m_vertexData.push_back(v4.z);
-//           m_vertexData.push_back(n4.x);
-//           m_vertexData.push_back(n4.y);
-//           m_vertexData.push_back(n4.z);
+           //m_vertexData.push_back(n4.x);
+           //m_vertexData.push_back(n4.y);
+           //m_vertexData.push_back(n4.z);
 //           m_vertexData.push_back(t4.x);
 //           m_vertexData.push_back(t4.y);
 
@@ -175,7 +155,7 @@ void Cloth::buildFace(int param1,int param2, int param3)
 }
 
 int Cloth::getParticleIndexFromCoordinates(int i, int j) {
-    return i * numYPoints + j;
+    return i + j * numXPoints;
 }
 
 bool Cloth::isValidCoordinate(int i, int j) {
@@ -185,6 +165,7 @@ bool Cloth::isValidCoordinate(int i, int j) {
 glm::vec3 Cloth::getSpringForce(glm::vec3 p, glm::vec3 q, Cloth::SpringForceType forceType) {
     float stiffness; //K in the spring equation
     float restLength; //L in the spring equation
+
     switch(forceType) {
         case Cloth::SpringForceType::STRUCTURAL:
             stiffness = K_structural;
@@ -196,6 +177,7 @@ glm::vec3 Cloth::getSpringForce(glm::vec3 p, glm::vec3 q, Cloth::SpringForceType
             stiffness = K_flexion;
             restLength = L_flexion;
     }
+
     return stiffness * (restLength - glm::length(p - q)) * glm::normalize(p - q);
 }
 
@@ -203,38 +185,116 @@ glm::vec3 Cloth::getStructuralSpringForce(int i, int j) {
     glm::vec3 totalStructuralForce = glm::vec3(0, 0, 0);
 
     glm::vec3 p = particles[getParticleIndexFromCoordinates(i, j)].m_pos;
-    std::cout<<"printing p"<<std::endl;
-    std::cout<<glm::to_string(p)<<std::endl;
-    std::cout<<"printing m_verticies"<<std::endl;
-    std::cout<<glm::to_string(m_vertices[getParticleIndexFromCoordinates(i, j)])<<std::endl;
-
-    std::cout<<"printing qs"<<std::endl;
     if(isValidCoordinate(i - 1, j)) {
         glm::vec3 q = particles[getParticleIndexFromCoordinates(i-1, j)].m_pos;
-        std::cout<<glm::to_string(q)<<std::endl;
         totalStructuralForce = totalStructuralForce + getSpringForce(p, q, Cloth::SpringForceType::STRUCTURAL);
     }
     if(isValidCoordinate(i + 1, j)) {
         glm::vec3 q = particles[getParticleIndexFromCoordinates(i + 1, j)].m_pos;
-        std::cout<<glm::to_string(q)<<std::endl;
         totalStructuralForce = totalStructuralForce + getSpringForce(p, q, Cloth::SpringForceType::STRUCTURAL);
     }
     if(isValidCoordinate(i, j + 1)) {
         glm::vec3 q = particles[getParticleIndexFromCoordinates(i, j + 1)].m_pos;
-        std::cout<<glm::to_string(q)<<std::endl;
         totalStructuralForce = totalStructuralForce + getSpringForce(p, q, Cloth::SpringForceType::STRUCTURAL);
     }
     if(isValidCoordinate(i, j - 1)) {
         glm::vec3 q = particles[getParticleIndexFromCoordinates(i, j - 1)].m_pos;
-        std::cout<<glm::to_string(q)<<std::endl;
         totalStructuralForce = totalStructuralForce + getSpringForce(p, q, Cloth::SpringForceType::STRUCTURAL);
     }
 
     return totalStructuralForce;
 }
 
+void Cloth::computeNormals() {
+    std::vector<int> dx = std::vector<int>({1, 1, 0, -1, -1, 0});
+    std::vector<int> dy = std::vector<int>({0, 1, 1, 0, -1, -1});
+    glm::vec3 e1;
+    glm::vec3 e2;
+
+    for (int i = 0; i < m_resolution; ++i )
+        for (int j = 0; j < m_resolution; ++j ) {
+
+            int currParticleIndex = getParticleIndexFromCoordinates(i, j);
+            glm::vec3 p0 = particles[getParticleIndexFromCoordinates(i, j)].m_pos;
+            std::vector<glm::vec3>norms;
+            norms.clear();
+            for (int t = 0; t < 6; ++t ) {
+                int i1 = i + dy[t];
+                int j1 = j + dx[t];
+                int i2 = i + dy[(t + 1) % 6];
+                int j2 = j + dx[(t + 1) % 6];
+                if ( i1 >= 0 && i1 < m_resolution && j1 >= 0 && j1 < m_resolution &&
+                     i2 >= 0 && i2 < m_resolution && j2 >= 0 && j2 < m_resolution ) {
+                    e1 = particles[getParticleIndexFromCoordinates(i1, j1)].m_pos - p0;
+                    e2 = particles[getParticleIndexFromCoordinates(i2, j2)].m_pos - p0;
+                    norms.push_back(glm::normalize(glm::cross(e1, e2)));
+                }
+            }
+            e1 = glm::vec3(0,0,0);
+            for (int t = 0; t < norms.size(); ++t) {
+                e1 = e1 + norms[t];
+            }
+            e1 = glm::normalize(e1);
+
+            particles[currParticleIndex].m_normal = e1;
+        }
+}
+
+glm::vec3 Cloth::getShearSpringForce(int i, int j) {
+    glm::vec3 totalShearForce = glm::vec3(0, 0, 0);
+
+    glm::vec3 p = particles[getParticleIndexFromCoordinates(i, j)].m_pos;
+
+    if(isValidCoordinate(i + 1, j + 1)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i + 1, j + 1)].m_pos;
+        totalShearForce = totalShearForce + getSpringForce(p, q, Cloth::SpringForceType::SHEAR);
+    }
+    if(isValidCoordinate(i + 1, j - 1)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i + 1, j - 1)].m_pos;
+        totalShearForce = totalShearForce + getSpringForce(p, q, Cloth::SpringForceType::SHEAR);
+    }
+    if(isValidCoordinate(i - 1, j - 1)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i - 1, j - 1)].m_pos;
+        totalShearForce = totalShearForce + getSpringForce(p, q, Cloth::SpringForceType::SHEAR);
+    }
+    if(isValidCoordinate(i - 1, j + 1)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i - 1, j + 1)].m_pos;
+        totalShearForce = totalShearForce + getSpringForce(p, q, Cloth::SpringForceType::SHEAR);
+    }
+
+    return totalShearForce;
+}
+
+glm::vec3 Cloth::getFlexionSpringForce(int i, int j) {
+    glm::vec3 totalFlexionForce = glm::vec3(0, 0, 0);
+
+    glm::vec3 p = particles[getParticleIndexFromCoordinates(i, j)].m_pos;
+
+    if(isValidCoordinate(i, j + 2)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i, j + 2)].m_pos;
+        totalFlexionForce = totalFlexionForce + getSpringForce(p, q, Cloth::SpringForceType::SHEAR);
+    }
+    if(isValidCoordinate(i, j - 2)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i, j - 2)].m_pos;
+        totalFlexionForce = totalFlexionForce + getSpringForce(p, q, Cloth::SpringForceType::SHEAR);
+    }
+    if(isValidCoordinate(i + 2, j)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i + 2, j)].m_pos;
+        totalFlexionForce = totalFlexionForce + getSpringForce(p, q, Cloth::SpringForceType::SHEAR);
+    }
+    if(isValidCoordinate(i - 2, j)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i - 2, j)].m_pos;
+        totalFlexionForce = totalFlexionForce + getSpringForce(p, q, Cloth::SpringForceType::SHEAR);
+    }
+
+    return totalFlexionForce;
+}
+
 void Cloth::update(float deltaTime)
 {
+    m_vertices.clear();
+    m_vertexData.clear();
+    m_uv.clear();
     for ( int i = 0; i < numXPoints; ++i )
     {
         for ( int j = 0; j < numYPoints; ++j )
@@ -245,43 +305,20 @@ void Cloth::update(float deltaTime)
             glm::vec3 f_gravity = glm::vec3(0, -9.8, 0) * particles[index].m_mass;
             glm::vec3 f_damping = particles[index].m_velocity * -Cd;
             glm::vec3 f_viscous = Cv * glm::dot(particles[index].m_normal, Ufluid - particles[index].m_velocity) * particles[index].m_normal;
-            glm::vec3 f_spring = getStructuralSpringForce(i, j);// + getShearSpringForce(i, j) + getFlexionSpringForce(i, j);
+            glm::vec3 f_spring = getStructuralSpringForce(i, j) + getShearSpringForce(i, j) + getFlexionSpringForce(i, j);
 
-            particles[index].m_force += f_gravity + f_damping + f_viscous + f_spring;
-        }
-    }
+            particles[index].m_force = f_gravity + f_damping + f_viscous + f_spring;
+            particles[index].step(deltaTime);
 
-    m_vertices.clear();
-//    m_normals.clear();
-//    m_vertexData.clear();
-//    m_uv.clear();
+            glm::vec3 pos = particles[index].m_pos;
 
-
-// //particles[numYPoints/2+numXPoints/2].force.z -= 1;
-
-
-    for (size_t i = 0; i < particles.size(); i++)
-    {
-        particles[i].step(deltaTime);
-    }
-
-    m_vertices.clear();
-    for ( int i = 0; i < numXPoints; ++i )
-    {
-        for ( int j = 0; j < numYPoints; ++j )
-        {
-            glm::vec3 pos = particles[i*numXPoints+j].m_pos;
-           // std::cout << pos.x << " ,"<<  pos.y  << " ," << pos.z <<std::endl;
             m_vertices.push_back(pos);
-            m_normals.push_back(Normal(0,0,-1.0));
             m_uv.push_back(glm::vec2(0));
         }
     }
 
-    m_vertexData.clear();
+    computeNormals();
     buildFace(0,0,0);
-
-   // updateBuffer();
 }
 
 void Cloth::draw()

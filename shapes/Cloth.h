@@ -21,8 +21,11 @@ public:
     void buildVAO();
 
     bool isValidCoordinate(int i, int j);
+    void computeNormals();
     glm::vec3 getSpringForce(glm::vec3 p, glm::vec3 q, Cloth::SpringForceType forceType);
     glm::vec3 getStructuralSpringForce(int i, int j);
+    glm::vec3 getShearSpringForce(int i, int j);
+    glm::vec3 getFlexionSpringForce(int i, int j);
 
     void updateBuffer();
 
@@ -33,9 +36,9 @@ public:
     float m_resolution;
     const float Cv = 0.5;
     const float Cd = 0.5;
-    const float K_structural = 25000.0;
-    const float K_shear = 25000.0;
-    const float K_flexion = 25000.0;
+    const float K_structural = 25.0;
+    const float K_shear = 25.0;
+    const float K_flexion = 25.0;
     const float L_structural;
     const float L_shear;
     const float L_flexion;

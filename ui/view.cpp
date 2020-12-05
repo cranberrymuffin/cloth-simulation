@@ -10,7 +10,7 @@
 using namespace CS123::GL;
 
 View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
-    m_time(), m_timer(), m_captureMouse(false), m_currentScene(nullptr),
+    delta_t(0), m_time(), m_timer(), m_captureMouse(false), m_currentScene(nullptr),
     m_defaultPerspectiveCamera(new CamtransCamera())
 {
     // View needs all mouse move events, not just mouse drag events
@@ -131,7 +131,6 @@ void View::initializeScene()
 void View::tick() {
 
     // Get the number of seconds since the last tick (variable update rate)
-    float seconds = m_time.restart() * 0.001f;
 
     if(firstFrame)
     {
@@ -139,7 +138,7 @@ void View::tick() {
         return;
     }
     // TODO: Implement the demo update here
-    m_currentScene->update(seconds);
+    m_currentScene->update(0.00026);
     // Flag this view for repainting (Qt will call paintGL() soon after)
 
     update();
