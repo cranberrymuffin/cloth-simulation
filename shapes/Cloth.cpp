@@ -4,39 +4,56 @@
 #include "gl/datatype/VBOAttribMarker.h"
 #include "gl/shaders/ShaderAttribLocations.h"
 #include "gl/GLDebug.h"
+#include "glm/ext.hpp"
+#include "glm/gtx/string_cast.hpp"
 
 using namespace CS123::GL;
 
-Cloth::Cloth(float width, float height, int particleWidth, int particleHeight, float weight, float damping)
+Cloth::Cloth(float resolution, int particleWidth, int particleHeight):
+    m_resolution(resolution),
+    L_structural(4.0/(resolution - 1)),
+    L_shear(sqrt(2.0) * 4.0/(resolution - 1)),
+    L_flexion(2.0 * (4.0/(resolution - 1)))
 {
-    numYPoints = height;
-    numXPoints = width;
-    float particleSeperationX =  numXPoints/particleWidth,
-            particleSeperationY = numYPoints/particleHeight,
-            numParticles = particleWidth * particleHeight,
-            //particleMass = numParticles/weight,
-            particleMass = 1.0,
-            particleDamping = 0.2;
+    particles.clear();
 
+    numXPoints = resolution;
+    numYPoints = resolution;
 
-    for (float x = -0.5; x < 0.5; x+= (1.0f/(float)numXPoints))
-    {
-        for (float y = 0.5; y > -0.5; y-= (1.0f/(float)numYPoints))
-        {
-            particles.push_back(ClothParticle(glm::vec3(x,y,0),
-                    particleMass, particleDamping,
-                    glm::vec2((float)x/(particleWidth-1), -(float)y/(particleHeight-1))
-            ));
+    float particleMass = 5.0;
+    float incrementX = (1.0f/(float)numXPoints);
+    float incrementY = (1.0f/(float)numYPoints);
+
+    /*
+        X ---> -0.5 to 0.5
+      Y
+      |
+      |
+      \/
+
+      */
+
+    for(int j = 0; j < numXPoints; j++) {
+        for(int i = 0; i< numYPoints; i++) {
+            float x = (1.f/numXPoints) * i - 0.5f;
+            float y = 0.5f - ((1.f/numYPoints) * j);
+
+            ClothParticle clothParticle = ClothParticle(
+                                            glm::vec3(x,y,0),
+                                            particleMass,
+                                            glm::vec2(x, y)
+                                          );
+            particles.push_back(clothParticle);
+
+            std::cout<<x<<std::endl;
+            std::cout<<y<<std::endl;
         }
-
     }
 
-  // particles[numYPoints/2+numXPoints/2].force.z -= 1;
-    particles[0].isStatic= true;
-    particles[numXPoints*(numYPoints-1)].isStatic= true;
-    particles[(numXPoints)*((numYPoints-1)/2)].isStatic= true;
+      particles[0].isStatic= true;
+      particles[numXPoints*(numYPoints-1)].isStatic= true;
 
-   buildShape(0, 0, 0);
+      buildShape(0, 0, 0);
 }
 
 void Cloth::buildShape(int param1, int param2, int param3)
@@ -157,13 +174,82 @@ void Cloth::buildFace(int param1,int param2, int param3)
     }
 }
 
-void Cloth::update(float deltaTime)
-{
-    for (size_t i = 0; i < particles.size(); i++)
-    {
-      particles[i].force += glm::vec3(0, -1.9, 0) ;
+int Cloth::getParticleIndexFromCoordinates(int i, int j) {
+    return i * numYPoints + j;
+}
+
+bool Cloth::isValidCoordinate(int i, int j) {
+    return (i < m_resolution && i >= 0) &&(j < m_resolution && j >= 0);
+}
+
+glm::vec3 Cloth::getSpringForce(glm::vec3 p, glm::vec3 q, Cloth::SpringForceType forceType) {
+    float stiffness; //K in the spring equation
+    float restLength; //L in the spring equation
+    switch(forceType) {
+        case Cloth::SpringForceType::STRUCTURAL:
+            stiffness = K_structural;
+            restLength = L_structural;
+        case Cloth::SpringForceType::SHEAR:
+            stiffness = K_shear;
+            restLength = L_shear;
+        case Cloth::SpringForceType::FLEXION:
+            stiffness = K_flexion;
+            restLength = L_flexion;
+    }
+    return stiffness * (restLength - glm::length(p - q)) * glm::normalize(p - q);
+}
+
+glm::vec3 Cloth::getStructuralSpringForce(int i, int j) {
+    glm::vec3 totalStructuralForce = glm::vec3(0, 0, 0);
+
+    glm::vec3 p = particles[getParticleIndexFromCoordinates(i, j)].m_pos;
+    std::cout<<"printing p"<<std::endl;
+    std::cout<<glm::to_string(p)<<std::endl;
+    std::cout<<"printing m_verticies"<<std::endl;
+    std::cout<<glm::to_string(m_vertices[getParticleIndexFromCoordinates(i, j)])<<std::endl;
+
+    std::cout<<"printing qs"<<std::endl;
+    if(isValidCoordinate(i - 1, j)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i-1, j)].m_pos;
+        std::cout<<glm::to_string(q)<<std::endl;
+        totalStructuralForce = totalStructuralForce + getSpringForce(p, q, Cloth::SpringForceType::STRUCTURAL);
+    }
+    if(isValidCoordinate(i + 1, j)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i + 1, j)].m_pos;
+        std::cout<<glm::to_string(q)<<std::endl;
+        totalStructuralForce = totalStructuralForce + getSpringForce(p, q, Cloth::SpringForceType::STRUCTURAL);
+    }
+    if(isValidCoordinate(i, j + 1)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i, j + 1)].m_pos;
+        std::cout<<glm::to_string(q)<<std::endl;
+        totalStructuralForce = totalStructuralForce + getSpringForce(p, q, Cloth::SpringForceType::STRUCTURAL);
+    }
+    if(isValidCoordinate(i, j - 1)) {
+        glm::vec3 q = particles[getParticleIndexFromCoordinates(i, j - 1)].m_pos;
+        std::cout<<glm::to_string(q)<<std::endl;
+        totalStructuralForce = totalStructuralForce + getSpringForce(p, q, Cloth::SpringForceType::STRUCTURAL);
     }
 
+    return totalStructuralForce;
+}
+
+void Cloth::update(float deltaTime)
+{
+    for ( int i = 0; i < numXPoints; ++i )
+    {
+        for ( int j = 0; j < numYPoints; ++j )
+        {
+
+            int index = getParticleIndexFromCoordinates(i, j);
+
+            glm::vec3 f_gravity = glm::vec3(0, -9.8, 0) * particles[index].m_mass;
+            glm::vec3 f_damping = particles[index].m_velocity * -Cd;
+            glm::vec3 f_viscous = Cv * glm::dot(particles[index].m_normal, Ufluid - particles[index].m_velocity) * particles[index].m_normal;
+            glm::vec3 f_spring = getStructuralSpringForce(i, j);// + getShearSpringForce(i, j) + getFlexionSpringForce(i, j);
+
+            particles[index].m_force += f_gravity + f_damping + f_viscous + f_spring;
+        }
+    }
 
     m_vertices.clear();
 //    m_normals.clear();

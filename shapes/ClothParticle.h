@@ -5,16 +5,19 @@
 class ClothParticle
 {
 public:
-    ClothParticle( glm::vec3 pos, float mass, float damping,glm::vec2 texCoord);
+    ClothParticle( glm::vec3 pos, float mass, glm::vec2 texCoord);
     ~ClothParticle();
-    bool isStatic;
-    glm::vec3 normal;
+    bool isStatic; // true for pinned particles
+
+    //used for physics calculations
+    glm::vec3 m_normal;
+    glm::vec3 m_velocity;
     glm::vec3 m_pos;
-    glm::vec3 lastPos;
-    glm::vec2 texCoord;
-    float m_damping;
+    glm::vec3 m_force;
     float m_mass;
-    glm::vec3 force;
+
+    glm::vec2 texCoord; //texture mapping
+
     void move(glm::vec3 delta);
     void step(float timeStep);
 };

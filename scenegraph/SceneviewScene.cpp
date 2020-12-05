@@ -37,7 +37,7 @@ SceneviewScene::SceneviewScene()
     //ResourceLoader::readObjFile(m_sceneObjects,inputfile );
     Material m;
 
-    Shape *clothShape = new Cloth(7,7,1,1,1,0.3);
+    Shape *clothShape = new Cloth(7,1,1);
    // Shape* buildShape = new PlaneShape(5,1,1);
     m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
     m_cloth->setWorldMatrix(glm::mat4x4());

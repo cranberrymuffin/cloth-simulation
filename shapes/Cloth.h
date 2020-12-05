@@ -6,20 +6,40 @@
 class Cloth:public Shape
 {
 public:
-    Cloth(float width, float height, int particleWidth, int particleHeight, float weight, float damping);
+    Cloth(float resolution, int particleWidth, int particleHeight);
+
+    enum SpringForceType {
+            STRUCTURAL, SHEAR, FLEXION
+    };
 
     void buildShape(int param1,int param2, int param3);
     void buildFace(int param1,int param2, int param3);
     void update(float deltaTime);
+    int getParticleIndexFromCoordinates(int i, int j);
     void draw();
     std::vector<ClothParticle> particles;
-     void buildVAO();
+    void buildVAO();
+
+    bool isValidCoordinate(int i, int j);
+    glm::vec3 getSpringForce(glm::vec3 p, glm::vec3 q, Cloth::SpringForceType forceType);
+    glm::vec3 getStructuralSpringForce(int i, int j);
 
     void updateBuffer();
 
     GLuint m_vaohandle;
     GLuint m_vbohandle;
     int numVertices;
+
+    float m_resolution;
+    const float Cv = 0.5;
+    const float Cd = 0.5;
+    const float K_structural = 25000.0;
+    const float K_shear = 25000.0;
+    const float K_flexion = 25000.0;
+    const float L_structural;
+    const float L_shear;
+    const float L_flexion;
+    const glm::vec3 Ufluid = glm::vec3(0,0,1);
 };
 
 #endif // CLOTH_H

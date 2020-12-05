@@ -2,8 +2,8 @@
 
 
 
-ClothParticle::ClothParticle(glm::vec3 pos, float mass, float damping,glm::vec2 texCoord)
-    :m_pos(pos),isStatic(false),m_damping(damping),m_mass(mass)
+ClothParticle::ClothParticle(glm::vec3 pos, float mass, glm::vec2 texCoord)
+    :m_pos(pos),isStatic(false),m_mass(mass), m_velocity(0)
 {
 
 }
@@ -24,16 +24,10 @@ void ClothParticle::move(glm::vec3 delta)
 
 void ClothParticle::step(float timeStep)
 {
-    if (isStatic)
-    {
-        return;
+    if (!isStatic){
+        m_velocity = m_velocity + (timeStep * (m_force/m_mass));
+        m_pos = m_pos + (timeStep * m_velocity);
     }
-
-        //apply force
-        glm::vec3 temp = m_pos;
-        m_pos += (m_pos-lastPos) * m_damping + (force/m_mass)*(timeStep/100);
-        lastPos = temp;
-        force = glm::vec3(0,0,0);
 }
 
 
