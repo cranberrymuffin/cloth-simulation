@@ -130,7 +130,6 @@ void View::initializeScene()
 
 void View::tick() {
 
-    if(tick_counter == 60) {
 
         // Get the number of seconds since the last tick (variable update rate)
 
@@ -148,8 +147,7 @@ void View::tick() {
 
         update();
         tick_counter = 0;
-    }
-    tick_counter++;
+
 }
 
 void View::loadSceneviewSceneFromParser(CS123XmlSceneParser &parser)

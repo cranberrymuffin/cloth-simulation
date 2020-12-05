@@ -26,6 +26,7 @@ public:
     glm::vec3 getStructuralSpringForce(int i, int j);
     glm::vec3 getShearSpringForce(int i, int j);
     glm::vec3 getFlexionSpringForce(int i, int j);
+    bool isValidNeighborDistance(int curr_i, int curr_j, int nbr_i, int nbr_j);
 
     void updateBuffer();
 
@@ -35,10 +36,10 @@ public:
 
     float m_resolution;
     const float Cv = 0.5;
-    const float Cd = 0.5;
-    const float K_structural = 25.0;
-    const float K_shear = 25.0;
-    const float K_flexion = 25.0;
+    const float Cd = 0.05;
+    const float K_structural = 1.f;
+    const float K_shear = 1.f;
+    const float K_flexion = 1.f;
     const float L_structural;
     const float L_shear;
     const float L_flexion;

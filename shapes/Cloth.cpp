@@ -20,7 +20,7 @@ Cloth::Cloth(float resolution, int particleWidth, int particleHeight):
     numXPoints = resolution;
     numYPoints = resolution;
 
-    float particleMass = 1.f;
+    float particleMass = 0.1f;
 
     for(int j = 0; j < m_resolution; j++) {
         for(int i = 0; i< m_resolution; i++) {
@@ -292,6 +292,16 @@ glm::vec3 Cloth::getFlexionSpringForce(int i, int j) {
 
 bool applied = false;
 
+bool Cloth::isValidNeighborDistance(int curr_i, int curr_j, int nbr_i, int nbr_j) {
+    if(isValidCoordinate(nbr_i, nbr_j)) {
+        glm::vec3 curr = particles[getParticleIndexFromCoordinates(curr_i, curr_j)].m_pos;
+        glm::vec3 nbr = particles[getParticleIndexFromCoordinates(nbr_i, nbr_j)].m_pos;
+
+        return glm::length(curr - nbr) < 0.1f;
+    }
+    return true;
+}
+
 void Cloth::update(float deltaTime)
 {
     m_vertices.clear();
@@ -307,14 +317,31 @@ void Cloth::update(float deltaTime)
             glm::vec3 f_gravity = glm::vec3(0.f, -9.8f * particles[index].m_mass, 0.f);
             glm::vec3 f_damping = particles[index].m_velocity * -Cd;
             glm::vec3 f_viscous = Cv * glm::dot(particles[index].m_normal, Ufluid - particles[index].m_velocity) * particles[index].m_normal;
+
+            if(particles[index].isStatic) {
+                f_gravity = glm::vec3(0.f, 0.f, 0.f);
+            }
             glm::vec3 f_spring = getStructuralSpringForce(i, j) + getShearSpringForce(i, j) + getFlexionSpringForce(i, j);
 
             particles[index].m_force = f_gravity + f_damping + f_viscous + f_spring;
+
+            glm::vec3 oldPos = particles[index].m_pos;
             particles[index].step(deltaTime);
+            glm::vec3 newPos = particles[index].m_pos;
 
-            glm::vec3 pos = particles[index].m_pos;
+            if(!(isValidNeighborDistance(i, j, i-1, j)
+                 && isValidNeighborDistance(i, j, i+1, j)
+                 && isValidNeighborDistance(i, j, i, j-1)
+                 && isValidNeighborDistance(i, j, i, j+1)
+                 && isValidNeighborDistance(i, j, i+1, j+1)
+                 && isValidNeighborDistance(i, j, i+1, j-1)
+                 && isValidNeighborDistance(i, j, i-1, j+1)
+                 && isValidNeighborDistance(i, j, i-1, j-1)
+              )){
+                particles[index].m_pos = oldPos;
+            }
 
-            m_vertices.push_back(pos);
+            m_vertices.push_back(particles[index].m_pos);
             m_uv.push_back(glm::vec2(0));
         }
     }
@@ -392,9 +419,9 @@ void Cloth::updateBuffer()
     glBindVertexArray(0);
 
     glBindVertexArray(m_vaohandle);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //comment for no wireframes
     glDrawArrays(GL_TRIANGLES, 0, numVertices);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //comment for no wireframes
 
     glBindVertexArray(0);
      checkError();
