@@ -22,7 +22,7 @@ SceneviewScene::SceneviewScene()
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     initializeSceneLight();
     loadPhongShader();
-    glm::vec3 eye(0.0,0.0,5.0);
+    glm::vec3 eye(5.0,5.0,5.0);
     glm::vec3 fwd(0.0,0.0,-1.0);
     glm::vec3 up(0.0,1.0,0.0);
 
@@ -40,7 +40,7 @@ SceneviewScene::SceneviewScene()
     //ResourceLoader::readObjFile(m_sceneObjects,inputfile );
     Material m;
 
-   // Shape *clothShape = new Cloth(7,7,1,1,1,0.3);
+    Shape *clothShape = new Cloth(64,1,1);
    // Shape* buildShape = new PlaneShape(5,1,1);
     Shape* sphereShape = ShapeBuilder::getInstance().
             LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);
