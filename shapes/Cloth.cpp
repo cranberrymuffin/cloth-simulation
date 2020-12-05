@@ -164,7 +164,7 @@ void Cloth::update(float deltaTime)
       particles[i].force += glm::vec3(0, -1.9, 0) ;
     }
 
-
+/****/
     m_vertices.clear();
 //    m_normals.clear();
 //    m_vertexData.clear();

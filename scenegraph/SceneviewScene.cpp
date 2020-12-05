@@ -11,6 +11,9 @@
 #include "lib/ResourceLoader.h"
 #include "shapes/Cloth.h"
 #include "shapes/PlaneShape.h"
+#include "shapes/Sphere.h"
+#include "scenegraph/Shapebuilder.h"
+
 using namespace CS123::GL;
 
 
@@ -37,11 +40,37 @@ SceneviewScene::SceneviewScene()
     //ResourceLoader::readObjFile(m_sceneObjects,inputfile );
     Material m;
 
-    Shape *clothShape = new Cloth(7,7,1,1,1,0.3);
+   // Shape *clothShape = new Cloth(7,7,1,1,1,0.3);
    // Shape* buildShape = new PlaneShape(5,1,1);
-    m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
-    m_cloth->setWorldMatrix(glm::mat4x4());
-    m_sceneObjects.push_back(m_cloth);
+    Shape* sphereShape = ShapeBuilder::getInstance().
+            LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);
+//    m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
+//    m_cloth->setWorldMatrix(glm::mat4x4());
+//    m_sceneObjects.push_back(m_cloth);
+
+    m.cDiffuse = glm::vec4(0.7,0.4,0.4,1.0);
+    m.cAmbient = glm::vec4(0.1,0.1,0.1,1.0);
+    m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
+    m.shininess = 20;
+
+    SceneObject* sceneObj = new SceneObject(sphereShape,PrimitiveType::PRIMITIVE_CONE,m);
+    glm::mat4x4 t = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.0,-1.0));
+    sceneObj->setWorldMatrix(t);
+    m_sceneObjects.push_back(sceneObj);
+
+    m_globalData.kd =0.5;
+    m_globalData.ka =0.5;
+    m_globalData.ks =0.5;
+
+
+    LightData l;
+    l.type = LightType::LIGHT_POINT;
+    l.pos = glm::vec4(0.0,1.0,0.5,1.0);
+    l.color = glm::vec4(1.0,1.0,1.0,1.0);
+    l.id = 0;
+    m_lights.clear();
+    m_lights.push_back(l);
+
 }
 
 SceneviewScene::~SceneviewScene()
@@ -86,7 +115,7 @@ void SceneviewScene::render(Camera* camera) {
     setSceneUniforms(*camera);
     std::cout<<"SceneviewScene::render 1" << std::endl;
     checkError();
-   //  setLights();
+    setLights();
     std::cout<<"SceneviewScene::render 2" << std::endl;
     checkError();
     renderGeometry();
@@ -153,7 +182,7 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
          Material m =sceneObject->getMaterial() ;
          m.cDiffuse *= m_globalData.kd;
          m.cAmbient *= m_globalData.ka;
-        // m_phongShader->applyMaterial(m);
+         m_phongShader->applyMaterial(m);
 
          if(sceneObject->getMaterial().textureMap.isUsed)
          {
@@ -161,7 +190,9 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
          }
          std::cout << "SceneviewScene::renderSceneViewObjects 3" << std::endl;
         checkError();
+        glDisable(GL_CULL_FACE);
          sceneObject->getShape().draw();
+         glEnable(GL_CULL_FACE);
           std::cout << "SceneviewScene::renderSceneViewObjects 4" << std::endl;
          checkError();
 
@@ -224,7 +255,11 @@ void SceneviewScene::settingsChanged() {
 
 void SceneviewScene::update(float deltaTime)
 {
-  m_cloth->step(deltaTime);
+  for(size_t i = 0 ; i < m_sceneObjects.size();++i)
+  {
+    m_sceneObjects[i]->step(deltaTime);
+  }
+
 }
 
 void SceneviewScene::initializeSceneLight()

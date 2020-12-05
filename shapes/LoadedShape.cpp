@@ -11,12 +11,9 @@ LoadedShape::LoadedShape(std::vector<glm::vec3>&vertices,std::vector<glm::vec3>&
   m_textCoords = textCoords;
 
   bbv_vertices = {
-          glm::vec3 ( -0.5, -0.5, -0.5),
-          glm::vec3 (  0.5, -0.5, -0.5),
-          glm::vec3 (0.5,  0.5, -0.5),
-          glm::vec3 ( -0.5,  0.5, -0.5),
-          glm::vec3 ( -0.5, -0.5,  0.5),
-          glm::vec3 (  0.5, -0.5,  0.5),
+          glm::vec3 ( -0.5, 0.0, 0.0),
+          glm::vec3 (  0.5, 0.0, 0.5),
+          glm::vec3 ( 0.0,  0.5, 0.0),
          };
 
        indexes = {
@@ -25,15 +22,15 @@ LoadedShape::LoadedShape(std::vector<glm::vec3>&vertices,std::vector<glm::vec3>&
           0, 4, 1, 5, 2, 6, 3, 7
         };
 
-     //  glGenVertexArrays(1, &vao_BoundingBox);
-       glBindVertexArray(vao_BoundingBox);
+//       glGenVertexArrays(1, &vao_BoundingBox);
+//       glBindVertexArray(vao_BoundingBox);
 
-       glGenBuffers(1, &vbo_BoundingBox);
-       glBindBuffer(GL_ARRAY_BUFFER, vbo_BoundingBox);
-       glBufferData(GL_ARRAY_BUFFER, bbv_vertices.size()*sizeof(glm::vec3), &bbv_vertices[0], GL_STATIC_DRAW);
-       glEnableVertexAttribArray(0);
-       glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(glm::vec3), (GLvoid*)0);
-
+//       glGenBuffers(1, &vbo_BoundingBox);
+//       glBindBuffer(GL_ARRAY_BUFFER, vbo_BoundingBox);
+//       glBufferData(GL_ARRAY_BUFFER, bbv_vertices.size()*sizeof(glm::vec3), &bbv_vertices[0], GL_STATIC_DRAW);
+//       glEnableVertexAttribArray(0);
+//       glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(glm::vec3), (GLvoid*)0);
+//       glBindBuffer(GL_ARRAY_BUFFER,0);
 
 
 //        glGenBuffers(1, &indexes_BoundingBox);
@@ -41,7 +38,7 @@ LoadedShape::LoadedShape(std::vector<glm::vec3>&vertices,std::vector<glm::vec3>&
 //        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size()*sizeof (int), &indexes[0], GL_STATIC_DRAW);
 
 
-        glBindVertexArray(0);
+  //      glBindVertexArray(0);
   buildVAO();
 
 }
@@ -75,12 +72,12 @@ void LoadedShape::buildShape(int param1,int param2, int param3)
 
 LoadedShape::~LoadedShape()
 {
-    for(GLuint vbo:vbos)
-    {
-      glDeleteBuffers(1,&vbo);
-    }
+//    for(GLuint vbo:vbos)
+//    {
+//      glDeleteBuffers(1,&vbo);
+//    }
 
-    glDeleteVertexArrays(1,&vao);
+//    glDeleteVertexArrays(1,&vao);
 }
 
 void LoadedShape::draw()
@@ -90,13 +87,13 @@ void LoadedShape::draw()
 //    glDrawArrays(GL_TRIANGLES,0,bbv_vertices.size());
 //    checkError();
 //    glBindVertexArray(0);
-      int sizeVertices = m_vertices.size() / sizeof(glm::vec3);
+      int sizeVertices = bbv_vertices.size() / sizeof(glm::vec3);
      //int sizeVertices = m_vertices.size() / sizeof(float);
 
         glBindVertexArray(vao);
 
         checkError();
-        glDrawArrays(GL_TRIANGLES,0,sizeVertices);
+        glDrawArrays(GL_TRIANGLES,0,m_vertices.size());
         checkError();
        // glBindVertexArray(0);
 
@@ -121,20 +118,15 @@ void LoadedShape::draw()
 void LoadedShape::buildVAO()
 {
     glGenVertexArrays(1, &vao);
-    checkError();
     glBindVertexArray(vao);
 
-
     glGenBuffers(1, &vbo);
-    //vbos.push_back(vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*m_vertices.size(),
-                 &m_vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(glm::vec3), &m_vertices[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(glm::vec3), (GLvoid*)0);
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-  //  glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    glBindVertexArray( 0);
 
 //    if(!m_normals.empty())
 //    {

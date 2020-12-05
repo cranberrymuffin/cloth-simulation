@@ -11,6 +11,7 @@ namespace CS123 { namespace GL {
     class Shader;
     class CS123Shader;
     class Texture2D;
+    class FBO;
 }}
 
 /**
@@ -72,6 +73,8 @@ private:
     glm::mat4x4 m_lookat;
     glm::mat4x4 m_projection;
     SceneObject* m_cloth;
+
+    //std::unique_ptr<CS123::GL::FBO> fbo;
 
 };
 

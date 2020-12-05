@@ -28,10 +28,15 @@ glm::vec3 toGLMVec3(const CS123SceneColor &c) {
 }
 
 void CS123Shader::applyMaterial(const CS123SceneMaterial &material) {
+    checkError();
     setUniform("ambient_color", toGLMVec3(material.cAmbient));
+    checkError();
     setUniform("diffuse_color", toGLMVec3(material.cDiffuse));
+    checkError();
     setUniform("specular_color", toGLMVec3(material.cSpecular));
+    checkError();
     setUniform("shininess", material.shininess);
+    checkError();
 }
 
 void CS123Shader::setLight(const CS123SceneLightData &light) {
@@ -47,7 +52,7 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
             setUniformArrayByIndex(name, light.pos.xyz(), light.id);
             std::cout<<"CS123Shader::setLight 0" << std::endl;
             checkError();
-            if (!settings.usePointLights) ignoreLight = true;
+           // if (!settings.usePointLights) ignoreLight = true;
             break;
         case LightType::LIGHT_DIRECTIONAL:
             lightType = 1;
@@ -63,10 +68,10 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
     }
 
     CS123SceneColor color = light.color;
-    if (ignoreLight) color.r = color.g = color.b = 0;
+   // if (ignoreLight) color.r = color.g = color.b = 0;
     std::cout<<"CS123Shader::setLight 1" << std::endl;
     checkError();
-    setUniformArrayByIndex("lightTypes", lightType, light.id);
+    //setUniformArrayByIndex("lightTypes", lightType, light.id);
     std::cout<<"CS123Shader::setLight 2" << std::endl;
     checkError();
     setUniformArrayByIndex("lightColors", glm::vec3(color.r, color.g, color.b), light.id);

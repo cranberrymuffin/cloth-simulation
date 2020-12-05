@@ -80,17 +80,20 @@ void ResourceLoader::readObjFile(std::vector<SceneObject*>& sceneObjects,
 //               vertices.push_back(3*idx.vertex_index+1);
 //               vertices.push_back(3*idx.vertex_index+2);
 
+               glm::vec3 normal(0.0);
                if(!attrib.normals.empty())
                {
-                   glm::vec3 normal;
                    normal.x = attrib.normals[3*idx.normal_index+0];
                    normal.y = attrib.normals[3*idx.normal_index+1];
                    normal.z = attrib.normals[3*idx.normal_index+2];
-                   normals.push_back(normal);
+
                }
+               normals.push_back(normal);
+
+               glm::vec2 textC;
                if(!attrib.texcoords.empty())
                {
-                   glm::vec2 textC;
+
                    textC.x = attrib.normals[3*idx.texcoord_index+0];
                    textC.y = attrib.normals[3*idx.texcoord_index+1];
                    textCoords.push_back(textC);
