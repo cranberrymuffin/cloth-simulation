@@ -39,30 +39,31 @@ SceneviewScene::SceneviewScene()
 //
     //ResourceLoader::readObjFile(m_sceneObjects,inputfile );
     Material m;
-
-    Shape *clothShape = new Cloth(64,1,1);
-   // Shape* buildShape = new PlaneShape(5,1,1);
-    Shape* sphereShape = ShapeBuilder::getInstance().
-            LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);
-//    m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
-//    m_cloth->setWorldMatrix(glm::mat4x4());
-//    m_sceneObjects.push_back(m_cloth);
-
     m.cDiffuse = glm::vec4(0.7,0.4,0.4,1.0);
-    m.cAmbient = glm::vec4(0.1,0.1,0.1,1.0);
+    m.cAmbient = glm::vec4(0.25,0.25,0.25,1.0);
     m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
     m.shininess = 20;
 
-    SceneObject* sceneObj = new SceneObject(sphereShape,PrimitiveType::PRIMITIVE_CONE,m);
-    glm::mat4x4 t = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.0,-1.0));
-    sceneObj->setWorldMatrix(t);
-    m_sceneObjects.push_back(sceneObj);
+    Shape *clothShape = new Cloth(64,1,1);
+   // Shape* buildShape = new PlaneShape(5,1,1);
+//    Shape* sphereShape = ShapeBuilder::getInstance().
+//            LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);
+    m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
+    m_cloth->setWorldMatrix(glm::mat4x4());
+    m_sceneObjects.push_back(m_cloth);
+
+
+
+    //SceneObject* sceneObj = new SceneObject(sphereShape,PrimitiveType::PRIMITIVE_CONE,m);
+//    glm::mat4x4 t = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.0,-1.0));
+//    sceneObj->setWorldMatrix(t);
+//    m_sceneObjects.push_back(sceneObj);
 
     m_globalData.kd =0.5;
-    m_globalData.ka =0.5;
+    m_globalData.ka =0.75;
     m_globalData.ks =0.5;
 
-    //m_lights.clear();
+    m_lights.clear();
 
     LightData l;
     l.type = LightType::LIGHT_POINT;
@@ -73,11 +74,11 @@ SceneviewScene::SceneviewScene()
     LightData l2;
     l2.type = LightType::LIGHT_DIRECTIONAL;
     l2.dir = glm::vec4(0.0,-1.0,-1.0,1.0);
-    l2.color = glm::vec4(0.8,0.8,0.8,1.0);
-    l2.id = 1;
+    l2.color = glm::vec4(1.0,1.0,1.0,1.0);
+    l2.id = 0;
 
-    m_lights.push_back(l);
-   // m_lights.push_back(l2);
+  //  m_lights.push_back(l);
+    m_lights.push_back(l2);
 
 }
 

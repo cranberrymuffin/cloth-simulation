@@ -54,6 +54,7 @@ void Cloth::buildShape(int param1, int param2, int param3)
         {
             m_vertices.push_back(particles[getParticleIndexFromCoordinates(i, j)].m_pos);
             m_normals.push_back(particles[getParticleIndexFromCoordinates(i, j)].m_normal);
+            //m_normals.push_back(glm::vec3(0.0,0.0,-1.0));
             m_uv.push_back(glm::vec2(0));
         }
     }
@@ -95,27 +96,27 @@ void Cloth::buildFace(int param1,int param2, int param3)
            m_vertexData.push_back(v1.x);
            m_vertexData.push_back(v1.y);
            m_vertexData.push_back(v1.z);
-          /* m_vertexData.push_back(n1.x);
+           m_vertexData.push_back(n1.x);
            m_vertexData.push_back(n1.y);
            m_vertexData.push_back(n1.z);
-           m_vertexData.push_back(t1.x);
+           /*m_vertexData.push_back(t1.x);
            m_vertexData.push_back(t1.y)*/;
 
            m_vertexData.push_back(v2.x);
            m_vertexData.push_back(v2.y);
            m_vertexData.push_back(v2.z);
-//           m_vertexData.push_back(n2.x);
-//           m_vertexData.push_back(n2.y);
-//           m_vertexData.push_back(n2.z);
+           m_vertexData.push_back(n2.x);
+           m_vertexData.push_back(n2.y);
+           m_vertexData.push_back(n2.z);
 //           m_vertexData.push_back(t2.x);
 //           m_vertexData.push_back(t2.y);
 
            m_vertexData.push_back(v3.x);
            m_vertexData.push_back(v3.y);
            m_vertexData.push_back(v3.z);
-//           m_vertexData.push_back(n3.x);
-//           m_vertexData.push_back(n3.y);
-//           m_vertexData.push_back(n3.z);
+           m_vertexData.push_back(n3.x);
+           m_vertexData.push_back(n3.y);
+           m_vertexData.push_back(n3.z);
 //           m_vertexData.push_back(t3.x);
 //           m_vertexData.push_back(t3.y);
 
@@ -126,27 +127,27 @@ void Cloth::buildFace(int param1,int param2, int param3)
            m_vertexData.push_back(v1.x);
            m_vertexData.push_back(v1.y);
            m_vertexData.push_back(v1.z);
-//           m_vertexData.push_back(n1.x);
-//           m_vertexData.push_back(n1.y);
-//           m_vertexData.push_back(n1.z);
+           m_vertexData.push_back(n1.x);
+           m_vertexData.push_back(n1.y);
+           m_vertexData.push_back(n1.z);
 //           m_vertexData.push_back(t1.x);
 //           m_vertexData.push_back(t1.y);
 
            m_vertexData.push_back(v3.x);
            m_vertexData.push_back(v3.y);
            m_vertexData.push_back(v3.z);
-//           m_vertexData.push_back(n3.x);
-//           m_vertexData.push_back(n3.y);
-//           m_vertexData.push_back(n3.z);
+           m_vertexData.push_back(n3.x);
+           m_vertexData.push_back(n3.y);
+           m_vertexData.push_back(n3.z);
 //           m_vertexData.push_back(t3.x);
 //           m_vertexData.push_back(t3.y);
 
            m_vertexData.push_back(v4.x);
            m_vertexData.push_back(v4.y);
            m_vertexData.push_back(v4.z);
-//           m_vertexData.push_back(n4.x);
-//           m_vertexData.push_back(n4.y);
-//           m_vertexData.push_back(n4.z);
+           m_vertexData.push_back(n4.x);
+           m_vertexData.push_back(n4.y);
+           m_vertexData.push_back(n4.z);
 //           m_vertexData.push_back(t4.x);
 //           m_vertexData.push_back(t4.y);
 
@@ -297,7 +298,7 @@ bool Cloth::isValidNeighborDistance(int curr_i, int curr_j, int nbr_i, int nbr_j
         glm::vec3 curr = particles[getParticleIndexFromCoordinates(curr_i, curr_j)].m_pos;
         glm::vec3 nbr = particles[getParticleIndexFromCoordinates(nbr_i, nbr_j)].m_pos;
 
-        return glm::length(curr - nbr) < 0.1f;
+        return glm::length(curr - nbr) < 10.f;
     }
     return true;
 }
@@ -393,8 +394,12 @@ void Cloth::buildVAO()
     glBindBuffer(GL_ARRAY_BUFFER, m_vbohandle);
     glBufferData(GL_ARRAY_BUFFER, m_vertexData.size()*sizeof (GL_FLOAT),
                  m_vertexData.data(), GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0,3, GL_FLOAT,GL_FALSE, 0 , 0);
+    glVertexAttribPointer(0,3, GL_FLOAT,GL_FALSE, 3*sizeof(float) , 0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1,3, GL_FLOAT,GL_FALSE, 3*sizeof(float) ,
+                          reinterpret_cast<GLvoid*>(3*sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -420,9 +425,9 @@ void Cloth::updateBuffer()
     glBindVertexArray(0);
 
     glBindVertexArray(m_vaohandle);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //comment for no wireframes
+   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //comment for no wireframes
     glDrawArrays(GL_TRIANGLES, 0, numVertices);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //comment for no wireframes
+   // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //comment for no wireframes
 
     glBindVertexArray(0);
      checkError();
