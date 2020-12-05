@@ -33,7 +33,6 @@ public:
     GLuint m_vaohandle;
     GLuint m_vbohandle;
     int numVertices;
-
     float m_resolution;
     const float Cv = 0.5;
     const float Cd = 0.05;

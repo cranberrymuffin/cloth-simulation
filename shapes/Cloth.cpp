@@ -298,7 +298,7 @@ bool Cloth::isValidNeighborDistance(int curr_i, int curr_j, int nbr_i, int nbr_j
         glm::vec3 curr = particles[getParticleIndexFromCoordinates(curr_i, curr_j)].m_pos;
         glm::vec3 nbr = particles[getParticleIndexFromCoordinates(nbr_i, nbr_j)].m_pos;
 
-        return glm::length(curr - nbr) < 10.f;
+        return glm::length(curr - nbr) < 0.01f;
     }
     return true;
 }
@@ -380,7 +380,7 @@ void Cloth::buildVAO()
 //                     0.0f,  0.5f, 0.0f  // top
 //                  };
 
-    numVertices = m_vertexData.size() / 3;
+    numVertices = m_vertexData.size() / 6;
 
 //    float vertices[] = {
 //           -0.5f, -0.5f, 0.0f, // left
@@ -394,12 +394,17 @@ void Cloth::buildVAO()
     glBindBuffer(GL_ARRAY_BUFFER, m_vbohandle);
     glBufferData(GL_ARRAY_BUFFER, m_vertexData.size()*sizeof (GL_FLOAT),
                  m_vertexData.data(), GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0,3, GL_FLOAT,GL_FALSE, 3*sizeof(float) , 0);
+    glVertexAttribPointer(0,3, GL_FLOAT,GL_FALSE, 3*sizeof(GL_FLOAT) , 0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1,3, GL_FLOAT,GL_FALSE, 3*sizeof(float) ,
-                          reinterpret_cast<GLvoid*>(3*sizeof(float)));
+    glVertexAttribPointer(1,3, GL_FLOAT,GL_FALSE, 3*sizeof(GL_FLOAT) ,
+                          (GLvoid*)(3 * sizeof (GL_FLOAT)));
     glEnableVertexAttribArray(1);
+
+    /*
+     *     markers.push_back(VBOAttribMarker(ShaderAttrib::POSITION, 3, 0));
+    markers.push_back(VBOAttribMarker(ShaderAttrib::NORMAL, 3, 3*sizeof(float)));
+    */
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -425,9 +430,9 @@ void Cloth::updateBuffer()
     glBindVertexArray(0);
 
     glBindVertexArray(m_vaohandle);
-   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //comment for no wireframes
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //comment for no wireframes
     glDrawArrays(GL_TRIANGLES, 0, numVertices);
-   // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //comment for no wireframes
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //comment for no wireframes
 
     glBindVertexArray(0);
      checkError();
