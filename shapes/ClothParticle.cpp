@@ -18,8 +18,8 @@ ClothParticle::~ClothParticle()
 
 void ClothParticle::step(float timeStep)
 {
-    if (!isStatic){
         m_velocity = m_velocity + (timeStep * (m_force/m_mass));
+    if (!isStatic){
         m_pos = m_pos + (timeStep * m_velocity);
     }
     m_force = glm::vec3(0.f, 0.f, 0.f);

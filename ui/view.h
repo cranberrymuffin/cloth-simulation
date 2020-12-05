@@ -41,7 +41,8 @@ private:
     std::unique_ptr<CamtransCamera> m_defaultPerspectiveCamera;
     bool firstFrame;
 
-    float delta_t;
+    float tick_counter;
+
 
 private slots:
     void tick();

@@ -19,7 +19,7 @@ SceneviewScene::SceneviewScene()
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     initializeSceneLight();
     loadPhongShader();
-    glm::vec3 eye(0.0,0.0,5.0);
+    glm::vec3 eye(5.0,5.0,5.0);
     glm::vec3 fwd(0.0,0.0,-1.0);
     glm::vec3 up(0.0,1.0,0.0);
 
