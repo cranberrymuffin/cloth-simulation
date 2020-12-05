@@ -37,8 +37,8 @@ public:
     float m_resolution;
     const float Cv = 0.5;
     const float Cd = 0.05;
-    const float K_structural = 1.f;
-    const float K_shear = 1.f;
+    const float K_structural = 0.01f;
+    const float K_shear = 1.5f;
     const float K_flexion = 1.f;
     const float L_structural;
     const float L_shear;
