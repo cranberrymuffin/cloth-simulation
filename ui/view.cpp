@@ -139,6 +139,9 @@ void View::tick() {
     }
     // TODO: Implement the demo update here
     m_currentScene->update(0.00026);
+    float timeStep = 0.0026;
+    int n = (0.026/timeStep);
+    for (int i = 0; i < n; ++i ) m_currentScene-> update(timeStep);
     // Flag this view for repainting (Qt will call paintGL() soon after)
 
     update();

@@ -24,8 +24,8 @@ Cloth::Cloth(float resolution, int particleWidth, int particleHeight):
 
     for(int j = 0; j < numXPoints; j++) {
         for(int i = 0; i< numYPoints; i++) {
-            float x = -1.f + 2.f*j/(resolution - 1.f);
-            float y = -1.f + 2.f*i/(resolution - 1.f);
+            float x = -2.f + 4.f*j/(resolution - 1.f);
+            float y = -2.f + 4.f*i/(resolution - 1.f);
 
             particles[getParticleIndexFromCoordinates(i, j)] = ClothParticle(glm::vec3(x,y,0), particleMass, glm::vec2(x/(particleWidth-1), y/(particleHeight-1)));
         }
@@ -182,7 +182,7 @@ glm::vec3 Cloth::getSpringForce(glm::vec3 p, glm::vec3 q, Cloth::SpringForceType
 }
 
 glm::vec3 Cloth::getStructuralSpringForce(int i, int j) {
-    glm::vec3 totalStructuralForce = glm::vec3(0, 0, 0);
+    glm::vec3 totalStructuralForce = glm::vec3(0.f, 0.f, 0.f);
 
     glm::vec3 p = particles[getParticleIndexFromCoordinates(i, j)].m_pos;
     if(isValidCoordinate(i - 1, j)) {
@@ -206,8 +206,8 @@ glm::vec3 Cloth::getStructuralSpringForce(int i, int j) {
 }
 
 void Cloth::computeNormals() {
-    std::vector<int> dx = std::vector<int>({1, 1, 0, -1, -1, 0});
-    std::vector<int> dy = std::vector<int>({0, 1, 1, 0, -1, -1});
+    std::vector<float> dx = std::vector<float>({1.f, 1.f, 0.f, -1.f, -1.f, 0.f});
+    std::vector<float> dy = std::vector<float>({0.f, 1.f, 1.f, 0.f, -1.f, -1.f});
     glm::vec3 e1;
     glm::vec3 e2;
 
@@ -230,7 +230,7 @@ void Cloth::computeNormals() {
                     norms.push_back(glm::normalize(glm::cross(e1, e2)));
                 }
             }
-            e1 = glm::vec3(0,0,0);
+            e1 = glm::vec3(0.f,0.f,0.f);
             for (int t = 0; t < norms.size(); ++t) {
                 e1 = e1 + norms[t];
             }
@@ -241,7 +241,7 @@ void Cloth::computeNormals() {
 }
 
 glm::vec3 Cloth::getShearSpringForce(int i, int j) {
-    glm::vec3 totalShearForce = glm::vec3(0, 0, 0);
+    glm::vec3 totalShearForce = glm::vec3(0.f, 0.f, 0.f);
 
     glm::vec3 p = particles[getParticleIndexFromCoordinates(i, j)].m_pos;
 
@@ -266,7 +266,7 @@ glm::vec3 Cloth::getShearSpringForce(int i, int j) {
 }
 
 glm::vec3 Cloth::getFlexionSpringForce(int i, int j) {
-    glm::vec3 totalFlexionForce = glm::vec3(0, 0, 0);
+    glm::vec3 totalFlexionForce = glm::vec3(0.f, 0.f, 0.f);
 
     glm::vec3 p = particles[getParticleIndexFromCoordinates(i, j)].m_pos;
 
@@ -302,10 +302,10 @@ void Cloth::update(float deltaTime)
 
             int index = getParticleIndexFromCoordinates(i, j);
 
-            glm::vec3 f_gravity = glm::vec3(0, -1.9, 0) * particles[index].m_mass;
+            glm::vec3 f_gravity = glm::vec3(0.f, -9.8f * particles[index].m_mass, 0.f);
             glm::vec3 f_damping = particles[index].m_velocity * -Cd;
             glm::vec3 f_viscous = Cv * glm::dot(particles[index].m_normal, Ufluid - particles[index].m_velocity) * particles[index].m_normal;
-            glm::vec3 f_spring = getStructuralSpringForce(i, j);// + getShearSpringForce(i, j) + getFlexionSpringForce(i, j);
+            glm::vec3 f_spring = getStructuralSpringForce(i, j) + getShearSpringForce(i, j) + getFlexionSpringForce(i, j);
 
             particles[index].m_force = f_gravity + f_damping + f_viscous + f_spring;
             particles[index].step(deltaTime);
@@ -390,9 +390,9 @@ void Cloth::updateBuffer()
     glBindVertexArray(0);
 
     glBindVertexArray(m_vaohandle);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawArrays(GL_TRIANGLES, 0, numVertices);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glBindVertexArray(0);
      checkError();

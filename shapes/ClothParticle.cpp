@@ -6,11 +6,11 @@
 
 ClothParticle::ClothParticle(glm::vec3 pos, float mass, glm::vec2 texCoord):
     isStatic(false),
+    m_normal(glm::vec3(0.f,1.f,0.f)),
+    m_velocity(glm::vec3(0.f,0.f,0.f)),
     m_pos(pos),
-    m_mass(mass),
-    m_normal(glm::vec3(0,1,0)),
-    m_velocity(glm::vec3(0,0,0)),
-    m_force(glm::vec3(0,0,0))
+    m_force(glm::vec3(0.f,0.f,0.f)),
+    m_mass(mass)
 {}
 
 ClothParticle::~ClothParticle()
@@ -22,6 +22,7 @@ void ClothParticle::step(float timeStep)
         m_velocity = m_velocity + (timeStep * (m_force/m_mass));
         m_pos = m_pos + (timeStep * m_velocity);
     }
+    m_force = glm::vec3(0.f, 0.f, 0.f);
 }
 
 
