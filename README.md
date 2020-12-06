@@ -1,3 +1,3 @@
-# Final Project
+# Cloth Simulation
 
-Readme goes here
+Simulating cloth motion in C++ with OpenGL.
