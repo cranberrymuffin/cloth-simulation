@@ -353,7 +353,9 @@ void Cloth::draw()
 //     glBindVertexArray(m_vaohandle);
 //     glDrawArrays(GL_TRIANGLES, 0, numVertices);
 //     glBindVertexArray(0);
+
     updateBuffer();
+
 }
 
 void Cloth::buildVAO()
@@ -365,9 +367,9 @@ void Cloth::buildVAO()
     markers.push_back(VBOAttribMarker(ShaderAttrib::POSITION, 3, 0));
     markers.push_back(VBOAttribMarker(ShaderAttrib::NORMAL, 3, 3*sizeof(float)));
 
-    VBO vbo = VBO(m_vertexData.data(), m_vertexData.size(), markers,
-                  VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, GL_DYNAMIC_DRAW);
-    m_VAO = std::make_unique<VAO>(vbo, numVertices);
+    m_VBO = std::make_unique<VBO>(m_vertexData.data(), m_vertexData.size(), markers,
+                                  VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, GL_DYNAMIC_DRAW);
+    m_VAO = std::make_unique<VAO>(*m_VBO.get(), numVertices);
 }
 
 void Cloth::updateBuffer()
@@ -377,7 +379,7 @@ void Cloth::updateBuffer()
         m_VAO->bind();
 
        checkError();
-       m_VAO->getVBO()->updateBuffer(m_vertexData.data(), m_vertexData.size());
+       m_VBO->updateBuffer(m_vertexData.data(), m_vertexData.size());
        m_VAO->draw();
 
        checkError();

@@ -3,6 +3,11 @@
 #include "shapes/Shape.h"
 #include "ClothParticle.h"
 
+namespace CS123 { namespace GL {
+class VBO;
+}}
+
+
 class Cloth:public Shape
 {
 public:
@@ -43,6 +48,8 @@ public:
     const float L_structural;
     const float L_shear;
     const float L_flexion;
+    std::unique_ptr<CS123::GL::VBO> m_VBO;
+
     const glm::vec3 Ufluid = glm::vec3(0,1,0);
 };
 
