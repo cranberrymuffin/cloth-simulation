@@ -179,7 +179,15 @@ void Cloth::computeNormals() {
             for (int t = 0; t < numNorms; ++t) {
                 e1 = e1 + norms[t];
             }
-            e1 = glm::normalize(e1);
+            if(fabs(glm::length(e1)) < 0.0001)
+            {
+                e1 = glm::normalize(glm::vec3(0.f,1.f,1.f));
+            }
+            else
+            {
+              e1 = glm::normalize(e1);
+            }
+
 
             particles[getIndex(i, j)].m_normal = e1;
         }
