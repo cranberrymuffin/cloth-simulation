@@ -63,8 +63,6 @@ void Cloth::buildShape(int param1, int param2, int param3)
 
     buildFace( param1,  param2,  param3);
     buildVAO();
-
-
 }
 
 void Cloth::buildFace(int param1,int param2, int param3)
@@ -82,16 +80,18 @@ void Cloth::buildFace(int param1,int param2, int param3)
            Vertex v1 = m_vertices[firstPoint];
            Vertex v2 = m_vertices[secondPoint];
            Vertex v3 = m_vertices[thirdPoint];
-
+           Vertex v4 = m_vertices[fourthPoint];
            Vertex n1 = m_normals[firstPoint ];
            Vertex n2 = m_normals[secondPoint];
            Vertex n3 = m_normals[thirdPoint];
+           Vertex n4 = m_normals[fourthPoint];
 
            //getTextCoordinates(); ??
 
            TextureCoord t1 = m_uv[firstPoint];
            TextureCoord t2 = m_uv[secondPoint];
            TextureCoord t3 = m_uv[thirdPoint];
+           TextureCoord t4 = m_uv[fourthPoint];
 
            m_vertexData.push_back(v1.x);
            m_vertexData.push_back(v1.y);
@@ -115,14 +115,10 @@ void Cloth::buildFace(int param1,int param2, int param3)
            m_vertexData.push_back(v3.y);
            m_vertexData.push_back(v3.z);
            m_vertexData.push_back(n3.x);
-           m_vertexData.push_back(n3.y);
-           m_vertexData.push_back(n3.z);
+          m_vertexData.push_back(n3.y);
+          m_vertexData.push_back(n3.z);
 //           m_vertexData.push_back(t3.x);
 //           m_vertexData.push_back(t3.y);
-
-           Vertex v4 = m_vertices[fourthPoint];
-           Vertex n4 = m_normals[fourthPoint];
-           TextureCoord t4 = m_uv[fourthPoint];
 
            m_vertexData.push_back(v1.x);
            m_vertexData.push_back(v1.y);
@@ -147,7 +143,7 @@ void Cloth::buildFace(int param1,int param2, int param3)
            m_vertexData.push_back(v4.z);
            m_vertexData.push_back(n4.x);
            m_vertexData.push_back(n4.y);
-           m_vertexData.push_back(n4.z);
+          m_vertexData.push_back(n4.z);
 //           m_vertexData.push_back(t4.x);
 //           m_vertexData.push_back(t4.y);
 
@@ -298,7 +294,7 @@ bool Cloth::isValidNeighborDistance(int curr_i, int curr_j, int nbr_i, int nbr_j
         glm::vec3 curr = particles[getParticleIndexFromCoordinates(curr_i, curr_j)].m_pos;
         glm::vec3 nbr = particles[getParticleIndexFromCoordinates(nbr_i, nbr_j)].m_pos;
 
-        return glm::length(curr - nbr) < 0.01f;
+        return glm::length(curr - nbr) < 10.f;
     }
     return true;
 }
@@ -362,82 +358,33 @@ void Cloth::draw()
 
 void Cloth::buildVAO()
 {
-//    const int numFloatsPerVertex = 8;
-//    const int numVertices = m_vertexData.size() / numFloatsPerVertex;
+    const int numFloatsPerVertex = 6;
+    const int numVertices = m_vertexData.size() / numFloatsPerVertex;
 
-//    std::vector<VBOAttribMarker> markers;
-//    markers.push_back(VBOAttribMarker(ShaderAttrib::POSITION, 3, 0));
-//    markers.push_back(VBOAttribMarker(ShaderAttrib::NORMAL, 3, 3*sizeof(float)));
-//    markers.push_back(VBOAttribMarker(ShaderAttrib::TEXCOORD0,2, 6*sizeof(float)));
-
-//    VBO vbo = VBO(m_vertexData.data(), m_vertexData.size(), markers,
-//                  VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, GL_DYNAMIC_DRAW);
-//    m_VAO = std::make_unique<VAO>(vbo, numVertices);
-
-//    m_vertexData.clear();
-//    m_vertexData ={  -0.5f, -0.5f, 0.0f, // left
-//                     0.5f, -0.5f, 0.0f, // right
-//                     0.0f,  0.5f, 0.0f  // top
-//                  };
-
-    numVertices = m_vertexData.size() / 6;
-
-//    float vertices[] = {
-//           -0.5f, -0.5f, 0.0f, // left
-//            0.5f, -0.5f, 0.0f, // right
-//            0.0f,  0.5f, 0.0f  // top
-//       };
-
-    glGenVertexArrays(1, &m_vaohandle);
-    glBindVertexArray(m_vaohandle);
-    glGenBuffers(1, &m_vbohandle);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbohandle);
-    glBufferData(GL_ARRAY_BUFFER, m_vertexData.size()*sizeof (GL_FLOAT),
-                 m_vertexData.data(), GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0,3, GL_FLOAT,GL_FALSE, 3*sizeof(GL_FLOAT) , 0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1,3, GL_FLOAT,GL_FALSE, 3*sizeof(GL_FLOAT) ,
-                          (GLvoid*)(3 * sizeof (GL_FLOAT)));
-    glEnableVertexAttribArray(1);
-
-    /*
-     *     markers.push_back(VBOAttribMarker(ShaderAttrib::POSITION, 3, 0));
+    std::vector<VBOAttribMarker> markers;
+    markers.push_back(VBOAttribMarker(ShaderAttrib::POSITION, 3, 0));
     markers.push_back(VBOAttribMarker(ShaderAttrib::NORMAL, 3, 3*sizeof(float)));
-    */
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glBindVertexArray( 0);
-
-     //vertexPositionBuffer = gl.createBuffer();
+    VBO vbo = VBO(m_vertexData.data(), m_vertexData.size(), markers,
+                  VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, GL_DYNAMIC_DRAW);
+    m_VAO = std::make_unique<VAO>(vbo, numVertices);
 }
 
 void Cloth::updateBuffer()
 {
 
-    //m_VAO->bind();
-    checkError();
-    //m_VAO->updateVBO(m_vertexData.data(),m_vertexData.size());
-//    m_VAO->getVBO()->updateBuffer(m_vertexData.data(),m_vertexData.size());
-    checkError();
-    glBindVertexArray(m_vaohandle);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbohandle);
-    glBufferData(GL_ARRAY_BUFFER, m_vertexData.size()*sizeof (GL_FLOAT),
-                 m_vertexData.data(), GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    if (m_VAO) {
+        m_VAO->bind();
 
-    glBindVertexArray(m_vaohandle);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //comment for no wireframes
-    glDrawArrays(GL_TRIANGLES, 0, numVertices);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //comment for no wireframes
+       checkError();
+       m_VAO->getVBO()->updateBuffer(m_vertexData.data(), m_vertexData.size());
+       m_VAO->draw();
 
-    glBindVertexArray(0);
-     checkError();
-    //glVertexAttribPointer(0,3, GL_FLOAT,GL_FALSE, 0 , 0);
-    //m_VAO->getVBO()->bindAndEnable();
-    //m_VAO->getVBO()->unbind();
-    //m_VAO->unbind();
+       checkError();
+
+        m_VAO->unbind();
+
+       checkError();
+
+    }
 }

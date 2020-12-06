@@ -186,7 +186,8 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
          std::cout << "SceneviewScene::renderSceneViewObjects 1" << std::endl;
         checkError();
          m_phongShader->setUniform("m",sceneObject->getToWorldMatrix());
-         std::cout << "SceneviewScene::renderSceneViewObjects 2" << std::endl;
+
+        std::cout << "SceneviewScene::renderSceneViewObjects 2" << std::endl;
         checkError();
          Material m =sceneObject->getMaterial() ;
          m.cDiffuse *= m_globalData.kd;
