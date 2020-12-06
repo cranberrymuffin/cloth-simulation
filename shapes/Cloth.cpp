@@ -167,12 +167,19 @@ glm::vec3 Cloth::getSpringForce(glm::vec3 p, glm::vec3 q, Cloth::SpringForceType
         case Cloth::SpringForceType::STRUCTURAL:
             stiffness = K_structural;
             restLength = L_structural;
+            break;
         case Cloth::SpringForceType::SHEAR:
             stiffness = K_shear;
             restLength = L_shear;
+            break;
         case Cloth::SpringForceType::FLEXION:
             stiffness = K_flexion;
             restLength = L_flexion;
+            break;
+        default:
+            stiffness = 10;
+            restLength = 10;
+        break;
     }
 
     return stiffness * (restLength - glm::length(p - q)) * glm::normalize(p - q);
@@ -389,7 +396,11 @@ void Cloth::updateBuffer()
 
        checkError();
        m_VBO->updateBuffer(m_vertexData.data(), m_vertexData.size());
+       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
        m_VAO->draw();
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
        checkError();
 

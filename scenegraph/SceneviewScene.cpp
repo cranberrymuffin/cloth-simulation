@@ -44,7 +44,7 @@ SceneviewScene::SceneviewScene()
     m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
     m.shininess = 20;
 
-    Shape *clothShape = new Cloth(10,1,1);
+    Shape *clothShape = new Cloth(3,1,1);
    // Shape* buildShape = new PlaneShape(5,1,1);
 //    Shape* sphereShape = ShapeBuilder::getInstance().
 //            LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);
