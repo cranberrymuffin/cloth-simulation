@@ -41,16 +41,16 @@ public:
     std::vector<float>m_normalData;
     float m_resolution;
     const float Cv = 0.5;
-    const float Cd = 0.05;
-    const float K_structural = 0.01f;
-    const float K_shear = 1.5f;
-    const float K_flexion = 1.f;
+    const float Cd = 0.5;
+    const float K_structural = 25000.f;
+    const float K_shear = 25000.f;
+    const float K_flexion = 25000.f;
     const float L_structural;
     const float L_shear;
     const float L_flexion;
     std::unique_ptr<CS123::GL::VBO> m_VBO;
 
-    const glm::vec3 Ufluid = glm::vec3(0,1,0);
+    const glm::vec3 Ufluid = glm::vec3(0,0,1.f);
 };
 
 #endif // CLOTH_H
