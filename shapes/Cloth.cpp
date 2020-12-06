@@ -197,17 +197,26 @@ void Cloth::computeNormals() {
                 int i2 = i + dy[(t + 1) % 6];
                 int j2 = j + dx[(t + 1) % 6];
                 if ( i1 >= 0 && i1 < m_resolution && j1 >= 0 && j1 < m_resolution &&
-                     i2 >= 0 && i2 < m_resolution && j2 >= 0 && j2 < m_resolution ) {
+                     i2 >= 0 && i2 < m_resolution && j2 >= 0 && j2 < m_resolution &&
+                     i2 != i && i1 != i && j1 !=j && j2!=j) {
                     e1 = particles[getParticleIndexFromCoordinates(i1, j1)].m_pos - p0;
                     e2 = particles[getParticleIndexFromCoordinates(i2, j2)].m_pos - p0;
                     norms.push_back(glm::normalize(glm::cross(e1, e2)));
                 }
             }
             e1 = glm::vec3(0.f,0.f,0.f);
-            for (int t = 0; t < norms.size(); ++t) {
+            for (size_t t = 0; t < norms.size(); ++t) {
                 e1 = e1 + norms[t];
             }
-            e1 = glm::normalize(e1);
+            if(fabs(glm::length(e1)) < 0.0001)
+            {
+                e1 = glm::normalize(glm::vec3(0.f,1.f,1.f));
+            }
+            else
+            {
+              e1 = glm::normalize(e1);
+            }
+
 
             particles[currParticleIndex].m_normal = e1;
         }
