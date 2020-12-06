@@ -20,18 +20,14 @@ public:
     void buildShape(int param1,int param2, int param3);
     void buildFace(int param1,int param2, int param3);
     void update(float deltaTime);
-    int getParticleIndexFromCoordinates(int i, int j);
+    int getIndex(int i, int j);
     void draw();
     std::vector<ClothParticle> particles;
     void buildVAO();
 
-    bool isValidCoordinate(int i, int j);
+    bool isValid(int i, int j);
     void computeNormals();
-    glm::vec3 getSpringForce(glm::vec3 p, glm::vec3 q, Cloth::SpringForceType forceType);
-    glm::vec3 getStructuralSpringForce(int i, int j);
-    glm::vec3 getShearSpringForce(int i, int j);
-    glm::vec3 getFlexionSpringForce(int i, int j);
-    bool isValidNeighborDistance(int curr_i, int curr_j, int nbr_i, int nbr_j);
+    glm::vec3 getSpringForce(glm::vec3 p, glm::vec3 q, float K, float L_0);
 
     void updateBuffer();
 
@@ -40,14 +36,15 @@ public:
     int numVertices;
     std::vector<float>m_normalData;
     float m_resolution;
-    const float Cv = 0.5;
-    const float Cd = 0.5;
-    const float K_structural = 25000.f;
-    const float K_shear = 25000.f;
-    const float K_flexion = 25000.f;
-    const float L_structural;
-    const float L_shear;
-    const float L_flexion;
+    float Cv = 0.5f;
+    float Cd = 0.5f;
+    float K_structural = 25000.f;
+    float K_shear = 25000.f;
+    float K_flexion = 25000.f;
+    float particleMass = 5.f;
+    float L_structural;
+    float L_shear;
+    float L_flexion;
     std::unique_ptr<CS123::GL::VBO> m_VBO;
 
     const glm::vec3 Ufluid = glm::vec3(0,0,1.f);
