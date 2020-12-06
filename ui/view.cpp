@@ -76,6 +76,9 @@ void View::paintGL() {
     float ratio = static_cast<QGuiApplication *>(QCoreApplication::instance())->devicePixelRatio();
     glViewport(0, 0, width() * ratio, height() * ratio);
     m_defaultPerspectiveCamera->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
+    m_currentScene->m_height =  height();
+    m_currentScene->m_width =  width();
+    m_currentScene->m_aspect = ratio;
     m_currentScene->render(m_defaultPerspectiveCamera.get());
     // TODO: Implement the demo rendering here
 }
