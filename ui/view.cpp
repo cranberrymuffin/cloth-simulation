@@ -147,20 +147,13 @@ void View::tick() {
         }
         if(!pauseSim)
         {
-
-            m_currentScene->update(0.001);
-            float timeStep = 0.0026;
-            int n =  0.0026;
-            //for (int i = 0; i < n; ++i ) m_currentScene-> update(timeStep);
-            //m_currentScene-> update(timeStep);
-            // Flag this view for repainting (Qt will call paintGL() soon after)
+            float timeStep = 0.00026;
+            int n = (0.0026/timeStep);
+            for (int i = 0; i < n; ++i ) m_currentScene-> update(timeStep);
 
             update();
             tick_counter = 0;
         }
-        // TODO: Implement the demo update here
-
-
 }
 
 void View::loadSceneviewSceneFromParser(CS123XmlSceneParser &parser)

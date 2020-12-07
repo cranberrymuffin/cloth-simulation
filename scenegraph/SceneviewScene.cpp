@@ -26,8 +26,8 @@ SceneviewScene::SceneviewScene()
     loadDepthgShader();
     loadPhongShader();
     loadQuadShader();
-
     glm::vec3 eye(5.0,5.0,5.0);
+   // glm::vec3 eye(5.0,5,-1.f);
     glm::vec3 fwd(0.0,0.0,-1.0);
     glm::vec3 up(0.0,1.0,0.0);
 
@@ -249,11 +249,11 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
         // std::cout << "SceneviewScene::renderSceneViewObjects 3" << std::endl;
         checkError();
         glDisable(GL_CULL_FACE);
-         sceneObject->getShape().draw();
-         checkError();
-         glEnable(GL_CULL_FACE);
-         // std::cout << "SceneviewScene::renderSceneViewObjects 4" << std::endl;
-         checkError();
+        sceneObject->getShape().draw();
+        checkError();
+        glEnable(GL_CULL_FACE);
+        // std::cout << "SceneviewScene::renderSceneViewObjects 4" << std::endl;
+        checkError();
 
          renderSceneViewObjects(sceneObject->getChildren());
     }
@@ -266,8 +266,10 @@ void SceneviewScene::renderDepthSceneViewObjects(const std::vector<SceneObject *
 
       SceneObject* sceneObject = s[i];
       m_depthshader->setUniform("m",sceneObject->getToWorldMatrix());
-       sceneObject->getShape().draw();
-       renderSceneViewObjects(sceneObject->getChildren());
+      glDisable(GL_CULL_FACE);
+      sceneObject->getShape().draw();
+      glEnable(GL_CULL_FACE);
+      renderSceneViewObjects(sceneObject->getChildren());
     }
 }
 
@@ -419,7 +421,7 @@ void SceneviewScene::AddCloth()
     m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
     m.shininess = 20;
 
-    Shape *clothShape = new Cloth(3,1,1);
+    Shape *clothShape = new Cloth(25,1,1);
     m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
     m_cloth->setWorldMatrix(glm::mat4x4());
     m_sceneObjects.push_back(m_cloth);
@@ -577,11 +579,10 @@ void SceneviewScene::initializeSceneLight()
 
 
     m_pointLight.type = LightType::LIGHT_POINT;
-    m_pointLight.pos = glm::vec4(0.1,0.2,8.1,1.0);
+    m_pointLight.pos = glm::vec4(-10,-10,8.1,1.0);
     m_pointLight.color = glm::vec4(1.0,1.0,1.0,1.0);
     m_pointLight.id = 0;
 
     m_lights.push_back(m_pointLight);
-
 }
 
