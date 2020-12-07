@@ -16,7 +16,7 @@ ShapeBuilder::~ShapeBuilder()
 
 Shape* ShapeBuilder::LoadShape(PrimitiveType type,int param1, int param2)
 {
-    std::string shapeName = "type:"+std::to_string(param1)+":"+std::to_string(param2);
+    std::string shapeName = std::to_string((int)type)+std::to_string(param1)+":"+std::to_string(param2);
     Shape* shape = nullptr;
     if( m_shapes.find(shapeName) == m_shapes.end()  )
     {

@@ -23,7 +23,7 @@ Shape::~Shape()
 void Shape::draw() {
     if (m_VAO) {
         m_VAO->bind();
-        m_VAO->getVBO()->updateBuffer(m_vertexData.data(), m_vertexData.size()/6);
+    //    m_VAO->getVBO()->updateBuffer(m_vertexData.data(), m_vertexData.size()/6);
         checkError();
 
         m_VAO->draw();

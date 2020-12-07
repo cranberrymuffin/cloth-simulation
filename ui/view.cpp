@@ -76,6 +76,9 @@ void View::paintGL() {
     float ratio = static_cast<QGuiApplication *>(QCoreApplication::instance())->devicePixelRatio();
     glViewport(0, 0, width() * ratio, height() * ratio);
     m_defaultPerspectiveCamera->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
+    m_currentScene->m_height =  height();
+    m_currentScene->m_width =  width();
+    m_currentScene->m_aspect = ratio;
     m_currentScene->render(m_defaultPerspectiveCamera.get());
     // TODO: Implement the demo rendering here
 }
@@ -117,6 +120,10 @@ void View::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Escape) QApplication::quit();
 
     // TODO: Handle keyboard presses here
+    if (event->key() == Qt::Key_Space)
+    {
+        pauseSim = !pauseSim;
+    }
 }
 
 void View::keyReleaseEvent(QKeyEvent *event) {
@@ -138,15 +145,15 @@ void View::tick() {
             firstFrame = false;
             return;
         }
-        // TODO: Implement the demo update here
-        float timeStep = 0.000026;
-        int n = (0.00026/timeStep);
-        for (int i = 0; i < n; ++i ) m_currentScene-> update(timeStep);
-        // Flag this view for repainting (Qt will call paintGL() soon after)
+        if(!pauseSim)
+        {
+            float timeStep = 0.00026;
+            int n = (0.0026/timeStep);
+            for (int i = 0; i < n; ++i ) m_currentScene-> update(timeStep);
 
-        update();
-        tick_counter = 0;
-
+            update();
+            tick_counter = 0;
+        }
 }
 
 void View::loadSceneviewSceneFromParser(CS123XmlSceneParser &parser)

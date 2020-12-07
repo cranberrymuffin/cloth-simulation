@@ -13,7 +13,7 @@ namespace CS123 { namespace GL {
     class Texture2D;
     class FBO;
 }}
-
+using namespace CS123::GL;
 /**
  *
  * @class SceneviewScene
@@ -38,6 +38,7 @@ public:
     void renderNormalsPass ();
     void renderGeometryAsWireframe();
     void renderSceneViewObjects( const std::vector<SceneObject*>& s);
+    void renderDepthSceneViewObjects( const std::vector<SceneObject*>& s);
 
 
     void renderGeometryAsFilledPolygons();
@@ -49,12 +50,29 @@ public:
 
     void update(float deltaTime);
 
-private:
 
 
 private:
+    void shadowPass();
+
+    void initQuad();
+    void renderQuad();
+
+    void AddCloth();
+
+    void builScenePlane();
+    void builPlaneCloth();
+
+    void builPointLigthObject();
+    void renderPointLigthObject();
+
+    void initShadowFBO();
+
     void initializeSceneLight();
     void loadPhongShader();
+    void loadDepthgShader();
+    void loadQuadShader();
+
     void loadWireframeShader();
     void loadNormalsShader();
     void loadNormalsArrowShader();
@@ -67,6 +85,9 @@ private:
     std::unique_ptr<Camera> m_camera;
 
     std::unique_ptr<CS123::GL::CS123Shader> m_phongShader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_depthshader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_quadShader;
+
     std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
@@ -74,8 +95,19 @@ private:
     glm::mat4x4 m_projection;
     SceneObject* m_cloth;
 
-    //std::unique_ptr<CS123::GL::FBO> fbo;
+    std::shared_ptr<FBO> depthFBO;
+    unsigned int depthMapFBO;
+    unsigned int depthMap;
+    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
+    std::unique_ptr<SceneObject> m_ligthObject;
+    SceneObject* m_clothObject;
+
+    LightData m_pointLight;
+    glm::mat4 lightSpaceMatrix;
+
+    unsigned int quadVAO = 0;
+    unsigned int quadVBO;
 };
 
 #endif // SCENEVIEWSCENE_H
