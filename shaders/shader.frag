@@ -19,7 +19,8 @@ void main() {
    float closestDepth = texture(shadowMap, projCoords.xy).r;
    float currentDepth = projCoords.z;
    //float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
-   if(currentDepth > closestDepth)
+   float bias = 0.005;
+   if(currentDepth - bias> closestDepth)
    {
       fragColor = vec4(0);
    }else

@@ -22,6 +22,7 @@ SceneviewScene::SceneviewScene()
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     initializeSceneLight();
+    loadQuadShader();
     loadDepthgShader();
     loadPhongShader();
     loadQuadShader();
@@ -89,9 +90,13 @@ SceneviewScene::SceneviewScene()
 
     initShadowFBO();
 
+    initQuad();
+
     builScenePlane();
 
     builPointLigthObject();
+
+
 
 }
 
@@ -152,6 +157,9 @@ void SceneviewScene::render(Camera* camera) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+   // renderQuad();
+   // checkError();
+
     m_phongShader->bind();
     std::cout<<"SceneviewScene::render 0" << std::endl;
     checkError();
@@ -172,22 +180,6 @@ void SceneviewScene::render(Camera* camera) {
     checkError();
     m_phongShader->unbind();
 
-//    m_wireframeShader->bind();
-//    m_wireframeShader->setUniform("p", m_camera->getProjectionMatrix());
-//    m_wireframeShader->setUniform("v", m_camera->getViewMatrix());
-
-//    m_wireframeShader->unbind();
-
-//    if (settings.drawNormals) {
-//        renderNormalsPass();
-//    }
-
-//    if(m_enableKdtree)
-//    {
-//        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-//        m_wireframeShader->setUniform("m",glm::mat4x4());
-
-//    }
 
 }
 void SceneviewScene::renderGeometryAsWireframe() {
@@ -389,13 +381,27 @@ void SceneviewScene::initQuad()
 void SceneviewScene::renderQuad()
 {
     m_quadShader->bind();
-    m_quadShader->setUniform("near_plane", 1.f);
+    checkError();
+    GLint location = glGetUniformLocation(m_quadShader->getID(),"near_plane");
+    checkError();
+    glUniform1f(location, 1.0);
+    checkError();
+    location = glGetUniformLocation(m_quadShader->getID(),"far_plane");
+    checkError();
+    glUniform1f(location, 10.f);
+    checkError();
+    /*m_quadShader->setUniform("near_plane", 1.f);
+    checkError();
     m_quadShader->setUniform("far_plane", 10.f);
+    checkError();*/
           glActiveTexture(GL_TEXTURE0);
           glBindTexture(GL_TEXTURE_2D, depthMap);
+             checkError();
     glBindVertexArray(quadVAO);
+       checkError();
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
      glBindVertexArray(0);
+    m_quadShader->unbind();
 }
 
 void SceneviewScene::buildAndAddCloth()
@@ -515,7 +521,7 @@ void SceneviewScene::initializeSceneLight()
 
 
     m_pointLight.type = LightType::LIGHT_POINT;
-    m_pointLight.pos = glm::vec4(0.0,3.2,0.0,1.0);
+    m_pointLight.pos = glm::vec4(0.1,3.2,0.1,1.0);
     m_pointLight.color = glm::vec4(1.0,1.0,1.0,1.0);
     m_pointLight.id = 0;
 
