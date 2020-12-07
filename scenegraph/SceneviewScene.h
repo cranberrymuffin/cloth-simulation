@@ -61,6 +61,8 @@ private:
     void AddCloth();
 
     void builScenePlane();
+    void builPlaneCloth();
+
     void builPointLigthObject();
     void renderPointLigthObject();
 
@@ -99,6 +101,8 @@ private:
     const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
     std::unique_ptr<SceneObject> m_ligthObject;
+    SceneObject* m_clothObject;
+
     LightData m_pointLight;
     glm::mat4 lightSpaceMatrix;
 

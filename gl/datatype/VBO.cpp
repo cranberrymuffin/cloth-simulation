@@ -95,7 +95,7 @@ void VBO::unbind() const {
 
 void VBO::updateBuffer(const float *data,int sizeInFloats)
 {
-    //bind();
+    bind();
     glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat), &data[0], m_usage);
     checkError();
 }

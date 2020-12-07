@@ -94,7 +94,9 @@ SceneviewScene::SceneviewScene()
 
     initQuad();
 
-    builScenePlane();
+   // builScenePlane();
+
+   builPlaneCloth();
 
     builPointLigthObject();
 
@@ -248,6 +250,7 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
         checkError();
         glDisable(GL_CULL_FACE);
          sceneObject->getShape().draw();
+         checkError();
          glEnable(GL_CULL_FACE);
          // std::cout << "SceneviewScene::renderSceneViewObjects 4" << std::endl;
          checkError();
@@ -336,7 +339,8 @@ void SceneviewScene::shadowPass()
 
    float near_plane = 1.0f, far_plane = 100.5f;
    glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-   glm::mat4 lightView = glm::lookAt(m_pointLight.pos.xyz(), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+
+   glm::mat4 lightView = glm::lookAt(m_pointLight.pos.xyz(), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0, 1.0, 0.0));
    lightSpaceMatrix = lightProjection * lightView;
 
 
@@ -419,6 +423,8 @@ void SceneviewScene::AddCloth()
     m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
     m_cloth->setWorldMatrix(glm::mat4x4());
     m_sceneObjects.push_back(m_cloth);
+
+    m_clothObject = m_cloth;
 }
 
 void SceneviewScene::builScenePlane()
@@ -466,6 +472,37 @@ void SceneviewScene::builScenePlane()
     ////    m_sceneObjects.push_back(sceneObj);
 }
 
+void SceneviewScene::builPlaneCloth()
+{
+    AddCloth();
+//    Material m;
+//    m.cDiffuse = glm::vec4(0.8,0.3,0.2,1.0);
+//    m.cAmbient = glm::vec4(0.25,0.25,0.25,1.0);
+//    m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
+//    m.shininess = 20;
+
+
+//    Shape* cube2Shape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
+//    SceneObject* sceneObj2 = new SceneObject(cube2Shape,PrimitiveType::PRIMITIVE_CUBE,m);
+//    glm::mat4x4 tr2 = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.1,0.1));
+//    sceneObj2->setWorldMatrix(tr2);
+//    m_sceneObjects.push_back(sceneObj2);
+
+    Material m2;
+    m2.cDiffuse = glm::vec4(0.5,0.4,0.5,1.0);
+    m2.cAmbient = glm::vec4(0.25,0.25,0.25,1.0);
+    m2.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
+    m2.shininess = 20;
+
+    Shape* wallShape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
+    SceneObject* floor = new SceneObject(wallShape,PrimitiveType::PRIMITIVE_CUBE,m2);
+    glm::mat4x4 tr = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.0,-3.0));
+    tr = glm::rotate(tr,glm::radians(90.f),glm::vec3(1.0,0.0,0.0));
+    tr = glm::scale(tr,glm::vec3(6.0,0.2,6.0));
+    floor->setWorldMatrix(tr);
+    m_sceneObjects.push_back(floor);
+}
+
 void SceneviewScene::builPointLigthObject()
 {
     Material m;
@@ -475,17 +512,19 @@ void SceneviewScene::builPointLigthObject()
     m.shininess = 20;
 
     Shape* sphShape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_SPHERE,8,8);
+    glm::mat4 tr = glm::scale(glm::mat4(),glm::vec3(0.4,0.4,0.4));
     m_ligthObject = std::make_unique<SceneObject>(sphShape,PrimitiveType::PRIMITIVE_SPHERE,m);
+    m_ligthObject->setWorldMatrix(tr);
 
 }
 
 void SceneviewScene::renderPointLigthObject()
 {
 
-     glm::mat4x4 tr = glm::translate(glm::mat4x4(),m_pointLight.pos.xyz());
-     m_ligthObject->setWorldMatrix(tr);
+     glm::mat4x4 tr = glm::translate(m_pointLight.pos.xyz());
+     glm::mat4x4 scal = m_ligthObject->getToWorldMatrix();
 
-     m_phongShader->setUniform("m",m_ligthObject->getToWorldMatrix());
+     m_phongShader->setUniform("m",scal * tr);
 
     //std::cout << "SceneviewScene::renderSceneViewObjects 2" << std::endl;
      checkError();
@@ -538,7 +577,7 @@ void SceneviewScene::initializeSceneLight()
 
 
     m_pointLight.type = LightType::LIGHT_POINT;
-    m_pointLight.pos = glm::vec4(0.1,3.2,0.1,1.0);
+    m_pointLight.pos = glm::vec4(0.1,0.2,8.1,1.0);
     m_pointLight.color = glm::vec4(1.0,1.0,1.0,1.0);
     m_pointLight.id = 0;
 
