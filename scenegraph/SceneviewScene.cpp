@@ -579,7 +579,7 @@ void SceneviewScene::initializeSceneLight()
 
 
     m_pointLight.type = LightType::LIGHT_POINT;
-    m_pointLight.pos = glm::vec4(-10,-10,8.1,1.0);
+    m_pointLight.pos = glm::vec4(0,0,8.1,1.0);
     m_pointLight.color = glm::vec4(1.0,1.0,1.0,1.0);
     m_pointLight.id = 0;
 
