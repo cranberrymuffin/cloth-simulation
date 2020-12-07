@@ -37,6 +37,10 @@ public:
 
     virtual void update(float deltaTime){};
 
+    int m_height;
+    int m_width;
+    float m_aspect;
+
 protected:
 
     // Adds a primitive to the scene.
@@ -66,6 +70,7 @@ protected:
 
 
    std::vector<SceneObject*> m_kdtree;
+
 
 
    void createKdTree();

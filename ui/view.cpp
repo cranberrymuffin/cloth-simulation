@@ -10,7 +10,7 @@
 using namespace CS123::GL;
 
 View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
-    m_time(), m_timer(), m_captureMouse(false), m_currentScene(nullptr),
+    tick_counter(0), m_time(), m_timer(), m_captureMouse(false), m_currentScene(nullptr),
     m_defaultPerspectiveCamera(new CamtransCamera())
 {
     // View needs all mouse move events, not just mouse drag events
@@ -76,6 +76,9 @@ void View::paintGL() {
     float ratio = static_cast<QGuiApplication *>(QCoreApplication::instance())->devicePixelRatio();
     glViewport(0, 0, width() * ratio, height() * ratio);
     m_defaultPerspectiveCamera->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
+    m_currentScene->m_height =  height();
+    m_currentScene->m_width =  width();
+    m_currentScene->m_aspect = ratio;
     m_currentScene->render(m_defaultPerspectiveCamera.get());
     // TODO: Implement the demo rendering here
 }
@@ -130,19 +133,24 @@ void View::initializeScene()
 
 void View::tick() {
 
-    // Get the number of seconds since the last tick (variable update rate)
-    float seconds = m_time.restart() * 0.001f;
 
-    if(firstFrame)
-    {
-        firstFrame = false;
-        return;
-    }
-    // TODO: Implement the demo update here
-    m_currentScene->update(seconds);
-    // Flag this view for repainting (Qt will call paintGL() soon after)
+        // Get the number of seconds since the last tick (variable update rate)
 
-    update();
+        if(firstFrame)
+        {
+            firstFrame = false;
+            return;
+        }
+        // TODO: Implement the demo update here
+        m_currentScene->update(0.00026);
+        float timeStep = 0.0026;
+        int n = (0.026/timeStep);
+        for (int i = 0; i < n; ++i ) m_currentScene-> update(timeStep);
+        // Flag this view for repainting (Qt will call paintGL() soon after)
+
+        update();
+        tick_counter = 0;
+
 }
 
 void View::loadSceneviewSceneFromParser(CS123XmlSceneParser &parser)

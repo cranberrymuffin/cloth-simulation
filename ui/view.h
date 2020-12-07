@@ -37,9 +37,12 @@ private:
     void keyReleaseEvent(QKeyEvent *event);
     void initializeScene();
 
-     std::unique_ptr<OpenGLScene> m_currentScene;
+    std::unique_ptr<OpenGLScene> m_currentScene;
     std::unique_ptr<CamtransCamera> m_defaultPerspectiveCamera;
     bool firstFrame;
+
+    float tick_counter;
+
 
 private slots:
     void tick();

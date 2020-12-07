@@ -170,6 +170,8 @@ RESOURCES += \
 DISTFILES += \
     resources/models/cornell_box.mtl \
     resources/models/cube.mtl \
+    shaders/depth.frag \
+    shaders/depth.vert \
     shaders/fullscreenquad/fullscreenquad.frag \
     shaders/fullscreenquad/fullscreenquad.vert \
     shaders/normals/normals.frag \
@@ -184,5 +186,7 @@ DISTFILES += \
     shaders/normals/normalsArrow.frag \
     shaders/normals/normalsArrow.vert \
     shaders/normals/normalsArrow.vert \
+    shaders/quad.frag \
+    shaders/quad.vert \
     shaders/wireframe/wireframe.frag \
     shaders/wireframe/wireframe.vert

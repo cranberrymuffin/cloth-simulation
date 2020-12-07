@@ -2,7 +2,7 @@
 
 #include "gl/datatype/VBOAttribMarker.h"
 #include "gl/GLDebug.h"
-
+#include <iostream>
 namespace CS123 { namespace GL {
 
 // This will count up the total size of each vertex, based on the maximum offset + numElements
@@ -28,6 +28,7 @@ VBO::VBO(const float *data, int sizeInFloats, std::vector<VBOAttribMarker> marke
     glBindBuffer(GL_ARRAY_BUFFER, m_handle);
     glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat),
                  &data[0], usage);
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -39,8 +40,6 @@ VBO::VBO(const VBO & that):m_handle(that.m_handle),
     m_triangleLayout(that.m_triangleLayout),
     m_usage(that.m_usage)
 {
-
-
 }
 
 // This is called a copy constructor, you don't have to worry about it
@@ -96,11 +95,9 @@ void VBO::unbind() const {
 
 void VBO::updateBuffer(const float *data,int sizeInFloats)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, m_handle);
-     checkError();
-    glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat),
-                 &data[0], m_usage);
-      checkError();
+    //bind();
+    glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat), &data[0], m_usage);
+    checkError();
 }
 
 int VBO::numberOfFloatsPerVertex() const {
