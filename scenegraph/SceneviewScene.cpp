@@ -50,7 +50,9 @@ SceneviewScene::SceneviewScene()
 //    m.shininess = 20;
 
 
+
 //    Shape *clothShape = new Cloth(10,1,1);
+
    // Shape* buildShape = new PlaneShape(5,1,1);
 //    Shape* sphereShape = ShapeBuilder::getInstance().
 //            LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);
@@ -404,15 +406,16 @@ void SceneviewScene::renderQuad()
     m_quadShader->unbind();
 }
 
-void SceneviewScene::buildAndAddCloth()
+void SceneviewScene::AddCloth()
 {
+
     Material m;
     m.cDiffuse = glm::vec4(0.7,0.4,0.4,1.0);
     m.cAmbient = glm::vec4(0.25,0.25,0.25,1.0);
     m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
     m.shininess = 20;
 
-    Shape *clothShape = new Cloth(10,1,1);
+    Shape *clothShape = new Cloth(3,1,1);
     m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
     m_cloth->setWorldMatrix(glm::mat4x4());
     m_sceneObjects.push_back(m_cloth);
@@ -426,12 +429,12 @@ void SceneviewScene::builScenePlane()
     m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
     m.shininess = 20;
 
-    Shape* cubeShape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
-    SceneObject* sceneObj = new SceneObject(cubeShape,PrimitiveType::PRIMITIVE_CUBE,m);
+    Shape* floorShape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
+    SceneObject* floor = new SceneObject(floorShape,PrimitiveType::PRIMITIVE_CUBE,m);
     glm::mat4x4 tr = glm::translate(glm::mat4x4(),glm::vec3(0.0,-1.0,0.0));
     tr = glm::scale(tr,glm::vec3(6.0,0.2,6.0));
-    sceneObj->setWorldMatrix(tr);
-    m_sceneObjects.push_back(sceneObj);
+    floor->setWorldMatrix(tr);
+    m_sceneObjects.push_back(floor);
 
 
     Shape* cube2Shape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
@@ -439,6 +442,20 @@ void SceneviewScene::builScenePlane()
     glm::mat4x4 tr2 = glm::translate(glm::mat4x4(),glm::vec3(0.0,1.5,-0.5));
     sceneObj2->setWorldMatrix(tr2);
     m_sceneObjects.push_back(sceneObj2);
+
+
+
+    Shape* cube3Shape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
+    SceneObject* sceneObj3 = new SceneObject(cube3Shape,PrimitiveType::PRIMITIVE_CUBE,m);
+    glm::mat4x4 tr3 = glm::translate(glm::mat4x4(),glm::vec3(0.0,1.5,1.5));
+    sceneObj3->setWorldMatrix(tr3);
+    m_sceneObjects.push_back(sceneObj3);
+
+    Shape* cube4Shape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
+    SceneObject* sceneObj4 = new SceneObject(cube4Shape,PrimitiveType::PRIMITIVE_CUBE,m);
+    glm::mat4x4 tr4 = glm::translate(glm::mat4x4(),glm::vec3(1.0,0.8,1.5));
+    sceneObj3->setWorldMatrix(tr4);
+    m_sceneObjects.push_back(sceneObj4);
 
 ////    Shape* buildShape = new PlaneShape(5,1,1);
 //    Shape* coneShape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);

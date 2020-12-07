@@ -43,6 +43,9 @@ private:
 
     float tick_counter;
 
+    bool pauseSim = false;
+
+
 
 private slots:
     void tick();

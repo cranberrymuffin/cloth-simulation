@@ -14,6 +14,7 @@ public:
     glm::vec3 m_velocity;
     glm::vec3 m_pos;
     glm::vec3 m_force;
+    glm::vec2 m_uv;
     float m_mass;
 
     glm::vec2 texCoord; //texture mapping

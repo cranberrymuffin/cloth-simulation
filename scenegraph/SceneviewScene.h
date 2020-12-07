@@ -58,7 +58,7 @@ private:
     void initQuad();
     void renderQuad();
 
-    void buildAndAddCloth();
+    void AddCloth();
 
     void builScenePlane();
     void builPointLigthObject();
