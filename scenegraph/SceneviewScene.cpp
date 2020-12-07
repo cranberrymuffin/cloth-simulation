@@ -498,9 +498,9 @@ void SceneviewScene::builPlaneCloth()
 
     Shape* wallShape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
     SceneObject* floor = new SceneObject(wallShape,PrimitiveType::PRIMITIVE_CUBE,m2);
-    glm::mat4x4 tr = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.0,-3.0));
+    glm::mat4x4 tr = glm::translate(glm::mat4x4(),glm::vec3(-15.0,-15.0,-5.0));
     tr = glm::rotate(tr,glm::radians(90.f),glm::vec3(1.0,0.0,0.0));
-    tr = glm::scale(tr,glm::vec3(6.0,0.2,6.0));
+    tr = glm::scale(tr,glm::vec3(100.0,0.2,100.0));
     floor->setWorldMatrix(tr);
     m_sceneObjects.push_back(floor);
 }
@@ -514,7 +514,7 @@ void SceneviewScene::builPointLigthObject()
     m.shininess = 20;
 
     Shape* sphShape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_SPHERE,8,8);
-    glm::mat4 tr = glm::scale(glm::mat4(),glm::vec3(0.4,0.4,0.4));
+    glm::mat4 tr = glm::scale(glm::mat4(),glm::vec3(5,5,5));
     m_ligthObject = std::make_unique<SceneObject>(sphShape,PrimitiveType::PRIMITIVE_SPHERE,m);
     m_ligthObject->setWorldMatrix(tr);
 

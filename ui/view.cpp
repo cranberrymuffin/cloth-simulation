@@ -147,8 +147,8 @@ void View::tick() {
         }
         if(!pauseSim)
         {
-            float timeStep = 0.000026;
-            int n = (0.00026/timeStep);
+            float timeStep = 0.00026;
+            int n = (0.0026/timeStep);
             for (int i = 0; i < n; ++i ) m_currentScene-> update(timeStep);
 
             update();
