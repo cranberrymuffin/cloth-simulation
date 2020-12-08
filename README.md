@@ -18,6 +18,8 @@ Where a particle is at any time t, is affected by it's posiiton, velocity, and f
   <img src="https://latex.codecogs.com/gif.latex?L_0" /> is rest length (a constant describing initial distance between two particles when under the influence of no forces, this differs for each type of spring force)
 
   <img src="https://latex.codecogs.com/gif.latex?K" /> is stiffness (a constant, also differs for each type of spring force)
+  
+  Spring forces we will be accounting for are structural (particles directly next to and above the current particle), Shear (particles diagonal to the current particle), and Flexion (particles 2 away in the vertical and horizontal direction, i.e. row - 2, row + 2, col - 2, col + 2). At most, 12 neighboring particles will influence the total spring force for a given particle.
 
 ### Gravitational Force
 
@@ -66,3 +68,6 @@ First we initialize a mesh of position based on the resolution of the Cloth (25 
 The cloth's update function is called by the tick() method in view.cpp. Every call to tick results in ten calls to the cloth's update function. The <a href="https://www.codecogs.com/eqnedit.php?latex=\Delta&space;t" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\Delta&space;t" title="\Delta t" /></a> for each call to update is 0.0026 units.
 
 We allow user control of constants (stiffness constants in spring equation, toggling gravity on/off, viscosity/damping constants), this information is kept in Settings.cpp, and accessed directly in Cloth. UI changes to these constants and values impact our simulation immediately.
+
+##### Credits:
+https://www.ics.uci.edu/~shz/courses/cs114/docs/proj3/index.html
