@@ -139,6 +139,15 @@ struct Settings {
     bool useKDTree;
     int lightDepth;
 
+    // Cloth
+    float particleMass;
+    float structural;
+    float shear;
+    float bend;
+    float damping;
+    float viscous;
+    bool hasGravity;
+
     int getSceneMode();
     int getCameraMode();
 

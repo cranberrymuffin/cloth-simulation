@@ -69,6 +69,7 @@ SOURCES += ui/mainwindow.cpp \
     shapes/Sphere.cpp \
     shapes/Surface.cpp \
     shapes/cubeshape.cpp \
+    ui/Databinding.cpp \
     ui/Settings.cpp \
     ui/SupportCanvas3D.cpp \
     ui/view.cpp \
@@ -126,6 +127,7 @@ HEADERS += ui/mainwindow.h \
     shapes/Surface.h \
     shapes/cubeshape.h \
     tinyobjloader/tiny_obj_loader.h \
+    ui/Databinding.h \
     ui/Settings.h \
     ui/SupportCanvas3D.h \
     ui_mainwindow.h \
