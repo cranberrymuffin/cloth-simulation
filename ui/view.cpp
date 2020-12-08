@@ -165,6 +165,17 @@ void View::loadSceneviewSceneFromParser(CS123XmlSceneParser &parser)
     std::cout <<"HERE 2" << std::endl;
 }
 
+void View::settingsChanged() {
+//    m_settingsDirty = true;
+    if (m_currentScene != nullptr) {
+        // Just calling this function so that the scene is always updated.
+ //       setSceneFromSettings();
+        m_currentScene->settingsChanged();
+    }
+    update(); /* repaint the scene */
+}
+
+
 CamtransCamera *View::getCamtransCamera()
 {
     return m_defaultPerspectiveCamera.get();

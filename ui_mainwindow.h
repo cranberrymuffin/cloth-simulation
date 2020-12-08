@@ -23,6 +23,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QPushButton>
 #include "view.h"
 
 QT_BEGIN_NAMESPACE
@@ -52,6 +53,7 @@ public:
     QWidget *emptySpace;
 
     // particle mass
+
     QSlider *particleMassSlider;
     QLabel *particleMassLabel;
     QLineEdit *particleMassTextbox;
@@ -246,7 +248,7 @@ public:
         particleMassTextbox->setMinimumSize(QSize(50, 0));
         particleMassTextbox->setMaximumSize(QSize(50, 16777215));
 
-        constantsGrid->addWidget(particleMassTextbox, 0, 3, 1, 1);
+        constantsGrid->addWidget(particleMassTextbox, 1, 3, 1, 1);
 
         // damping
         dampingTextbox = new QLineEdit(constants);
@@ -254,7 +256,7 @@ public:
         dampingTextbox->setMinimumSize(QSize(50, 0));
         dampingTextbox->setMaximumSize(QSize(50, 16777215));
 
-        constantsGrid->addWidget(dampingTextbox, 1, 3, 1, 1);
+        constantsGrid->addWidget(dampingTextbox, 2, 3, 1, 1);
 
         // viscous
         viscousTextbox = new QLineEdit(constants);
@@ -262,7 +264,7 @@ public:
         viscousTextbox->setMinimumSize(QSize(50, 0));
         viscousTextbox->setMaximumSize(QSize(50, 16777215));
 
-        constantsGrid->addWidget(viscousTextbox, 2, 3, 1, 1);
+        constantsGrid->addWidget(viscousTextbox, 3, 3, 1, 1);
 
         // --------------------------- SLIDERS ------------------------------------- //
         // particle mass
@@ -271,7 +273,7 @@ public:
         particleMassSlider->setMinimumSize(QSize(100, 0));
         particleMassSlider->setOrientation(Qt::Horizontal);
 
-        constantsGrid->addWidget(particleMassSlider, 0, 2, 1, 1);
+        constantsGrid->addWidget(particleMassSlider, 1, 2, 1, 1);
 
         // damping
         dampingSlider = new QSlider(constants);
@@ -279,7 +281,7 @@ public:
         dampingSlider->setMinimumSize(QSize(100, 0));
         dampingSlider->setOrientation(Qt::Horizontal);
 
-        constantsGrid->addWidget(dampingSlider, 1, 2, 1, 1);
+        constantsGrid->addWidget(dampingSlider, 2, 2, 1, 1);
 
         // viscous
         viscousSlider = new QSlider(constants);
@@ -287,26 +289,26 @@ public:
         viscousSlider->setMinimumSize(QSize(100, 0));
         viscousSlider->setOrientation(Qt::Horizontal);
 
-        constantsGrid->addWidget(viscousSlider, 2, 2, 1, 1);
+        constantsGrid->addWidget(viscousSlider, 3, 2, 1, 1);
 
         // --------------------------------- LABEL ------------------------------------- //
         // particle mass
         particleMassLabel = new QLabel(constants);
         particleMassLabel->setObjectName(QString::fromUtf8("particleMassLabel"));
 
-        constantsGrid->addWidget(particleMassLabel, 0, 0, 1, 1);
+        constantsGrid->addWidget(particleMassLabel, 1, 0, 1, 1);
 
         // damping
         dampingLabel = new QLabel(constants);
         dampingLabel->setObjectName(QString::fromUtf8("dampingLabel"));
 
-        constantsGrid->addWidget(dampingLabel, 1, 0, 1, 1);
+        constantsGrid->addWidget(dampingLabel, 2, 0, 1, 1);
 
         // viscous
         viscousLabel = new QLabel(constants);
         viscousLabel->setObjectName(QString::fromUtf8("viscousLabel"));
 
-        constantsGrid->addWidget(viscousLabel, 2, 0, 1, 1);
+        constantsGrid->addWidget(viscousLabel, 3, 0, 1, 1);
 
         // labeling
         constants->setTitle(QCoreApplication::translate("MainWindow", "Constants", nullptr));

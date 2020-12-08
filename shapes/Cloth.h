@@ -28,11 +28,13 @@ public:
     bool isValid(int i, int j);
     void computeNormals();
     glm::vec3 getSpringForce(glm::vec3 p, glm::vec3 q, float K, float L_0);
-
+    void settingsChanged() override;
     void updateBuffer();
 
     GLuint m_vaohandle;
     GLuint m_vbohandle;
+    float m_particleWidth;
+    float m_particleHeight;
     int numVertices;
     std::vector<float>m_normalData;
     float m_resolution;

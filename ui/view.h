@@ -19,6 +19,7 @@ public:
     ~View();
     void loadSceneviewSceneFromParser(CS123XmlSceneParser &parser);
     CamtransCamera* getCamtransCamera();
+    void settingsChanged();
 
 private:
     QTime m_time;
@@ -44,7 +45,6 @@ private:
     float tick_counter;
 
     bool pauseSim = false;
-
 
 
 private slots:

@@ -36,7 +36,7 @@ public:
     virtual void draw();
     virtual void buildFace(int param1,int param2, int param3);
     virtual void buildShape(int param1,int param2, int param3) = 0;
-
+    virtual void settingsChanged() {}
     virtual void update(float deltaT){};
 
 protected:
