@@ -140,7 +140,7 @@ struct Settings {
     int lightDepth;
 
     // Cloth
-    float particleMass = 5.f;
+    float particleMass = 5;
     float structural = 25000;
     float shear = 25000;
     float bend = 25000;

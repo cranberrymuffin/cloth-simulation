@@ -84,7 +84,7 @@ void MainWindow::dataBind() {
 }
 
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->particleMassSlider, ui->particleMassTextbox, settings.particleMass, 1, 25))
+        ui->particleMassSlider, ui->particleMassTextbox, settings.particleMass, 5, 25))
     BIND(FloatBinding::bindSliderAndTextbox(
         ui->structuralSlider, ui->structuralTextbox, settings.structural, 0, 50000))
     BIND(FloatBinding::bindSliderAndTextbox(

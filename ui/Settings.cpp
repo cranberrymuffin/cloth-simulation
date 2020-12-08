@@ -79,7 +79,7 @@ void Settings::loadSettingsOrDefaults() {
     currentTab = s.value("currentTab", TAB_2D).toBool();
 
     // Cloth
-    particleMass = s.value("particleMass", 5.0f).toDouble();
+    particleMass = s.value("particleMass", 5.f).toDouble();
     structural = s.value("structural", 25000.f).toDouble();
     shear = s.value("shear", 25000.f).toDouble();
     bend = s.value("bend", 25000.f).toDouble();
