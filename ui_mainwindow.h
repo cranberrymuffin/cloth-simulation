@@ -48,6 +48,8 @@ public:
     // constants
     QGroupBox *constants;
     QGridLayout *constantsGrid;
+    // empty
+    QWidget *emptySpace;
 
     // particle mass
     QSlider *particleMassSlider;
@@ -319,10 +321,20 @@ public:
         gravityCheckbox->setChecked(true);
         gravityCheckbox->setText(QCoreApplication::translate("MainWindow", "has gravity", nullptr));
 
+// ------------------------------- EMPTY SPACE ------------------------------------- //
+
+        emptySpace = new QWidget(clothDockContents);
+        emptySpace->setObjectName(QString::fromUtf8("emptySpace"));
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(emptySpace->sizePolicy().hasHeightForWidth());
+        emptySpace->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(springForces);
         verticalLayout->addWidget(constants);
         verticalLayout->addWidget(gravityCheckbox);
+        verticalLayout->addWidget(emptySpace);
 
         clothDock->setWidget(clothDockContents);
         MainWindow->addDockWidget(Qt::LeftDockWidgetArea, clothDock);
