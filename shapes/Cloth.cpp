@@ -29,8 +29,7 @@ Cloth::Cloth(float resolution, int particleWidth, int particleHeight)
         for(int i = 0; i< m_resolution; i++) {
             float x = -2.f + 4.f*j/(resolution - 1.f);
             float y = -2.f + 4.f*i/(resolution - 1.f);
-
-            particles[getIndex(i, j)] = ClothParticle(glm::vec3(x,y,0), settings.particleMass, glm::vec2(x/(particleWidth-1), y/(particleHeight-1)));
+            particles[getIndex(i, j)] = ClothParticle(glm::vec3(x,y,0), settings.particleMass, glm::vec2(i/(m_resolution - 1), j/(m_resolution-1)));
         }
     }
 
@@ -88,8 +87,9 @@ void Cloth::buildFace(int param1,int param2, int param3)
            m_vertexData.push_back(n1.x);
            m_vertexData.push_back(n1.y);
            m_vertexData.push_back(n1.z);
-           /*m_vertexData.push_back(t1.x);
-           m_vertexData.push_back(t1.y)*/;
+
+           m_vertexData.push_back(t1.x);
+           m_vertexData.push_back(t1.y);
 
            m_vertexData.push_back(v2.x);
            m_vertexData.push_back(v2.y);
@@ -97,26 +97,9 @@ void Cloth::buildFace(int param1,int param2, int param3)
            m_vertexData.push_back(n2.x);
            m_vertexData.push_back(n2.y);
            m_vertexData.push_back(n2.z);
-//           m_vertexData.push_back(t2.x);
-//           m_vertexData.push_back(t2.y);
 
-           m_vertexData.push_back(v3.x);
-           m_vertexData.push_back(v3.y);
-           m_vertexData.push_back(v3.z);
-           m_vertexData.push_back(n3.x);
-          m_vertexData.push_back(n3.y);
-          m_vertexData.push_back(n3.z);
-//           m_vertexData.push_back(t3.x);
-//           m_vertexData.push_back(t3.y);
-
-           m_vertexData.push_back(v1.x);
-           m_vertexData.push_back(v1.y);
-           m_vertexData.push_back(v1.z);
-           m_vertexData.push_back(n1.x);
-           m_vertexData.push_back(n1.y);
-           m_vertexData.push_back(n1.z);
-//           m_vertexData.push_back(t1.x);
-//           m_vertexData.push_back(t1.y);
+           m_vertexData.push_back(t2.x);
+           m_vertexData.push_back(t2.y);
 
            m_vertexData.push_back(v3.x);
            m_vertexData.push_back(v3.y);
@@ -124,17 +107,39 @@ void Cloth::buildFace(int param1,int param2, int param3)
            m_vertexData.push_back(n3.x);
            m_vertexData.push_back(n3.y);
            m_vertexData.push_back(n3.z);
-//           m_vertexData.push_back(t3.x);
-//           m_vertexData.push_back(t3.y);
+
+           m_vertexData.push_back(t3.x);
+           m_vertexData.push_back(t3.y);
+
+           m_vertexData.push_back(v1.x);
+           m_vertexData.push_back(v1.y);
+           m_vertexData.push_back(v1.z);
+           m_vertexData.push_back(n1.x);
+           m_vertexData.push_back(n1.y);
+           m_vertexData.push_back(n1.z);
+
+           m_vertexData.push_back(t1.x);
+           m_vertexData.push_back(t1.y);
+
+           m_vertexData.push_back(v3.x);
+           m_vertexData.push_back(v3.y);
+           m_vertexData.push_back(v3.z);
+           m_vertexData.push_back(n3.x);
+           m_vertexData.push_back(n3.y);
+           m_vertexData.push_back(n3.z);
+
+           m_vertexData.push_back(t3.x);
+           m_vertexData.push_back(t3.y);
 
            m_vertexData.push_back(v4.x);
            m_vertexData.push_back(v4.y);
            m_vertexData.push_back(v4.z);
            m_vertexData.push_back(n4.x);
            m_vertexData.push_back(n4.y);
-          m_vertexData.push_back(n4.z);
-//           m_vertexData.push_back(t4.x);
-//           m_vertexData.push_back(t4.y);
+           m_vertexData.push_back(n4.z);
+
+           m_vertexData.push_back(t4.x);
+           m_vertexData.push_back(t4.y);
 
         }
     }
@@ -298,6 +303,7 @@ void Cloth::buildVAO()
     std::vector<VBOAttribMarker> markers;
     markers.push_back(VBOAttribMarker(ShaderAttrib::POSITION, 3, 0));
     markers.push_back(VBOAttribMarker(ShaderAttrib::NORMAL, 3, 3*sizeof(float)));
+    markers.push_back(VBOAttribMarker(ShaderAttrib::TEXCOORD0, 2, 6*sizeof(float)));
 
     m_VBO = std::make_unique<VBO>(m_vertexData.data(), m_vertexData.size(), markers, VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, GL_DYNAMIC_DRAW);
     m_VAO = std::make_unique<VAO>(*m_VBO.get(), numVertices);

@@ -10,7 +10,7 @@ ClothParticle::ClothParticle(glm::vec3 pos, float mass, glm::vec2 texCoord):
     m_velocity(glm::vec3(0.f,0.f,0.f)),
     m_pos(pos),
     m_force(glm::vec3(0.f,0.f,0.f)),
-    m_uv(0,0),
+    m_uv(texCoord),
     m_mass(mass)
 {}
 
