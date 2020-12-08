@@ -7,6 +7,7 @@
 #include "lib/CS123XmlSceneParser.h"
 #include "camera/CamtransCamera.h"
 #include <QMessageBox>
+#include "Settings.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,6 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
     qglFormat.setVersion(4, 3);
     qglFormat.setProfile(QGLFormat::CoreProfile);
     qglFormat.setSampleBuffers(true);
+
+    m_canvas3D = new SupportCanvas3D(qglFormat, this);
+
+    QSettings qtSettings("CS123", "CS123");
+
+    dataBind();
 
   /*QGridLayout *gridLayout = new QGridLayout(ui->canvas3D);
   m_canvas3D = new SupportCanvas3D(qglFormat, this);
@@ -63,6 +70,40 @@ void MainWindow::openFileScene()
 
     }
 }
+
+void MainWindow::settingsChanged() {
+    //ui->canvas2D->settingsChanged();
+    //float checkp = settings.particleMass;
+    m_canvas3D->settingsChanged();
+}
+
+void MainWindow::dataBind() {
+    // Cloth dock
+#define BIND(b) { \
+    DataBinding *_b = (b); \
+    m_bindings.push_back(_b); \
+    assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
+}
+
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->particleMassSlider, ui->particleMassTextbox, settings.particleMass, 1, 25))
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->structuralSlider, ui->structuralTextbox, settings.structural, 0, 50000))
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->shearSlider, ui->shearTextbox, settings.shear, 0, 50000))
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->bendSlider, ui->bendTextbox, settings.bend, 0, 50000))
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->dampingSlider, ui->dampingTextbox, settings.damping, 0, 2))
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->viscousSlider, ui->viscousTextbox, settings.viscous, 0, 2))
+    BIND(BoolBinding::bindCheckbox(ui->gravityCheckbox, settings.hasGravity))
+
+#undef BIND
+
+}
+
+
 
 
 

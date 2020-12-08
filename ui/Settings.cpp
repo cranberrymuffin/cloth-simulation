@@ -78,6 +78,15 @@ void Settings::loadSettingsOrDefaults() {
 
     currentTab = s.value("currentTab", TAB_2D).toBool();
 
+    // Cloth
+    particleMass = s.value("particleMass", 5.f).toDouble();
+    structural = s.value("structural", 25000.f).toDouble();
+    shear = s.value("shear", 25000.f).toDouble();
+    bend = s.value("bend", 25000.f).toDouble();
+    damping = s.value("damping", 0.5f).toDouble();
+    viscous = s.value("viscous", 0.5f).toDouble();
+    hasGravity = s.value("hasGravity", true).toBool();
+
     // These are for computing deltas and the values don't matter, so start all dials in the up
     // position
     cameraPosX = 0;
@@ -140,7 +149,17 @@ void Settings::saveSettings() {
     s.setValue("useKDTree", useKDTree);
     s.setValue("lightDepth",lightDepth);
 
+    // Cloth
+    s.setValue("particleMass", particleMass);
+    s.setValue("structural", structural);
+    s.setValue("shear", shear);
+    s.setValue("bend", bend);
+    s.setValue("damping", damping);
+    s.setValue("viscous", viscous);
+    s.setValue("hasGravity", hasGravity);
+
     s.setValue("currentTab", currentTab);
+
 }
 
 int Settings::getSceneMode() {
