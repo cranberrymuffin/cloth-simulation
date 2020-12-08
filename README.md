@@ -58,3 +58,7 @@ Where a particle is at any time t, is affected by it's posiiton, velocity, and f
   Position at any step <a href="https://www.codecogs.com/eqnedit.php?latex=\Delta&space;t" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\Delta&space;t" title="\Delta t" /></a> is computed as 
  
   <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{x}_{current}&space;\gets&space;\mathbf{x}_{previous}&space;&plus;&space;\Delta&space;t&space;*&space;\mathbf{v}_{current}." target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{x}_{current}&space;\gets&space;\mathbf{x}_{previous}&space;&plus;&space;\Delta&space;t&space;*&space;\mathbf{v}_{current}." title="\mathbf{x}_{current} \gets \mathbf{x}_{previous} + \Delta t * \mathbf{v}_{current}." /></a>
+
+# C++ implementation
+
+First we initialize a mesh of position based on the resolution of the Cloth (25 by 25). We use GPU rendering for our simulation. Our mesh is built by adding verticies in counter clockwise order to create a wireframe. After each vertex, the normal of the particle at that vertex is added in the same vector. This list of positions and normals is sent to a VBO (Vertex Buffer Object), and a VAO (Vertex Array Object) is constructed using this VBO. Every call of update sends new data to the VBO.
