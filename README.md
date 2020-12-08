@@ -61,7 +61,7 @@ Where a particle is at any time t, is affected by it's posiiton, velocity, and f
  
   <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbf{x}_{current}&space;\gets&space;\mathbf{x}_{previous}&space;&plus;&space;\Delta&space;t&space;*&space;\mathbf{v}_{current}." target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbf{x}_{current}&space;\gets&space;\mathbf{x}_{previous}&space;&plus;&space;\Delta&space;t&space;*&space;\mathbf{v}_{current}." title="\mathbf{x}_{current} \gets \mathbf{x}_{previous} + \Delta t * \mathbf{v}_{current}." /></a>
 
-# Implementation details
+## Implementation details
 
 First we initialize a mesh of position based on the resolution of the Cloth (25 by 25). We maintain an array of ClothParticle objects, and an array of positions/normals. ClothParticle objects hold the data for the position, velocity, force, mass, etc for a single given particle. We use GPU rendering for our simulation, the array of position/normal data is used for this (discussed later). Our mesh is built by adding verticies defining a particle's position followed by the normal for that particle in counter clockwise order. This list of positions and normals is sent to a VBO (Vertex Buffer Object), and a VAO (Vertex Array Object) is constructed using this VBO. Every call of update sends new data to the VBO. Lighting of our cloth uses the Phong Lighting model. The logic can be found in shader.vert.
 
