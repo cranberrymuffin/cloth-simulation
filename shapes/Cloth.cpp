@@ -6,6 +6,7 @@
 #include "gl/GLDebug.h"
 #include "glm/ext.hpp"
 #include "glm/gtx/string_cast.hpp"
+#include "Settings.h"
 
 using namespace CS123::GL;
 
@@ -209,52 +210,55 @@ void Cloth::update(float stepSize)
             glm::vec3 f_spring = glm::vec3(0.f,0.f,0.f);
             /** STRUCTURAL SPRING FORCES **/
             if(isValid(i, j+1)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i, j+1)].m_pos, K_structural, L_structural));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i, j+1)].m_pos, settings.structural, L_structural));
             }
             if(isValid(i, j-1)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i, j-1)].m_pos, K_structural, L_structural));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i, j-1)].m_pos, settings.structural, L_structural));
             }
             if(isValid(i+1, j)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i+1, j)].m_pos, K_structural, L_structural));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i+1, j)].m_pos, settings.structural, L_structural));
             }
             if(isValid(i-1, j)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-1, j)].m_pos, K_structural, L_structural));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-1, j)].m_pos, settings.structural, L_structural));
             }
 
             /** SHEAR SPRING FORCES **/
             if(isValid(i+1, j+1)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i+1, j+1)].m_pos, K_shear, L_shear));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i+1, j+1)].m_pos, settings.shear, L_shear));
             }
             if(isValid(i+1, j-1)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i+1, j-1)].m_pos, K_shear, L_shear));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i+1, j-1)].m_pos, settings.shear, L_shear));
             }
             if(isValid(i-1, j-1)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-1, j-1)].m_pos, K_shear, L_shear));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-1, j-1)].m_pos, settings.shear, L_shear));
             }
             if(isValid(i-1, j+1)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-1, j+1)].m_pos, K_shear, L_shear));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-1, j+1)].m_pos, settings.shear, L_shear));
             }
 
             /** FLEXION SPRING FORCES **/
             if(isValid(i, j+2)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i, j+2)].m_pos, K_flexion, L_flexion));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i, j+2)].m_pos, settings.bend, L_flexion));
             }
             if(isValid(i, j-2)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i, j-2)].m_pos, K_flexion, L_flexion));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i, j-2)].m_pos, settings.bend, L_flexion));
             }
             if(isValid(i+2, j)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i+2, j)].m_pos, K_flexion, L_flexion));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i+2, j)].m_pos, settings.bend, L_flexion));
             }
             if(isValid(i-2, j)) {
-                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-2, j)].m_pos, K_flexion, L_flexion));
+                f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-2, j)].m_pos, settings.bend, L_flexion));
             }
 
-            glm::vec3 f_gravity = glm::vec3(0.f, -9.8f * particles[index].m_mass, 0.f);
-            glm::vec3 f_damping = particles[index].m_velocity * -1.f * Cd;
-            glm::vec3 f_viscous = Cv * glm::dot(particles[index].m_normal, Ufluid - particles[index].m_velocity) * particles[index].m_normal;
+            glm::vec3 f_gravity = glm::vec3(0.f, -9.8f * settings.particleMass, 0.f);
+            if(settings.hasGravity == 1) {
+                f_gravity = glm::vec3(0.f, 0.f, 0.f);
+            }
+            glm::vec3 f_damping = particles[index].m_velocity * -1.f * settings.damping;
+            glm::vec3 f_viscous = settings.viscous * glm::dot(particles[index].m_normal, Ufluid - particles[index].m_velocity) * particles[index].m_normal;
 
             particles[index].m_force = f_gravity + f_damping + f_viscous + f_spring;
-            particles[index].m_velocity = particles[index].m_velocity + (stepSize * (particles[index].m_force/particles[index].m_mass));
+            particles[index].m_velocity = particles[index].m_velocity + (stepSize * (particles[index].m_force/settings.particleMass));
             glm::vec3 newPos = particles[index].m_pos + (particles[index].m_velocity * stepSize);
             if(!particles[index].isStatic) {
                 particles[index].m_pos = newPos;
