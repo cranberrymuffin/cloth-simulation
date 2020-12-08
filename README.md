@@ -69,5 +69,5 @@ The cloth's update function is called by the tick() method in view.cpp. Every ca
 
 We allow user control of constants (stiffness constants in spring equation, toggling gravity on/off, viscosity/damping constants), this information is kept in Settings.cpp, and accessed directly in Cloth. UI changes to these constants and values impact our simulation immediately.
 
-# Credits:
+## Credits:
 https://www.ics.uci.edu/~shz/courses/cs114/docs/proj3/index.html
