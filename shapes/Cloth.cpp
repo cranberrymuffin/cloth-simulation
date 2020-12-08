@@ -22,12 +22,15 @@ Cloth::Cloth(float resolution, int particleWidth, int particleHeight)
     numXPoints = resolution;
     numYPoints = resolution;
 
+    m_particleHeight = particleHeight;
+    m_particleWidth = particleWidth;
+
     for(int j = 0; j < m_resolution; j++) {
         for(int i = 0; i< m_resolution; i++) {
             float x = -2.f + 4.f*j/(resolution - 1.f);
             float y = -2.f + 4.f*i/(resolution - 1.f);
 
-            particles[getIndex(i, j)] = ClothParticle(glm::vec3(x,y,0), particleMass, glm::vec2(x/(particleWidth-1), y/(particleHeight-1)));
+            particles[getIndex(i, j)] = ClothParticle(glm::vec3(x,y,0), settings.particleMass, glm::vec2(x/(particleWidth-1), y/(particleHeight-1)));
         }
     }
 
@@ -37,6 +40,10 @@ Cloth::Cloth(float resolution, int particleWidth, int particleHeight)
     particles[getIndex(m_resolution - 1, m_resolution - 1)].isStatic= true;
 
     buildShape(0, 0, 0);
+}
+
+void Cloth::settingsChanged() {
+
 }
 
 void Cloth::buildShape(int param1, int param2, int param3)
@@ -196,6 +203,8 @@ void Cloth::computeNormals() {
 
 void Cloth::update(float stepSize)
 {
+    std::cout<<settings.particleMass;
+
     for ( int i = 0; i < m_resolution; ++i )
     {
         for ( int j = 0; j < m_resolution; ++j )
@@ -250,10 +259,11 @@ void Cloth::update(float stepSize)
                 f_spring = (f_spring + getSpringForce(x, particles[getIndex(i-2, j)].m_pos, settings.bend, L_flexion));
             }
 
-            glm::vec3 f_gravity = glm::vec3(0.f, -9.8f * settings.particleMass, 0.f);
-            if(settings.hasGravity == 1) {
+            glm::vec3 f_gravity = glm::vec3(0.f, -1.9f * settings.particleMass, 0.f);
+            if(!settings.hasGravity) {
                 f_gravity = glm::vec3(0.f, 0.f, 0.f);
             }
+
             glm::vec3 f_damping = particles[index].m_velocity * -1.f * settings.damping;
             glm::vec3 f_viscous = settings.viscous * glm::dot(particles[index].m_normal, Ufluid - particles[index].m_velocity) * particles[index].m_normal;
 

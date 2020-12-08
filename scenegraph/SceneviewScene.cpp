@@ -40,74 +40,18 @@ SceneviewScene::SceneviewScene()
     );
 
     m_enableKdtree = false;
-  //  std::string inputfile = "D:/cs1230/cs1230-final-project/resources/models/cornell_box.obj";
-//
-    //ResourceLoader::readObjFile(m_sceneObjects,inputfile );
-//    Material m;
-//    m.cDiffuse = glm::vec4(0.7,0.4,0.4,1.0);
-//    m.cAmbient = glm::vec4(0.25,0.25,0.25,1.0);
-//    m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
-//    m.shininess = 20;
-
-
-
-//    Shape *clothShape = new Cloth(10,1,1);
-
-   // Shape* buildShape = new PlaneShape(5,1,1);
-//    Shape* sphereShape = ShapeBuilder::getInstance().
-//            LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);
-//    m_cloth = new SceneObject(clothShape,PrimitiveType::PRIMITIVE_MESH,m);
-//    m_cloth->setWorldMatrix(glm::mat4x4());
-//    m_sceneObjects.push_back(m_cloth);
-
-
-
-    //SceneObject* sceneObj = new SceneObject(sphereShape,PrimitiveType::PRIMITIVE_CONE,m);
-//    glm::mat4x4 t = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.0,-1.0));
-//    sceneObj->setWorldMatrix(t);
-//    m_sceneObjects.push_back(sceneObj);
-
-
-
-//    m_lights.clear();
-
-//    LightData l;
-//    l.type = LightType::LIGHT_POINT;
-//    l.pos = glm::vec4(0.0,1.0,0.5,1.0);
-//    l.color = glm::vec4(1.0,1.0,1.0,1.0);
-//    l.id = 0;
-
-//    LightData l2;
-//    l2.type = LightType::LIGHT_DIRECTIONAL;
-//    l2.dir = glm::vec4(0.0,-1.0,-1.0,1.0);
-//    l2.color = glm::vec4(1.0,1.0,1.0,1.0);
-//    l2.id = 0;
-
-//  //  m_lights.push_back(l);
-//    m_lights.push_back(l2);
-
-
-//    depthFBO = std::make_unique<FBO>(2,FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,  1204,1024,TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE,
-//                                TextureParameters::FILTER_METHOD::NEAREST,GL_FLOAT);
 
     initShadowFBO();
 
     initQuad();
 
-   // builScenePlane();
-
-   builPlaneCloth();
+    builPlaneCloth();
 
     builPointLigthObject();
-
-
-
 }
 
 SceneviewScene::~SceneviewScene()
-{
-
-}
+{}
 
 void SceneviewScene::loadPhongShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/default.vert");
@@ -323,7 +267,10 @@ void SceneviewScene::renderGeometry() {
 
 
 void SceneviewScene::settingsChanged() {
-    // TODO: [SCENEVIEW] Fill this in if applicable.
+    for(size_t i = 0 ; i < m_sceneObjects.size();++i)
+    {
+      m_sceneObjects[i]->settingsChanged();
+    }
 }
 
 void SceneviewScene::update(float deltaTime)

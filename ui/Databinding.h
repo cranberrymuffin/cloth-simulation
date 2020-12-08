@@ -11,6 +11,7 @@
 #include <QDockWidget>
 #include <QTabWidget>
 #include <QDial>
+#include <QPushButton>
 
 /**
  * @class DataBinding

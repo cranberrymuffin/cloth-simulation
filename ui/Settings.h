@@ -140,14 +140,13 @@ struct Settings {
     int lightDepth;
 
     // Cloth
-    float particleMass;
-    float structural;
-    float shear;
-    float bend;
-    float damping;
-    float viscous;
-    bool hasGravity;
-
+    float particleMass = 5.f;
+    float structural = 25000;
+    float shear = 25000;
+    float bend = 25000;
+    float damping = 0.5;
+    float viscous = 0.5;
+    bool hasGravity = false;
     int getSceneMode();
     int getCameraMode();
 

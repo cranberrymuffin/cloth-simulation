@@ -22,7 +22,7 @@ public:
     void setScale(Transformation scale);
     void setMaterial(Material scale);
     void setPrimitiveType(PrimitiveType primitiveType);
-
+    void settingsChanged();
     Transformation& getPosition() const;
     Transformation& getOrientation() const;
     Transformation& getScale() const;

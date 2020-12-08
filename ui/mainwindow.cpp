@@ -19,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     qglFormat.setProfile(QGLFormat::CoreProfile);
     qglFormat.setSampleBuffers(true);
 
-    m_canvas3D = new SupportCanvas3D(qglFormat, this);
-
     QSettings qtSettings("CS123", "CS123");
 
     dataBind();
@@ -74,7 +72,7 @@ void MainWindow::openFileScene()
 void MainWindow::settingsChanged() {
     //ui->canvas2D->settingsChanged();
     //float checkp = settings.particleMass;
-    m_canvas3D->settingsChanged();
+    ui->view->settingsChanged();
 }
 
 void MainWindow::dataBind() {
@@ -94,9 +92,9 @@ void MainWindow::dataBind() {
     BIND(FloatBinding::bindSliderAndTextbox(
         ui->bendSlider, ui->bendTextbox, settings.bend, 0, 50000))
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->dampingSlider, ui->dampingTextbox, settings.damping, 0, 2))
+        ui->dampingSlider, ui->dampingTextbox, settings.damping, 0, 15))
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->viscousSlider, ui->viscousTextbox, settings.viscous, 0, 2))
+        ui->viscousSlider, ui->viscousTextbox, settings.viscous, 0, 15))
     BIND(BoolBinding::bindCheckbox(ui->gravityCheckbox, settings.hasGravity))
 
 #undef BIND

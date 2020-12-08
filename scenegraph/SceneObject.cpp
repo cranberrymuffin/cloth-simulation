@@ -17,6 +17,10 @@ SceneObject::SceneObject(Shape* shape, PrimitiveType type,Material& material):m_
 
 }
 
+void SceneObject::settingsChanged() {
+    m_Shape->settingsChanged();
+}
+
 SceneObject::SceneObject(SceneObject & other):m_Shape(other.m_Shape),m_type(other.m_type),m_parent(other.m_parent),
     m_Material(other.m_Material)
 {
