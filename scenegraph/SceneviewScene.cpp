@@ -41,6 +41,20 @@ SceneviewScene::SceneviewScene()
 
     m_enableKdtree = false;
 
+    QImage image = QImage("/Users/aparnanatarajan/course/cs123/data/image/cheeseTexture.jpg");
+    image = image.convertToFormat( QImage::Format_RGBX8888 );
+    QImage fImage = QGLWidget::convertToGLFormat(image);
+    std::cout<<fImage.width()<<std::endl;
+    std::cout<<fImage.height()<<std::endl;
+   // std::cout<<fImage.bits()<<std::endl;
+    glGenTextures(1, &clothTexture);
+    glBindTexture(GL_TEXTURE_2D, clothTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fImage.width(),  fImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, fImage.bits());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
     initShadowFBO();
 
     initQuad();
@@ -105,7 +119,7 @@ void SceneviewScene::render(Camera* camera) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-   // renderQuad();
+  //  renderQuad();
    // checkError();
 
     m_phongShader->bind();
@@ -189,6 +203,14 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
          glActiveTexture(GL_TEXTURE1);
          checkError();
          glBindTexture(GL_TEXTURE_2D, depthMap);
+
+         location = glGetUniformLocation(m_phongShader->getID(),"tex");
+         std::cout<<location<<std::endl;
+         glUniform1i(location, 0);
+         checkError();
+         glActiveTexture(GL_TEXTURE0);
+         checkError();
+         glBindTexture(GL_TEXTURE_2D, clothTexture);
 
         // std::cout << "SceneviewScene::renderSceneViewObjects 3" << std::endl;
         checkError();
@@ -350,7 +372,7 @@ void SceneviewScene::renderQuad()
     m_quadShader->setUniform("far_plane", 10.f);
     checkError();*/
           glActiveTexture(GL_TEXTURE0);
-          glBindTexture(GL_TEXTURE_2D, depthMap);
+          glBindTexture(GL_TEXTURE_2D, clothTexture);
              checkError();
     glBindVertexArray(quadVAO);
        checkError();

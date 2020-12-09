@@ -12,7 +12,9 @@ out vec4 fragColor;
 
 
 void main() {
-    //fragColor = texture(tex, texCoord);
+   //fragColor = texture(tex, texCoord);
+
+   vec4 textureColor = texture(tex, texCoord);
 
    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
    projCoords = projCoords * 0.5 + 0.5;
@@ -25,9 +27,6 @@ void main() {
       fragColor = vec4(0);
    }else
    {
-
-          fragColor = vec4(color,1.0);
+          fragColor = vec4(mix(textureColor.xyz, color, 0.5), 1);
    }
-
-  //      fragColor = vec4(color,1.0);
 }

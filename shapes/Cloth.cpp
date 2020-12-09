@@ -81,6 +81,7 @@ void Cloth::buildFace(int param1,int param2, int param3)
            TextureCoord t3 = particles[thirdPoint].m_uv;
            TextureCoord t4 = particles[fourthPoint].m_uv;
 
+
            m_vertexData.push_back(v1.x);
            m_vertexData.push_back(v1.y);
            m_vertexData.push_back(v1.z);
@@ -297,7 +298,7 @@ void Cloth::draw()
 
 void Cloth::buildVAO()
 {
-    const int numFloatsPerVertex = 6;
+    const int numFloatsPerVertex = 8;
     const int numVertices = m_vertexData.size() / numFloatsPerVertex;
 
     std::vector<VBOAttribMarker> markers;

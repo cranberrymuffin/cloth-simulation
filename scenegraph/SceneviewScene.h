@@ -91,6 +91,9 @@ private:
     std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
+
+    unsigned int clothTexture;
+
     glm::mat4x4 m_lookat;
     glm::mat4x4 m_projection;
     SceneObject* m_cloth;
