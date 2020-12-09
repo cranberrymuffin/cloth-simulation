@@ -53,8 +53,6 @@ Scene::~Scene()
 
 void Scene::parse(Scene *sceneToFill, CS123ISceneParser *parser) {
     // TODO: load scene into sceneToFill using setGlobal(), addLight(), addPrimitive(), and
-    std::cout << "parse" << std::endl;
-
     // get global data
 
     parser->getGlobalData(sceneToFill->m_globalData);

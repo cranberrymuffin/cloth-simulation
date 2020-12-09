@@ -46,7 +46,6 @@ void View::initializeGL() {
         /* Problem: glewInit failed, something is seriously wrong. */
         std::cerr << "Something is very wrong, glew initialization failed." << std::endl;
     }
-    std::cout << "Using GLEW " <<  glewGetString( GLEW_VERSION ) << std::endl;
     initializeScene();
     // Start a timer that will try to get 60 frames per second (the actual
     // frame rate depends on the operating system and other running programs)
@@ -54,21 +53,16 @@ void View::initializeGL() {
     m_timer.start(1000 / 60);
 
     checkError();
-    std::cout << "View::initializeGL() 1" << std::endl;
     glEnable(GL_CULL_FACE);
 
     glEnable(GL_DEPTH_TEST);
     checkError();
-    std::cout << "View::initializeGL() 1" << std::endl;
     glEnable(GL_CULL_FACE);
     checkError();
-    std::cout << "View::initializeGL() 2" << std::endl;
     glCullFace(GL_BACK);
     checkError();
-    std::cout << "View::initializeGL() 3" << std::endl;
     glFrontFace(GL_CCW);
     checkError();
-    std::cout << "View::initializeGL() 4" << std::endl;
 }
 
 void View::paintGL() {
@@ -158,18 +152,12 @@ void View::tick() {
 
 void View::loadSceneviewSceneFromParser(CS123XmlSceneParser &parser)
 {
-   // m_currentScene = std::make_unique<SceneviewScene>();
     Scene::parse(m_currentScene.get(), &parser);
-    //m_settingsDirty = true;
-
-    std::cout <<"HERE 2" << std::endl;
 }
 
 void View::settingsChanged() {
-//    m_settingsDirty = true;
     if (m_currentScene != nullptr) {
         // Just calling this function so that the scene is always updated.
- //       setSceneFromSettings();
         m_currentScene->settingsChanged();
     }
     update(); /* repaint the scene */

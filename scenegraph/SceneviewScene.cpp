@@ -44,9 +44,6 @@ SceneviewScene::SceneviewScene()
     QImage image = QImage("/Users/aparnanatarajan/course/cs123/data/image/cheeseTexture.jpg");
     image = image.convertToFormat( QImage::Format_RGBX8888 );
     QImage fImage = QGLWidget::convertToGLFormat(image);
-    std::cout<<fImage.width()<<std::endl;
-    std::cout<<fImage.height()<<std::endl;
-   // std::cout<<fImage.bits()<<std::endl;
     glGenTextures(1, &clothTexture);
     glBindTexture(GL_TEXTURE_2D, clothTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fImage.width(),  fImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, fImage.bits());
@@ -71,7 +68,6 @@ void SceneviewScene::loadPhongShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/default.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/default.frag");
     m_phongShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
-    std::cout<<"Phong Shader loaded" << std::endl;
 }
 
 void SceneviewScene::loadDepthgShader()
@@ -79,7 +75,6 @@ void SceneviewScene::loadDepthgShader()
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/depth.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/depth.frag");
     m_depthshader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
-    std::cout<<"Depth Shader loaded" << std::endl;
 }
 
 void SceneviewScene::loadQuadShader()
@@ -87,7 +82,6 @@ void SceneviewScene::loadQuadShader()
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/quad.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/quad.frag");
     m_quadShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
-    std::cout<<"Quad Shader loaded" << std::endl;
 }
 
 void SceneviewScene::loadWireframeShader() {
@@ -119,22 +113,15 @@ void SceneviewScene::render(Camera* camera) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  //  renderQuad();
-   // checkError();
-
     m_phongShader->bind();
-    std::cout<<"SceneviewScene::render 0" << std::endl;
     checkError();
     setSceneUniforms(*camera);
-    std::cout<<"SceneviewScene::render 1" << std::endl;
     checkError();
     setLights();
-    std::cout<<"SceneviewScene::render 2" << std::endl;
     checkError();
 
 
     renderGeometry();
-    std::cout<<"SceneviewScene::render 3" << std::endl;
     checkError();
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -176,12 +163,10 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
     {
 
          SceneObject* sceneObject = s[i];
-        // std::cout << "SceneviewScene::renderSceneViewObjects 1" << std::endl;
-        checkError();
+         checkError();
          m_phongShader->setUniform("m",sceneObject->getToWorldMatrix());
 
-        //std::cout << "SceneviewScene::renderSceneViewObjects 2" << std::endl;
-        checkError();
+         checkError();
          Material m =sceneObject->getMaterial() ;
          m.cDiffuse *= m_globalData.kd;
          m.cAmbient *= m_globalData.ka;
@@ -196,8 +181,7 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
 
          checkError();
          GLint location = glGetUniformLocation(m_phongShader->getID(),"shadowMap");
-         //std::cout << location << std::endl;
-         //m_phongShader->setUniform("shadowMap", 1);
+
           glUniform1i(location, 1);
            checkError();
          glActiveTexture(GL_TEXTURE1);
@@ -205,7 +189,6 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
          glBindTexture(GL_TEXTURE_2D, depthMap);
 
          location = glGetUniformLocation(m_phongShader->getID(),"tex");
-         std::cout<<location<<std::endl;
          glUniform1i(location, 0);
          checkError();
          glActiveTexture(GL_TEXTURE0);
@@ -270,10 +253,8 @@ void SceneviewScene::setLights()
 
 void SceneviewScene::renderGeometry() {
 
-    std::cout << "SceneviewScene::renderGeometry 0" << std::endl;
     checkError();
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    std::cout << "SceneviewScene::renderGeometry 1" << std::endl;
     checkError();
 
     // TODO: [SCENEVIEW] Fill this in...

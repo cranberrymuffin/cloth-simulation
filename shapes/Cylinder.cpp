@@ -61,12 +61,6 @@ void Cylinder::buildShape(int param1, int param2, int param3)
       m_uv.push_back(m_uv[i]);
    }
 
-
-  // printVertices();
-//   for(int i = 0 ;  i < m_normals.size() ; i++)
-//   {
-//      std::cout << m_normals[i].x << ", " << m_normals[i].y <<", " << m_normals[i].z << std::endl;
-//   }
    buildFace(param1,  param2,  param3);
 
    vertices.insert(vertices.end(),m_vertices.begin(),m_vertices.end());

@@ -150,8 +150,6 @@ void SupportCanvas3D::setSceneToShapes() {
 
 void SupportCanvas3D::copyPixels(int width, int height, RGBA *data) {
     glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, data);
-    std::cout << "copied " << width << "x" << height << std::endl;
-
     // Flip the image and since OpenGL uses an origin in the lower left and we an origin in the
     // upper left.
     for (int y = 0; y < (height + 1) / 2; y++)
