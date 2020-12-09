@@ -63,11 +63,14 @@ Where a particle is at any time t, is affected by it's posiiton, velocity, and f
 
 ## Implementation details
 
-First we initialize a mesh of position based on the resolution of the Cloth (25 by 25). We maintain an array of ClothParticle objects, and an array of positions/normals. ClothParticle objects hold the data for the position, velocity, force, mass, etc for a single given particle. We use GPU rendering for our simulation, the array of position/normal data is used for this (discussed later). Our mesh is built by adding verticies defining a particle's position followed by the normal for that particle in counter clockwise order. This list of positions and normals is sent to a VBO (Vertex Buffer Object), and a VAO (Vertex Array Object) is constructed using this VBO. Every call of update sends new data to the VBO. Lighting of our cloth uses the Phong Lighting model. The logic can be found in shader.vert.
+First we initialize a mesh of position based on the resolution of the Cloth (25 by 25). We maintain an array of ClothParticle objects, and an array of positions/normals/uv coordinates. ClothParticle objects hold the data for the position, velocity, force, mass, etc for a single given particle. We use GPU rendering for our simulation, the array of position/normal data is used for this (discussed later). Our mesh is built by adding verticies defining a particle's position followed by the normal for that particle in counter clockwise order. This list of positions, normals, and uv coordinates is sent to a VBO (Vertex Buffer Object), and a VAO (Vertex Array Object) is constructed using this VBO. Every call of update sends new data to the VBO. Lighting of our cloth uses the Phong Lighting model. The logic can be found in shader.vert. UV coordinates fit in the bounds of 0-1 and are used for texture mapping. In our demo below you can see a cheese texture mapped onto a cloth (bringing a new meaning to cheese cloth!)
 
 The cloth's update function is called by the tick() method in view.cpp. Every call to tick results in ten calls to the cloth's update function. The <a href="https://www.codecogs.com/eqnedit.php?latex=\Delta&space;t" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\Delta&space;t" title="\Delta t" /></a> for each call to update is 0.0026 units.
 
 We allow user control of constants (stiffness constants in spring equation, toggling gravity on/off, viscosity/damping constants), this information is kept in Settings.cpp, and accessed directly in Cloth. UI changes to these constants and values impact our simulation immediately.
+
+## Demo
+![Demo GIF](https://github.com/cranberrymuffin/cloth-simulation/blob/master/results/Large%20GIF%20(806x596).gif)
 
 ## Credits:
 https://www.ics.uci.edu/~shz/courses/cs114/docs/proj3/index.html
