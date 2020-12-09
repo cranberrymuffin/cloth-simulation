@@ -209,8 +209,6 @@ void Cloth::computeNormals() {
 
 void Cloth::update(float stepSize)
 {
-    std::cout<<settings.particleMass;
-
     for ( int i = 0; i < m_resolution; ++i )
     {
         for ( int j = 0; j < m_resolution; ++j )

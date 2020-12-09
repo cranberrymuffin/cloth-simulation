@@ -21,7 +21,6 @@ CamtransCamera::CamtransCamera():m_near(0.0),m_far(100.0),m_thetaH(60.0),m_aspec
 
 void CamtransCamera::setAspectRatio(float a)
 {
-   // std::cout << "setAspectRatio: " << a << std::endl;
     // @TODO: [CAMTRANS] Fill this in...
     m_aspectRatio = a;
     updateProjectionMatrix();
@@ -77,11 +76,6 @@ float CamtransCamera::getHeightAngle() const {
 
 void CamtransCamera::orientLook(const glm::vec4 &eye, const glm::vec4 &look, const glm::vec4 &up) {
     // @TODO: [CAMTRANS] Fill this in...
-
-   std::cout << "trasnlate " << eye.x <<"," << eye.y <<","<< eye.z << std::endl;
-   std::cout << "trasnlate " << look.x <<"," << look.y <<","<< look.z << std::endl;
-   std::cout << "trasnlate " << up.x <<"," << up.y <<","<< up.z << std::endl;
-
     m_eye = eye;
     //m_look = look;
     m_up = up;
@@ -97,7 +91,6 @@ void CamtransCamera::orientLook(const glm::vec4 &eye, const glm::vec4 &look, con
 
 void CamtransCamera::setHeightAngle(float h) {
 
-//    std::cout << "setHeightAngle "<< h<< std::endl;
 //    // @TODO: [CAMTRANS] Fill this in...
     m_thetaH = h;
     updateProjectionMatrix();
@@ -105,7 +98,6 @@ void CamtransCamera::setHeightAngle(float h) {
 
 void CamtransCamera::translate(const glm::vec4 &v) {
     // @TODO: [CAMTRANS] Fill this in...
-    std::cout << "trasnlate " << v.x <<"," << v.y <<","<< v.z << std::endl;
     m_eye +=  v;
     updateViewMatrix();
 }
@@ -140,7 +132,6 @@ void CamtransCamera::rotateW(float degrees) {
 
 void CamtransCamera::setClip(float nearPlane, float farPlane) {
     // @TODO: [CAMTRANS] Fill this in...
-//    std::cout << "setClip : near :" << nearPlane <<" far: " <<farPlane << std::endl;
     m_near = nearPlane;
     m_far = farPlane;
    updateProjectionMatrix();
