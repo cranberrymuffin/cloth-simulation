@@ -44,17 +44,10 @@ public:
     const glm::mat4x4 getToWorldMatrix();
     const glm::mat4x4& getLocalMatrix();
 
-//    glm::vec4 getPointWorldIntersection( HitPoint& h);
-//    glm::vec4 getNormalWorldIntersection( glm::vec4& point);
-//    void getPointWorldIntersection( HitPoint& h,glm::vec4& point,glm::vec4& normal);
-    //void getWorldIntersection(HitPoint& h, glm::vec4& point, glm::vec4& normal);
-
     void setShape(Shape* shape);
     Shape& getShape();
 
-
     virtual void step(float deltaT);
-
 
     SceneObjectMaterial& getObjectMaterial();
 
@@ -81,11 +74,6 @@ protected:
 
     Transformation* m_parent;
     std::vector<SceneObject*> children;
-
-
-
-    //std::vector<float> bbv_vertices;
-
 };
 
 #endif // SCENEOBJECT_H

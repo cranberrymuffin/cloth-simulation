@@ -35,11 +35,6 @@ void Plane::buildSurface(int param1, int param2, int param3,std::vector<Vertex>&
 
       for(float j =-0.5; j <= 0.5; j += (1.0f/param1))
       {
-          //UV coordinate
-          //float u = ((float)( (int)( (i+0.5) *100)%param1)/param1)/100.0;
-         // int moduleH = (int)((j+0.5)*(100/param1));
-         // int x =(moduleH%100/param1);
-         // float v = (float)((float)(x)/param1)/100.f;
           float v= ((float)( (int)( (j+0.5) *(100.f))%(scaledQuad)))/scaledQuad;
           v /=100.f;
 

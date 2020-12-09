@@ -478,7 +478,6 @@ void SceneviewScene::renderPointLigthObject()
 
      m_phongShader->setUniform("m",scal * tr);
 
-    //std::cout << "SceneviewScene::renderSceneViewObjects 2" << std::endl;
      checkError();
      Material m =m_ligthObject->getMaterial() ;
      m.cDiffuse *= m_globalData.kd;
@@ -517,16 +516,6 @@ void SceneviewScene::initializeSceneLight()
     m_globalData.kd =0.5;
     m_globalData.ka =0.75;
     m_globalData.ks =0.5;
-
-//    CS123SceneLightData m_light;
-//    m_light.type = LightType::LIGHT_DIRECTIONAL;
-//    m_light.dir = glm::normalize(glm::vec4(1.f, -1.f, -1.f, 0.f));
-//    m_light.color.r = m_light.color.g = m_light.color.b = 1;
-//    m_light.id = 0;
-
-   // m_lights.push_back(m_light);
-
-
 
     m_pointLight.type = LightType::LIGHT_POINT;
     m_pointLight.pos = glm::vec4(0,0,8.1,1.0);

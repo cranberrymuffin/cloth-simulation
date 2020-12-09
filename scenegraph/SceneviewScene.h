@@ -50,8 +50,6 @@ public:
 
     void update(float deltaTime);
 
-
-
 private:
     void shadowPass();
 

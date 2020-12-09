@@ -45,18 +45,14 @@ SOURCES += ui/mainwindow.cpp \
     lib/ResourceLoader.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
-    scenegraph/DynamicSceneObject.cpp \
     scenegraph/OpenGLScene.cpp \
     scenegraph/Scene.cpp \
     scenegraph/SceneObject.cpp \
     scenegraph/SceneObjectMaterial.cpp \
     scenegraph/SceneviewScene.cpp \
     scenegraph/Shapebuilder.cpp \
-    shapes/Cap.cpp \
     shapes/Cloth.cpp \
     shapes/ClothParticle.cpp \
-    shapes/Cone.cpp \
-    shapes/Cylinder.cpp \
     shapes/LoadedShape.cpp \
     shapes/Plane.cpp \
     shapes/PlaneShape.cpp \
@@ -96,18 +92,14 @@ HEADERS += ui/mainwindow.h \
     lib/CS123XmlSceneParser.h \
     lib/RGBA.h \
     lib/ResourceLoader.h \
-    scenegraph/DynamicSceneObject.h \
     scenegraph/OpenGLScene.h \
     scenegraph/Scene.h \
     scenegraph/SceneObject.h \
     scenegraph/SceneObjectMaterial.h \
     scenegraph/SceneviewScene.h \
     scenegraph/Shapebuilder.h \
-    shapes/Cap.h \
     shapes/Cloth.h \
     shapes/ClothParticle.h \
-    shapes/Cone.h \
-    shapes/Cylinder.h \
     shapes/LoadedShape.h \
     shapes/Plane.h \
     shapes/PlaneShape.h \

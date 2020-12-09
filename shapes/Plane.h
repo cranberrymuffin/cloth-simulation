@@ -1,9 +1,13 @@
 #ifndef PLANE_H
 #define PLANE_H
 
-#include "Surface.h"
+#include "GL/glew.h"
 
-class Plane:public Surface
+#include<memory>
+#include <vector>
+#include "../common/common.h"
+
+class Plane
 {
 public:
     Plane();

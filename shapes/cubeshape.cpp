@@ -29,7 +29,7 @@ void CubeShape::buildShape(int param1,int param2, int param3)
   //   V1---V3
 
 
-  std::unique_ptr<Surface> plane = std::make_unique<Plane>();
+  std::unique_ptr<Plane> plane = std::make_unique<Plane>();
   plane->buildSurface(param1, param2,param3,m_vertices,m_normals,m_uv);
 
 

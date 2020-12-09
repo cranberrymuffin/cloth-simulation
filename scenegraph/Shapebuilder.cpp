@@ -1,7 +1,5 @@
 #include "Shapebuilder.h"
-#include "shapes/Cone.h"
 #include "shapes/cubeshape.h"
-#include "shapes/Cylinder.h"
 #include "shapes/Sphere.h"
 
 
@@ -22,21 +20,11 @@ Shape* ShapeBuilder::LoadShape(PrimitiveType type,int param1, int param2)
     {
         switch(type)
         {
-         case PrimitiveType::PRIMITIVE_CONE:
-            shape = new Cone();
-            shape->buildShape(param1,param2,0);
-
-            break;
          case PrimitiveType::PRIMITIVE_CUBE:
             shape = new CubeShape();
             shape->buildShape(param1,param2,0);
 
             break;
-         case PrimitiveType::PRIMITIVE_CYLINDER:
-            shape = new Cylinder();
-            shape->buildShape(param1,param2,0);
-
-           break;
          case PrimitiveType::PRIMITIVE_SPHERE:
             shape = new Sphere();
             shape->buildShape(param1,param2,0);
