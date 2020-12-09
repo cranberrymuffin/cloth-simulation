@@ -23,7 +23,7 @@ SceneviewScene::SceneviewScene()
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     initializeSceneLight();
     loadQuadShader();
-    loadDepthgShader();
+    loadDepthShader();
     loadPhongShader();
     loadQuadShader();
     glm::vec3 eye(5.0,5.0,5.0);
@@ -70,11 +70,11 @@ void SceneviewScene::loadPhongShader() {
     m_phongShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
 }
 
-void SceneviewScene::loadDepthgShader()
+void SceneviewScene::loadDepthShader()
 {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/depth.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/depth.frag");
-    m_depthshader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
+    m_depthShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
 }
 
 void SceneviewScene::loadQuadShader()
@@ -214,7 +214,7 @@ void SceneviewScene::renderDepthSceneViewObjects(const std::vector<SceneObject *
     {
 
       SceneObject* sceneObject = s[i];
-      m_depthshader->setUniform("m",sceneObject->getToWorldMatrix());
+      m_depthShader->setUniform("m",sceneObject->getToWorldMatrix());
       glDisable(GL_CULL_FACE);
       sceneObject->getShape().draw();
       glEnable(GL_CULL_FACE);
@@ -297,18 +297,18 @@ void SceneviewScene::shadowPass()
 
 
 
-   m_depthshader->bind();
+   m_depthShader->bind();
    checkError();
    glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
    glClear(GL_DEPTH_BUFFER_BIT);
 
-   m_depthshader->setUniform("lightSpaceMatrix",lightSpaceMatrix);
+   m_depthShader->setUniform("lightSpaceMatrix",lightSpaceMatrix);
    checkError();
    renderDepthSceneViewObjects(m_sceneObjects);
    checkError();
    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-   m_depthshader->unbind();
+   m_depthShader->unbind();
    checkError();
    glViewport(0, 0, m_width * m_aspect, m_height * m_aspect);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -70,7 +70,7 @@ private:
 
     void initializeSceneLight();
     void loadPhongShader();
-    void loadDepthgShader();
+    void loadDepthShader();
     void loadQuadShader();
 
     void loadWireframeShader();
@@ -85,7 +85,7 @@ private:
     std::unique_ptr<Camera> m_camera;
 
     std::unique_ptr<CS123::GL::CS123Shader> m_phongShader;
-    std::unique_ptr<CS123::GL::CS123Shader> m_depthshader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_depthShader;
     std::unique_ptr<CS123::GL::CS123Shader> m_quadShader;
 
     std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
