@@ -25,8 +25,6 @@ SOURCES += ui/mainwindow.cpp \
     camera/CamtransCamera.cpp \
     camera/OrbitingCamera.cpp \
     camera/QuaternionCamera.cpp \
-    cloth/solver.cpp \
-    cloth/state.cpp \
     gl/GLDebug.cpp \
     gl/datatype/FBO.cpp \
     gl/datatype/IBO.cpp \
@@ -47,9 +45,6 @@ SOURCES += ui/mainwindow.cpp \
     lib/ResourceLoader.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
-    models/cube.cpp \
-    particle/Particle.cpp \
-    particle/particle.cpp \
     scenegraph/DynamicSceneObject.cpp \
     scenegraph/OpenGLScene.cpp \
     scenegraph/Scene.cpp \
@@ -67,7 +62,6 @@ SOURCES += ui/mainwindow.cpp \
     shapes/PlaneShape.cpp \
     shapes/Shape.cpp \
     shapes/Sphere.cpp \
-    shapes/Surface.cpp \
     shapes/cubeshape.cpp \
     ui/Databinding.cpp \
     ui/Settings.cpp \
@@ -80,8 +74,6 @@ HEADERS += ui/mainwindow.h \
     camera/CamtransCamera.h \
     camera/OrbitingCamera.h \
     camera/QuaternionCamera.h \
-    cloth/solver.h \
-    cloth/state.h \
     common/common.h \
     gl/GLDebug.h \
     gl/datatype/FBO.h \
@@ -104,9 +96,6 @@ HEADERS += ui/mainwindow.h \
     lib/CS123XmlSceneParser.h \
     lib/RGBA.h \
     lib/ResourceLoader.h \
-    models/cube.h \
-    particle/Particle.h \
-    particle/particle.h \
     scenegraph/DynamicSceneObject.h \
     scenegraph/OpenGLScene.h \
     scenegraph/Scene.h \
@@ -124,8 +113,6 @@ HEADERS += ui/mainwindow.h \
     shapes/PlaneShape.h \
     shapes/Shape.h \
     shapes/Sphere.h \
-    shapes/Surface.h \
-    shapes/cubeshape.h \
     tinyobjloader/tiny_obj_loader.h \
     ui/Databinding.h \
     ui/Settings.h \
