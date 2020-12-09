@@ -10,7 +10,6 @@
 #include "gl/shaders/CS123Shader.h"
 #include "lib/ResourceLoader.h"
 #include "shapes/Cloth.h"
-#include "shapes/PlaneShape.h"
 #include "shapes/Sphere.h"
 #include "scenegraph/Shapebuilder.h"
 #include "gl/datatype/FBO.h"
@@ -414,14 +413,6 @@ void SceneviewScene::builScenePlane()
     glm::mat4x4 tr4 = glm::translate(glm::mat4x4(),glm::vec3(1.0,0.8,1.5));
     sceneObj3->setWorldMatrix(tr4);
     m_sceneObjects.push_back(sceneObj4);
-
-////    Shape* buildShape = new PlaneShape(5,1,1);
-//    Shape* coneShape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CONE,8,8);
-
-//    SceneObject* sceneObj = new SceneObject(coneShape,PrimitiveType::PRIMITIVE_CONE,m);
-////    glm::mat4x4 t = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.0,-1.0));
-////    sceneObj->setWorldMatrix(t);
-    ////    m_sceneObjects.push_back(sceneObj);
 }
 
 void SceneviewScene::builPlaneCloth()

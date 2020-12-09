@@ -55,7 +55,6 @@ SOURCES += ui/mainwindow.cpp \
     shapes/ClothParticle.cpp \
     shapes/LoadedShape.cpp \
     shapes/Plane.cpp \
-    shapes/PlaneShape.cpp \
     shapes/Shape.cpp \
     shapes/Sphere.cpp \
     shapes/cubeshape.cpp \
@@ -102,7 +101,6 @@ HEADERS += ui/mainwindow.h \
     shapes/ClothParticle.h \
     shapes/LoadedShape.h \
     shapes/Plane.h \
-    shapes/PlaneShape.h \
     shapes/Shape.h \
     shapes/Sphere.h \
     tinyobjloader/tiny_obj_loader.h \
