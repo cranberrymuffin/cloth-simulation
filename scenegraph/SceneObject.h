@@ -1,18 +1,15 @@
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 
-#include "../shapes/Shape.h"
-#include <memory>
 #include "../lib/CS123SceneData.h"
+#include "../shapes/Shape.h"
 #include "SceneObjectMaterial.h"
+#include <memory>
 
-
-class SceneObject
-{
+class SceneObject {
 public:
     SceneObject();
-    SceneObject(Shape* shape, PrimitiveType,Material&);
-
+    SceneObject(Shape* shape, PrimitiveType, Material&);
 
     SceneObject(SceneObject&);
     ~SceneObject();
@@ -51,24 +48,15 @@ public:
 
     SceneObjectMaterial& getObjectMaterial();
 
-
-
-
 protected:
-
     void updateBBV();
 
-    Shape*  m_Shape;
-
-
+    Shape* m_Shape;
 
     Transformation m_localTransformation;
     Transformation m_parenTransformation;
 
-
     PrimitiveType m_type;
-
-
 
     SceneObjectMaterial m_Material;
 

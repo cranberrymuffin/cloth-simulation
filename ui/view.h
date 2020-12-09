@@ -2,11 +2,11 @@
 #define VIEW_H
 
 #include "GL/glew.h"
-#include <qgl.h>
+#include "camera/CamtransCamera.h"
 #include <QTime>
 #include <QTimer>
 #include <lib/CS123XmlSceneParser.h>
-#include "camera/CamtransCamera.h"
+#include <qgl.h>
 
 class OpenGLScene;
 class SceneviewScene;
@@ -15,9 +15,9 @@ class View : public QGLWidget {
     Q_OBJECT
 
 public:
-    View(QWidget *parent);
+    View(QWidget* parent);
     ~View();
-    void loadSceneviewSceneFromParser(CS123XmlSceneParser &parser);
+    void loadSceneviewSceneFromParser(CS123XmlSceneParser& parser);
     CamtransCamera* getCamtransCamera();
     void settingsChanged();
 
@@ -30,12 +30,12 @@ private:
     void paintGL();
     void resizeGL(int w, int h);
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
 
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent* event);
+    void keyReleaseEvent(QKeyEvent* event);
     void initializeScene();
 
     std::unique_ptr<OpenGLScene> m_currentScene;
@@ -45,7 +45,6 @@ private:
     float tick_counter;
 
     bool pauseSim = false;
-
 
 private slots:
     void tick();

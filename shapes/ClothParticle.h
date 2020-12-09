@@ -2,10 +2,9 @@
 #define CLOTHPARTICLE_H
 #include "common/common.h"
 
-class ClothParticle
-{
+class ClothParticle {
 public:
-    ClothParticle( glm::vec3 pos, float mass, glm::vec2 texCoord);
+    ClothParticle(glm::vec3 pos, float mass, glm::vec2 texCoord);
     ~ClothParticle();
     bool isStatic; // true for pinned particles
 

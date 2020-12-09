@@ -38,16 +38,16 @@ public:
     //
 
     // Called when the mouse button is pressed down.
-    virtual void mouseDown(int x, int y)    {}
+    virtual void mouseDown(int x, int y) { }
 
     // Called when the mouse button is dragged.
-    virtual void mouseDragged(int x, int y) {}
+    virtual void mouseDragged(int x, int y) { }
 
     // Called when the mouse button is released.
-    virtual void mouseUp(int x, int y)      {}
+    virtual void mouseUp(int x, int y) { }
 
     // Called when the scroll wheel changes position.
-    virtual void mouseScrolled(int delta)   {}
+    virtual void mouseScrolled(int delta) { }
 };
 
 #endif // CAMERA_H

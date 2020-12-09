@@ -1,16 +1,16 @@
 #include "Databinding.h"
-#include <math.h>
 #include <QVariant>
+#include <math.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // class IntBinding
 ////////////////////////////////////////////////////////////////////////////////
 
 IntBinding* IntBinding::bindSliderAndTextbox(
-        QSlider *slider, QLineEdit *textbox, int &value, int minValue, int maxValue)
+    QSlider* slider, QLineEdit* textbox, int& value, int minValue, int maxValue)
 {
     // Bind the slider, the textbox, and the value together
-    IntBinding *binding = new IntBinding(value);
+    IntBinding* binding = new IntBinding(value);
     connect(slider, SIGNAL(valueChanged(int)), binding, SLOT(intChanged(int)));
     connect(slider, SIGNAL(sliderMoved(int)), binding, SLOT(intChanged(int)));
     connect(textbox, SIGNAL(textChanged(QString)), binding, SLOT(stringChanged(QString)));
@@ -26,9 +26,10 @@ IntBinding* IntBinding::bindSliderAndTextbox(
     return binding;
 }
 
-IntBinding* IntBinding::bindTextbox(QLineEdit *textbox, int &value) {
+IntBinding* IntBinding::bindTextbox(QLineEdit* textbox, int& value)
+{
     // Bind the the textbox and the value together
-    IntBinding *binding = new IntBinding(value);
+    IntBinding* binding = new IntBinding(value);
     connect(textbox, SIGNAL(textChanged(QString)), binding, SLOT(stringChanged(QString)));
 
     // Set the initial value
@@ -37,7 +38,8 @@ IntBinding* IntBinding::bindTextbox(QLineEdit *textbox, int &value) {
     return binding;
 }
 
-void IntBinding::intChanged(int newValue) {
+void IntBinding::intChanged(int newValue)
+{
     if (m_value != newValue) {
         m_value = newValue;
         emit updateString(QString::number(m_value));
@@ -45,7 +47,8 @@ void IntBinding::intChanged(int newValue) {
     }
 }
 
-void IntBinding::stringChanged(QString newValue) {
+void IntBinding::stringChanged(QString newValue)
+{
     int intValue = newValue.toInt();
     if (m_value != intValue) {
         m_value = intValue;
@@ -59,9 +62,10 @@ void IntBinding::stringChanged(QString newValue) {
 ////////////////////////////////////////////////////////////////////////////////
 
 UCharBinding* UCharBinding::bindSliderAndTextbox(
-        QSlider *slider, QLineEdit *textbox, unsigned char &value, int minValue, int maxValue) {
+    QSlider* slider, QLineEdit* textbox, unsigned char& value, int minValue, int maxValue)
+{
     // Bind the slider, the textbox, and the value together
-    UCharBinding *binding = new UCharBinding(value);
+    UCharBinding* binding = new UCharBinding(value);
     connect(slider, SIGNAL(valueChanged(int)), binding, SLOT(ucharChanged(int)));
     connect(slider, SIGNAL(sliderMoved(int)), binding, SLOT(ucharChanged(int)));
     connect(textbox, SIGNAL(textChanged(QString)), binding, SLOT(stringChanged(QString)));
@@ -77,9 +81,10 @@ UCharBinding* UCharBinding::bindSliderAndTextbox(
     return binding;
 }
 
-UCharBinding* UCharBinding::bindTextbox(QLineEdit *textbox, unsigned char &value) {
+UCharBinding* UCharBinding::bindTextbox(QLineEdit* textbox, unsigned char& value)
+{
     // Bind the the textbox and the value together
-    UCharBinding *binding = new UCharBinding(value);
+    UCharBinding* binding = new UCharBinding(value);
     connect(textbox, SIGNAL(textChanged(QString)), binding, SLOT(stringChanged(QString)));
 
     // Set the initial value
@@ -88,7 +93,8 @@ UCharBinding* UCharBinding::bindTextbox(QLineEdit *textbox, unsigned char &value
     return binding;
 }
 
-void UCharBinding::ucharChanged(int newValue) {
+void UCharBinding::ucharChanged(int newValue)
+{
     if (m_value != newValue) {
         m_value = static_cast<unsigned char>(newValue);
         emit updateString(QString::number(m_value));
@@ -96,7 +102,8 @@ void UCharBinding::ucharChanged(int newValue) {
     }
 }
 
-void UCharBinding::stringChanged(QString newValue) {
+void UCharBinding::stringChanged(QString newValue)
+{
     int intValue = newValue.toInt();
     if (m_value != intValue) {
         m_value = intValue;
@@ -115,9 +122,10 @@ inline float mapValue(int i) { return static_cast<float>(i) * 0.01f; }
 inline int mapValue(float f) { return (int)ceilf(f * 100 - 0.5f); }
 
 FloatBinding* FloatBinding::bindSliderAndTextbox(
-        QSlider *slider, QLineEdit *textbox, float &value, float minValue, float maxValue) {
+    QSlider* slider, QLineEdit* textbox, float& value, float minValue, float maxValue)
+{
     // Bind the slider, the textbox, and the value together
-    FloatBinding *binding = new FloatBinding(value);
+    FloatBinding* binding = new FloatBinding(value);
     connect(slider, SIGNAL(valueChanged(int)), binding, SLOT(intChanged(int)));
     connect(slider, SIGNAL(sliderMoved(int)), binding, SLOT(intChanged(int)));
     connect(textbox, SIGNAL(textChanged(QString)), binding, SLOT(stringChanged(QString)));
@@ -135,9 +143,10 @@ FloatBinding* FloatBinding::bindSliderAndTextbox(
 }
 
 FloatBinding* FloatBinding::bindDial(
-        QDial *dial, float &value, float minValue, float maxValue, bool wrappingExtendsRange) {
+    QDial* dial, float& value, float minValue, float maxValue, bool wrappingExtendsRange)
+{
     // Bind the dial and the value together
-    FloatBinding *binding = new FloatBinding(value);
+    FloatBinding* binding = new FloatBinding(value);
     connect(dial, SIGNAL(valueChanged(int)), binding, SLOT(intChanged(int)));
 
     // Store state for computing dial wrapping
@@ -153,7 +162,8 @@ FloatBinding* FloatBinding::bindDial(
     return binding;
 }
 
-void FloatBinding::intChanged(int newValue) {
+void FloatBinding::intChanged(int newValue)
+{
     float REALValue = mapValue(newValue);
 
     if (m_wrappingExtendsRange) {
@@ -181,7 +191,8 @@ void FloatBinding::intChanged(int newValue) {
     }
 }
 
-void FloatBinding::stringChanged(QString newValue) {
+void FloatBinding::stringChanged(QString newValue)
+{
     float REALValue = newValue.toFloat();
     if (m_value - m_offset != REALValue) {
         m_value = REALValue + m_offset;
@@ -194,9 +205,10 @@ void FloatBinding::stringChanged(QString newValue) {
 // class BoolBinding
 ////////////////////////////////////////////////////////////////////////////////
 
-BoolBinding* BoolBinding::bindCheckbox(QCheckBox *checkbox, bool &value) {
+BoolBinding* BoolBinding::bindCheckbox(QCheckBox* checkbox, bool& value)
+{
     // Bind the checkbox and the value together
-    BoolBinding *binding = new BoolBinding(value);
+    BoolBinding* binding = new BoolBinding(value);
     connect(checkbox, SIGNAL(toggled(bool)), binding, SLOT(boolChanged(bool)));
 
     // Set the initial value
@@ -205,9 +217,10 @@ BoolBinding* BoolBinding::bindCheckbox(QCheckBox *checkbox, bool &value) {
     return binding;
 }
 
-BoolBinding* BoolBinding::bindDock(QDockWidget *dock, bool &value) {
+BoolBinding* BoolBinding::bindDock(QDockWidget* dock, bool& value)
+{
     // Bind the checkbox and the value together
-    BoolBinding *binding = new BoolBinding(value);
+    BoolBinding* binding = new BoolBinding(value);
     connect(dock, SIGNAL(visibilityChanged(bool)), binding, SLOT(boolChanged(bool)));
 
     // Set the initial value
@@ -216,7 +229,8 @@ BoolBinding* BoolBinding::bindDock(QDockWidget *dock, bool &value) {
     return binding;
 }
 
-void BoolBinding::boolChanged(bool newValue) {
+void BoolBinding::boolChanged(bool newValue)
+{
     m_value = newValue;
     emit dataChanged();
 }
@@ -226,16 +240,17 @@ void BoolBinding::boolChanged(bool newValue) {
 ////////////////////////////////////////////////////////////////////////////////
 
 ChoiceBinding* ChoiceBinding::bindRadioButtons(
-        QButtonGroup *buttonGroup, int numRadioButtons, int &value, ...) {
+    QButtonGroup* buttonGroup, int numRadioButtons, int& value, ...)
+{
     // Adjust button group from the variable argument list following initialValue
     va_list args;
     va_start(args, value);
     for (int id = 0; id < numRadioButtons; id++)
-        buttonGroup->addButton(va_arg(args, QRadioButton *), id);
+        buttonGroup->addButton(va_arg(args, QRadioButton*), id);
     va_end(args);
 
     // Bind the button group and the value together
-    ChoiceBinding *binding = new ChoiceBinding(value);
+    ChoiceBinding* binding = new ChoiceBinding(value);
     connect(buttonGroup, SIGNAL(buttonClicked(int)), binding, SLOT(intChanged(int)));
 
     // Set the initial value
@@ -245,9 +260,10 @@ ChoiceBinding* ChoiceBinding::bindRadioButtons(
     return binding;
 }
 
-ChoiceBinding* ChoiceBinding::bindTabs(QTabWidget *tabs, int &value) {
+ChoiceBinding* ChoiceBinding::bindTabs(QTabWidget* tabs, int& value)
+{
     // Bind the tabs and the value together
-    ChoiceBinding *binding = new ChoiceBinding(value);
+    ChoiceBinding* binding = new ChoiceBinding(value);
     connect(tabs, SIGNAL(currentChanged(int)), binding, SLOT(intChanged(int)));
 
     // Set the initial value
@@ -257,7 +273,8 @@ ChoiceBinding* ChoiceBinding::bindTabs(QTabWidget *tabs, int &value) {
     return binding;
 }
 
-void ChoiceBinding::intChanged(int newValue) {
+void ChoiceBinding::intChanged(int newValue)
+{
     m_value = newValue;
     emit dataChanged();
 }

@@ -2,18 +2,17 @@
 #define SCENEOBJECTMATERIAL_H
 
 #include "../lib/CS123SceneData.h"
-#include <gl/textures/Texture2D.h>
-#include "gl/textures/TextureParametersBuilder.h"
 #include "gl/textures/TextureParameters.h"
-#include <memory>
+#include "gl/textures/TextureParametersBuilder.h"
 #include <QImage>
+#include <gl/textures/Texture2D.h>
+#include <memory>
 
 class RGBA;
 class SceneObject;
 typedef CS123SceneMaterial Material;
 
-class SceneObjectMaterial
-{
+class SceneObjectMaterial {
 public:
     SceneObjectMaterial();
     SceneObjectMaterial(SceneObject* parent, const Material& m);
@@ -24,15 +23,14 @@ public:
 
     Material& getMaterial();
 
+    QImage& getTexture();
+    void setMaterial(Material& material);
 
-   QImage& getTexture();
-   void setMaterial(Material& material);
+    int textureWidth();
+    int textureHeight();
 
-   int textureWidth();
-   int textureHeight();
-
-   glm::vec4 getTextureColor(const glm::vec2& position);
-   RGBA getTextelAt(int s, int t );
+    glm::vec4 getTextureColor(const glm::vec2& position);
+    RGBA getTextelAt(int s, int t);
 
 private:
     Material m_material;
@@ -40,7 +38,7 @@ private:
     int m_textureHeight;
     int m_textureWidth;
     SceneObject* m_objectParent;
-    RGBA * data;
+    RGBA* data;
 };
 
 #endif // SCENEOBJECTMATERIAL_H

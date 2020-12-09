@@ -5,14 +5,15 @@
 
 #include <memory>
 
-
-namespace CS123 { namespace GL {
+namespace CS123 {
+namespace GL {
 
     class Shader;
     class CS123Shader;
     class Texture2D;
     class FBO;
-}}
+}
+}
 using namespace CS123::GL;
 /**
  *
@@ -35,11 +36,10 @@ public:
     virtual ~SceneviewScene();
 
     virtual void render(Camera*) override;
-    void renderNormalsPass ();
+    void renderNormalsPass();
     void renderGeometryAsWireframe();
-    void renderSceneViewObjects( const std::vector<SceneObject*>& s);
-    void renderDepthSceneViewObjects( const std::vector<SceneObject*>& s);
-
+    void renderSceneViewObjects(const std::vector<SceneObject*>& s);
+    void renderDepthSceneViewObjects(const std::vector<SceneObject*>& s);
 
     void renderGeometryAsFilledPolygons();
     virtual void settingsChanged() override;
@@ -75,8 +75,8 @@ private:
     void loadNormalsShader();
     void loadNormalsArrowShader();
 
-    void setSceneUniforms(Camera& );
-    void setMatrixUniforms(CS123::GL::Shader *shader,Camera&);
+    void setSceneUniforms(Camera&);
+    void setMatrixUniforms(CS123::GL::Shader* shader, Camera&);
     void setLights();
     void renderGeometry();
 

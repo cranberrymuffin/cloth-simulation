@@ -1,17 +1,17 @@
 #ifndef DATABINDING_H
 #define DATABINDING_H
 
-#include <QObject>
-#include <QVariant>
-#include <QSlider>
-#include <QLineEdit>
-#include <QCheckBox>
 #include <QButtonGroup>
-#include <QRadioButton>
-#include <QDockWidget>
-#include <QTabWidget>
+#include <QCheckBox>
 #include <QDial>
+#include <QDockWidget>
+#include <QLineEdit>
+#include <QObject>
 #include <QPushButton>
+#include <QRadioButton>
+#include <QSlider>
+#include <QTabWidget>
+#include <QVariant>
 
 /**
  * @class DataBinding
@@ -24,12 +24,14 @@ class DataBinding : public QObject {
     Q_OBJECT
 
 public:
-    DataBinding(QObject *parent = 0) : QObject(parent) {}
-    virtual ~DataBinding() {}
+    DataBinding(QObject* parent = 0)
+        : QObject(parent)
+    {
+    }
+    virtual ~DataBinding() { }
 
 signals:
     void dataChanged();
-
 };
 
 /**
@@ -42,12 +44,12 @@ signals:
 class IntBinding : public DataBinding {
     Q_OBJECT
 public:
-    virtual ~IntBinding() {}
+    virtual ~IntBinding() { }
 
     static IntBinding* bindSliderAndTextbox(
-        QSlider *slider, QLineEdit *textbox, int &value, int minValue, int maxValue);
+        QSlider* slider, QLineEdit* textbox, int& value, int minValue, int maxValue);
 
-    static IntBinding* bindTextbox(QLineEdit *textbox, int &value);
+    static IntBinding* bindTextbox(QLineEdit* textbox, int& value);
 
 private slots:
     void intChanged(int newValue);
@@ -58,14 +60,16 @@ signals:
     void updateString(QString newValue);
 
 private:
-    IntBinding(int &value) : DataBinding(), m_value(value) {}
+    IntBinding(int& value)
+        : DataBinding()
+        , m_value(value)
+    {
+    }
 
-    static void connectToSliders(IntBinding* binding, QSlider *slider, QLineEdit *textbox);
-    static void setWidgetValues(QSlider *slider, QLineEdit *textbox, int value, int minValue, int maxValue);
-    int &m_value;
+    static void connectToSliders(IntBinding* binding, QSlider* slider, QLineEdit* textbox);
+    static void setWidgetValues(QSlider* slider, QLineEdit* textbox, int value, int minValue, int maxValue);
+    int& m_value;
 };
-
-
 
 /**
  * @class UCharBinding
@@ -77,12 +81,12 @@ private:
 class UCharBinding : public DataBinding {
     Q_OBJECT
 public:
-    virtual ~UCharBinding() {}
+    virtual ~UCharBinding() { }
 
     static UCharBinding* bindSliderAndTextbox(
-        QSlider *slider, QLineEdit *textbox, unsigned char &value, int minValue, int maxValue);
+        QSlider* slider, QLineEdit* textbox, unsigned char& value, int minValue, int maxValue);
 
-    static UCharBinding* bindTextbox(QLineEdit *textbox, unsigned char &value);
+    static UCharBinding* bindTextbox(QLineEdit* textbox, unsigned char& value);
 
 private slots:
     void ucharChanged(int newValue);
@@ -93,13 +97,16 @@ signals:
     void updateString(QString newValue);
 
 private:
-    UCharBinding(unsigned char &value) : DataBinding(), m_value(value) {}
+    UCharBinding(unsigned char& value)
+        : DataBinding()
+        , m_value(value)
+    {
+    }
 
-    static void connectToSliders(IntBinding* binding, QSlider *slider, QLineEdit *textbox);
-    static void setWidgetValues(QSlider *slider, QLineEdit *textbox, unsigned char value, unsigned char minValue, unsigned char maxValue);
-    unsigned char &m_value;
+    static void connectToSliders(IntBinding* binding, QSlider* slider, QLineEdit* textbox);
+    static void setWidgetValues(QSlider* slider, QLineEdit* textbox, unsigned char value, unsigned char minValue, unsigned char maxValue);
+    unsigned char& m_value;
 };
-
 
 /**
  *
@@ -112,12 +119,12 @@ private:
 class FloatBinding : public DataBinding {
     Q_OBJECT
 public:
-    virtual ~FloatBinding() {}
+    virtual ~FloatBinding() { }
 
     static FloatBinding* bindSliderAndTextbox(
-         QSlider *slider, QLineEdit *textbox, float &value, float minValue, float maxValue);
+        QSlider* slider, QLineEdit* textbox, float& value, float minValue, float maxValue);
     static FloatBinding* bindDial(
-         QDial *dial, float &value, float minValue, float maxValue, bool wrappingExtendsRange);
+        QDial* dial, float& value, float minValue, float maxValue, bool wrappingExtendsRange);
 
 private slots:
     void intChanged(int newValue);
@@ -128,13 +135,15 @@ signals:
     void updateString(QString newValue);
 
 private:
-    FloatBinding(float &value) :
-        DataBinding(),
-        m_value(value),
-        m_maxValue(0),
-        m_minValue(0),
-        m_offset(0),
-        m_wrappingExtendsRange(false) {}
+    FloatBinding(float& value)
+        : DataBinding()
+        , m_value(value)
+        , m_maxValue(0)
+        , m_minValue(0)
+        , m_offset(0)
+        , m_wrappingExtendsRange(false)
+    {
+    }
 
     float &m_value, m_maxValue, m_minValue, m_offset;
     bool m_wrappingExtendsRange;
@@ -149,18 +158,22 @@ private:
 class BoolBinding : public DataBinding {
     Q_OBJECT
 public:
-    virtual ~BoolBinding() {}
+    virtual ~BoolBinding() { }
 
-    static BoolBinding* bindCheckbox(QCheckBox *checkbox, bool &value);
-    static BoolBinding* bindDock(QDockWidget *dock, bool &value);
+    static BoolBinding* bindCheckbox(QCheckBox* checkbox, bool& value);
+    static BoolBinding* bindDock(QDockWidget* dock, bool& value);
 
 private slots:
     void boolChanged(bool newValue);
 
 private:
-    BoolBinding(bool &value) : DataBinding(), m_value(value) {}
+    BoolBinding(bool& value)
+        : DataBinding()
+        , m_value(value)
+    {
+    }
 
-    bool &m_value;
+    bool& m_value;
 };
 
 /**
@@ -173,19 +186,23 @@ private:
 class ChoiceBinding : public DataBinding {
     Q_OBJECT
 public:
-    virtual ~ChoiceBinding() {}
+    virtual ~ChoiceBinding() { }
 
     static ChoiceBinding* bindRadioButtons(
-            QButtonGroup *buttonGroup, int numRadioButtons, int &value, ...);
-    static ChoiceBinding* bindTabs(QTabWidget *tabs, int &value);
+        QButtonGroup* buttonGroup, int numRadioButtons, int& value, ...);
+    static ChoiceBinding* bindTabs(QTabWidget* tabs, int& value);
 
 private slots:
     void intChanged(int newValue);
 
 private:
-    ChoiceBinding(int &value) : DataBinding(), m_value(value) {}
+    ChoiceBinding(int& value)
+        : DataBinding()
+        , m_value(value)
+    {
+    }
 
-    int &m_value;
+    int& m_value;
 };
 
 #endif // DATABINDING_H

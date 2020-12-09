@@ -8,7 +8,8 @@ OpenGLScene::~OpenGLScene()
 {
 }
 
-void OpenGLScene::setClearColor() {
+void OpenGLScene::setClearColor()
+{
     if (settings.drawWireframe || settings.drawNormals) {
         glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
     } else {
@@ -16,6 +17,6 @@ void OpenGLScene::setClearColor() {
     }
 }
 
-void OpenGLScene::settingsChanged() {
-
+void OpenGLScene::settingsChanged()
+{
 }

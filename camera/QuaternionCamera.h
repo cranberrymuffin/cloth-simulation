@@ -5,7 +5,6 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-
 /**
  * @class Quaternion Camera
  *
@@ -20,12 +19,17 @@
 class QuaternionCamera : public Camera {
 
 public:
-    QuaternionCamera() : m_heightAngle(60), m_aspectRatio(1), m_near(1), m_far(30) {
+    QuaternionCamera()
+        : m_heightAngle(60)
+        , m_aspectRatio(1)
+        , m_near(1)
+        , m_far(30)
+    {
         orientLook(glm::vec4(2.f, 2.f, 2.f, 0.f),
-                   glm::vec4(-2.f, -2.f, -2.f, 0.f),
-                   glm::vec4(0.f, 1.f, 0.f, 0.f));
+            glm::vec4(-2.f, -2.f, -2.f, 0.f),
+            glm::vec4(0.f, 1.f, 0.f, 0.f));
     }
-    ~QuaternionCamera() {}
+    ~QuaternionCamera() { }
 
     virtual glm::mat4x4 getProjectionMatrix() const;
     virtual glm::mat4x4 getViewMatrix() const;
@@ -38,12 +42,12 @@ public:
     float getAspectRatio() const;
     float getHeightAngle() const;
 
-    void orientLook(const glm::vec4 &eye, const glm::vec4 &look, const glm::vec4 &up);
+    void orientLook(const glm::vec4& eye, const glm::vec4& look, const glm::vec4& up);
 
     void setHeightAngle(float h);
     void setAspectRatio(float a);
-    void translate(const glm::vec4 &v);
-    void rotate(float degrees, const glm::vec3 &v);
+    void translate(const glm::vec4& v);
+    void rotate(float degrees, const glm::vec3& v);
     void rotateU(float degrees);
     void rotateV(float degrees);
     void rotateW(float degrees);

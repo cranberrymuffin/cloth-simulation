@@ -23,7 +23,6 @@ public:
     virtual void render(Camera*) = 0;
 
 protected:
-
     void setClearColor();
 };
 
