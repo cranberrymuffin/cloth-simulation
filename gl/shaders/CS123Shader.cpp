@@ -29,13 +29,29 @@ glm::vec3 toGLMVec3(const CS123SceneColor &c) {
 
 void CS123Shader::applyMaterial(const CS123SceneMaterial &material) {
     checkError();
-    setUniform("ambient_color", toGLMVec3(material.cAmbient));
+    int lc = glGetUniformLocation(getID(),"ambient_color");
+    std::cout << lc << std::endl;
+    glm::vec3 ca = toGLMVec3(material.cAmbient);
+    glUniform3fv(lc, 1, glm::value_ptr(ca));
+
+    //setUniform("ambient_color", toGLMVec3(material.cAmbient));
     checkError();
-    setUniform("diffuse_color", toGLMVec3(material.cDiffuse));
+     lc = glGetUniformLocation(getID(),"diffuse_color");
+     std::cout << lc << std::endl;
+     glm::vec3 cd = toGLMVec3(material.cDiffuse);
+     glUniform3fv(lc, 1, glm::value_ptr(cd));
+ //  setUniform("diffuse_color", toGLMVec3(material.cDiffuse));
     checkError();
-    setUniform("specular_color", toGLMVec3(material.cSpecular));
+    lc = glGetUniformLocation(getID(),"specular_color");
+    std::cout << lc << std::endl;
+    glm::vec3 ce = toGLMVec3(material.cSpecular);
+    glUniform3fv(lc, 1, glm::value_ptr(ce));
+   //setUniform("specular_color", toGLMVec3(material.cSpecular));
     checkError();
-    setUniform("shininess", material.shininess);
+    lc = glGetUniformLocation(getID(),"shininess");
+    std::cout << lc << std::endl;
+    glUniform1f(lc,  material.shininess);
+    //setUniform("shininess", material.shininess);
     checkError();
 }
 
@@ -50,7 +66,7 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
             lightType = 0;
             name = "lightPositions";
             setUniformArrayByIndex(name, light.pos.xyz(), light.id);
-            std::cout<<"CS123Shader::setLight 0" << std::endl;
+            //std::cout<<"CS123Shader::setLight 0" << std::endl;
             checkError();
            // if (!settings.usePointLights) ignoreLight = true;
             break;
@@ -71,9 +87,11 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
    // if (ignoreLight) color.r = color.g = color.b = 0;
     std::cout<<"CS123Shader::setLight 1" << std::endl;
     checkError();
-    setUniformArrayByIndex("lightTypes", lightType, light.id);
+    //setUniformArrayByIndex("lightTypes", lightType, light.id);
     std::cout<<"CS123Shader::setLight 2" << std::endl;
     checkError();
+    //GLint l = glGetUniformLocation(getID(),"mylightColor");
+    //glUniform3fv(l, 1, glm::value_ptr(glm::vec3(color.r, color.g,color.b)));
     setUniformArrayByIndex("lightColors", glm::vec3(color.r, color.g, color.b), light.id);
     std::cout<<"CS123Shader::setLight 3" << std::endl;
     checkError();

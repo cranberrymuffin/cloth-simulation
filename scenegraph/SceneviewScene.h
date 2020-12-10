@@ -41,6 +41,8 @@ public:
     void renderDepthSceneViewObjects( const std::vector<SceneObject*>& s);
 
 
+
+
     void renderGeometryAsFilledPolygons();
     virtual void settingsChanged() override;
 
@@ -82,6 +84,8 @@ private:
     void setLights();
     void renderGeometry();
 
+    glm::mat4 buildProjectorMatrices();
+
     std::unique_ptr<Camera> m_camera;
 
     std::unique_ptr<CS123::GL::CS123Shader> m_phongShader;
@@ -108,6 +112,13 @@ private:
 
     unsigned int quadVAO = 0;
     unsigned int quadVBO;
+
+    glm::mat4 projectiveTextureMatrix;
+
+    std::unique_ptr<CS123::GL::Texture2D> prjtexture;
+    unsigned int pjTextId;
+
+
 };
 
 #endif // SCENEVIEWSCENE_H

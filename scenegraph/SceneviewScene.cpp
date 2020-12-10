@@ -14,6 +14,8 @@
 #include "shapes/Sphere.h"
 #include "scenegraph/Shapebuilder.h"
 #include "gl/datatype/FBO.h"
+#include "glm/gtc/type_ptr.hpp"
+#include <gtc/matrix_access.hpp>
 
 using namespace CS123::GL;
 
@@ -100,8 +102,26 @@ SceneviewScene::SceneviewScene()
 
     builPointLigthObject();
 
+   QImage image = QImage("D:\\cs1230\\data\\image\\brown-university.png");
+   image = image.convertToFormat(QImage::Format_RGBX8888);
+   QImage fImage = QGLWidget::convertToGLFormat(image);
 
+   //prjtexture =  std::make_unique<CS123::GL::Texture2D>(fImage.bits(), fImage.width(), fImage.height());
 
+   glGenTextures(1, &pjTextId);
+   glBindTexture(GL_TEXTURE_2D, pjTextId);
+   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fImage.width(),  fImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, fImage.bits());
+
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+//   CS123::GL::TextureParametersBuilder builder;
+//   builder.setFilter(CS123::GL::TextureParameters::FILTER_METHOD::LINEAR);
+//   builder.setWrap(CS123::GL::TextureParameters::WRAP_METHOD::REPEAT);
+//   CS123::GL::TextureParameters parameters = builder.build();
+//   parameters.applyTo(*prjtexture.get());
 }
 
 SceneviewScene::~SceneviewScene()
@@ -161,13 +181,13 @@ void SceneviewScene::render(Camera* camera) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-   // renderQuad();
+  //  renderQuad();
    // checkError();
 
     m_phongShader->bind();
     std::cout<<"SceneviewScene::render 0" << std::endl;
     checkError();
-    setSceneUniforms(*camera);
+    setSceneUniforms    (*camera);
     std::cout<<"SceneviewScene::render 1" << std::endl;
     checkError();
     setLights();
@@ -222,10 +242,21 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
         checkError();
          m_phongShader->setUniform("m",sceneObject->getToWorldMatrix());
 
+         glm::mat3x3 normalMatrix;
+         normalMatrix = glm::column(normalMatrix, 0, glm::vec3(sceneObject->getToWorldMatrix()[0][0], sceneObject->getToWorldMatrix()[0][1], sceneObject->getToWorldMatrix()[0][2]));
+         normalMatrix = glm::column(normalMatrix, 1, glm::vec3(sceneObject->getToWorldMatrix()[1][0], sceneObject->getToWorldMatrix()[1][1], sceneObject->getToWorldMatrix()[1][2]));
+         normalMatrix = glm::column(normalMatrix, 2, glm::vec3(sceneObject->getToWorldMatrix()[2][0], sceneObject->getToWorldMatrix()[2][1], sceneObject->getToWorldMatrix()[2][2]));
+
+         normalMatrix = glm::transpose(glm::inverse(normalMatrix));
+         m_phongShader->setUniform("normalMatrix",normalMatrix);
+         checkError();
         //std::cout << "SceneviewScene::renderSceneViewObjects 2" << std::endl;
-        checkError();
+
          Material m =sceneObject->getMaterial() ;
          m.cDiffuse *= m_globalData.kd;
+       //  std::cout << m.cDiffuse.r << std::endl;
+       //  std::cout << m.cDiffuse.g << std::endl;
+      //   std::cout << m.cDiffuse.b << std::endl;
          m.cAmbient *= m_globalData.ka;
          m_phongShader->applyMaterial(m);
 
@@ -234,17 +265,45 @@ void SceneviewScene::renderSceneViewObjects( const std::vector<SceneObject*> &s)
             sceneObject->binTexture();
          }
         checkError();
+        //GLint location= -1;
+     //   GLint location = glGetUniformLocation(m_phongShader->getID(),"lightSpaceMatrix");
+     //   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+////       checkError();
          m_phongShader->setUniform("lightSpaceMatrix",lightSpaceMatrix);
-
          checkError();
+
+//        GLint l = glGetUniformLocation(m_phongShader->getID(),"mylightColor");
+//        checkError();
+//        glUniform3fv(l, 1, glm::value_ptr(glm::vec3(1.0,1.0,1.0)));
+//        checkError();
+//         checkError();
          GLint location = glGetUniformLocation(m_phongShader->getID(),"shadowMap");
          //std::cout << location << std::endl;
-         //m_phongShader->setUniform("shadowMap", 1);
-          glUniform1i(location, 1);
-           checkError();
+         m_phongShader->setUniform("shadowMap", 1);
+         glUniform1i(location, 1);
+         checkError();
          glActiveTexture(GL_TEXTURE1);
          checkError();
          glBindTexture(GL_TEXTURE_2D, depthMap);
+
+//        checkError();
+
+          projectiveTextureMatrix = buildProjectorMatrices();
+          m_phongShader->setUniform("textureMatrix",projectiveTextureMatrix);
+          checkError();
+          m_phongShader->setUniform("texProj", 2);
+          glActiveTexture(GL_TEXTURE2);
+          glBindTexture(GL_TEXTURE_2D, pjTextId);
+          checkError();
+//        GLint locationt = glGetUniformLocation(m_phongShader->getID(),"texProj");
+//         //std::cout << location << std::endl;
+
+
+
+//         m_phongShader->setUniform("shadowMap", 1);
+//         glUniform1i(locationt,2);
+//         checkError();
+
 
         // std::cout << "SceneviewScene::renderSceneViewObjects 3" << std::endl;
         checkError();
@@ -294,9 +353,15 @@ void SceneviewScene::setLights()
     // Set up the lighting for your scene using m_phongShader.
     // The lighting information will most likely be stored in CS123SceneLightData structures.
     //
+//    GLint l = glGetUniformLocation(m_phongShader->getID(),"lightColors[0]");
+//    checkError();
+//    glUniform3fv(l, 1, glm::value_ptr(glm::vec3(0.5,0.1,0.0)));
+//    checkError();
+
     for(size_t i = 0; i< m_lights.size();i++)
     {
       m_phongShader->setLight(m_lights[i]);
+      checkError();
     }
 
 
@@ -319,6 +384,27 @@ void SceneviewScene::renderGeometry() {
     //
     renderSceneViewObjects(m_sceneObjects);
 
+}
+
+glm::mat4 SceneviewScene::buildProjectorMatrices()
+{
+    glm::vec3 projectorPosition = m_pointLight.pos.xyz() + glm::vec3(0.0,0.5,0.0);
+    glm::mat4 projectorViewMatrix = glm::lookAt(projectorPosition,
+            glm::vec3(0.0,0.0,0.0), glm::vec3(0.0,1.0,0.0));
+    glm::mat4 projectorProjectionMatrix = glm::perspective(glm::radians(30.0f)
+                                                           , 1.0f, 0.2f, 1000.0f);
+
+    glm::mat4 scaleBiasMatrix = glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0.5, 0.5, 0.5)), glm::vec3(0.5f));
+
+//    glm::mat4 scaleBiasMatrix =glm::mat4(0.5f, 0, 0, 0.5f,
+//                                         0, 0.5f, 0, 0.5f,
+//                                         0, 0, 0.5f, 0.5f,
+//                                         0, 0, 0, 1);
+
+    glm::mat4 projectorTransformMatrix = scaleBiasMatrix * projectorProjectionMatrix *
+            projectorViewMatrix;
+
+    return projectorTransformMatrix;
 }
 
 
@@ -477,18 +563,18 @@ void SceneviewScene::builScenePlane()
 void SceneviewScene::builPlaneCloth()
 {
     AddCloth();
-//    Material m;
-//    m.cDiffuse = glm::vec4(0.8,0.3,0.2,1.0);
-//    m.cAmbient = glm::vec4(0.25,0.25,0.25,1.0);
-//    m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
-//    m.shininess = 20;
+    Material m;
+    m.cDiffuse = glm::vec4(0.8,0.3,0.2,1.0);
+    m.cAmbient = glm::vec4(0.25,0.25,0.25,1.0);
+    m.cSpecular = glm::vec4(0.8,0.8,0.8,1.0);
+    m.shininess = 20;
 
 
-//    Shape* cube2Shape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
-//    SceneObject* sceneObj2 = new SceneObject(cube2Shape,PrimitiveType::PRIMITIVE_CUBE,m);
-//    glm::mat4x4 tr2 = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.1,0.1));
-//    sceneObj2->setWorldMatrix(tr2);
-//    m_sceneObjects.push_back(sceneObj2);
+    Shape* cube2Shape = ShapeBuilder::getInstance().LoadShape(PrimitiveType::PRIMITIVE_CUBE,8,8);
+    SceneObject* sceneObj2 = new SceneObject(cube2Shape,PrimitiveType::PRIMITIVE_CUBE,m);
+    glm::mat4x4 tr2 = glm::translate(glm::mat4x4(),glm::vec3(0.0,0.1,-1.1));
+    sceneObj2->setWorldMatrix(tr2);
+    m_sceneObjects.push_back(sceneObj2);
 
     Material m2;
     m2.cDiffuse = glm::vec4(0.5,0.4,0.5,1.0);
@@ -531,8 +617,8 @@ void SceneviewScene::renderPointLigthObject()
     //std::cout << "SceneviewScene::renderSceneViewObjects 2" << std::endl;
      checkError();
      Material m =m_ligthObject->getMaterial() ;
-     m.cDiffuse *= m_globalData.kd;
-     m.cAmbient *= m_globalData.ka;
+     //m.cDiffuse *= m_globalData.kd;
+     //m.cAmbient *= m_globalData.ka;
      m_phongShader->applyMaterial(m);
 
      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -565,7 +651,7 @@ void SceneviewScene::initShadowFBO()
 void SceneviewScene::initializeSceneLight()
 {
     m_globalData.kd =0.5;
-    m_globalData.ka =0.75;
+    m_globalData.ka =0.3;
     m_globalData.ks =0.5;
 
 //    CS123SceneLightData m_light;
@@ -579,7 +665,7 @@ void SceneviewScene::initializeSceneLight()
 
 
     m_pointLight.type = LightType::LIGHT_POINT;
-    m_pointLight.pos = glm::vec4(-10,-10,8.1,1.0);
+    m_pointLight.pos = glm::vec4(-2.0,-0,8.1,1.0);
     m_pointLight.color = glm::vec4(1.0,1.0,1.0,1.0);
     m_pointLight.id = 0;
 
