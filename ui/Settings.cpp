@@ -18,12 +18,12 @@
 
 Settings settings;
 
-
 /**
  * Loads the application settings, or, if no saved settings are available, loads default values for
  * the settings. You can change the defaults here.
  */
-void Settings::loadSettingsOrDefaults() {
+void Settings::loadSettingsOrDefaults()
+{
     // Set the default values below
     QSettings s("CS123", "CS123");
 
@@ -34,8 +34,8 @@ void Settings::loadSettingsOrDefaults() {
     brushColor.g = s.value("brushGreen", 255).toInt();
     brushColor.b = s.value("brushBlue", 0).toInt();
     brushColor.a = s.value("brushAlpha", 20).toInt();
-    textureIndex = s.value("textureIndex",0).toInt();
-    gaussianSigma = s.value("gaussianSigma",0.5).toInt();
+    textureIndex = s.value("textureIndex", 0).toInt();
+    gaussianSigma = s.value("gaussianSigma", 0.5).toInt();
 
     // Filter
     filterType = s.value("filterType", FILTER_EDGE_DETECT).toInt();
@@ -44,7 +44,7 @@ void Settings::loadSettingsOrDefaults() {
     scaleX = s.value("scaleX", 2).toDouble();
     scaleY = s.value("scaleY", 2).toDouble();
     rotateAngle = s.value("rotateAngle", 0).toInt();
-    scalefilterType = s.value("scaleType",0).toInt();
+    scalefilterType = s.value("scaleType", 0).toInt();
 
     // Shapes
     shapeType = s.value("shapeType", SHAPE_SPHERE).toInt();
@@ -74,9 +74,18 @@ void Settings::loadSettingsOrDefaults() {
     useDirectionalLights = s.value("useDirectionalLights", true).toBool();
     useSpotLights = s.value("useSpotLights", true).toBool();
     useKDTree = s.value("useKDTree", true).toBool();
-    lightDepth = s.value("lightDepth",1).toBool();
+    lightDepth = s.value("lightDepth", 1).toBool();
 
     currentTab = s.value("currentTab", TAB_2D).toBool();
+
+    // Cloth
+    particleMass = s.value("particleMass", 5.f).toDouble();
+    structural = s.value("structural", 25000.f).toDouble();
+    shear = s.value("shear", 25000.f).toDouble();
+    bend = s.value("bend", 25000.f).toDouble();
+    damping = s.value("damping", 0.5f).toDouble();
+    viscous = s.value("viscous", 0.5f).toDouble();
+    hasGravity = s.value("hasGravity", false).toBool();
 
     // These are for computing deltas and the values don't matter, so start all dials in the up
     // position
@@ -88,7 +97,8 @@ void Settings::loadSettingsOrDefaults() {
     cameraRotN = 0;
 }
 
-void Settings::saveSettings() {
+void Settings::saveSettings()
+{
     QSettings s("CS123", "CS123");
 
     // Brush
@@ -98,8 +108,8 @@ void Settings::saveSettings() {
     s.setValue("brushGreen", brushColor.g);
     s.setValue("brushBlue", brushColor.b);
     s.setValue("brushAlpha", brushColor.a);
-    s.setValue("textureIndex",textureIndex);
-    s.setValue("gaussianSigma",gaussianSigma);
+    s.setValue("textureIndex", textureIndex);
+    s.setValue("gaussianSigma", gaussianSigma);
 
     // Filter
     s.setValue("filterType", filterType);
@@ -108,7 +118,7 @@ void Settings::saveSettings() {
     s.setValue("scaleX", scaleX);
     s.setValue("scaleY", scaleY);
     s.setValue("rotateAngle", rotateAngle);
-    s.setValue("scalefilterType",scalefilterType);
+    s.setValue("scalefilterType", scalefilterType);
 
     // Shapes
     s.setValue("shapeType", shapeType);
@@ -138,19 +148,30 @@ void Settings::saveSettings() {
     s.setValue("useDirectionalLights", useDirectionalLights);
     s.setValue("useSpotLights", useSpotLights);
     s.setValue("useKDTree", useKDTree);
-    s.setValue("lightDepth",lightDepth);
+    s.setValue("lightDepth", lightDepth);
+
+    // Cloth
+    s.setValue("particleMass", particleMass);
+    s.setValue("structural", structural);
+    s.setValue("shear", shear);
+    s.setValue("bend", bend);
+    s.setValue("damping", damping);
+    s.setValue("viscous", viscous);
+    s.setValue("hasGravity", hasGravity);
 
     s.setValue("currentTab", currentTab);
 }
 
-int Settings::getSceneMode() {
+int Settings::getSceneMode()
+{
     if (this->useSceneviewScene)
         return SCENEMODE_SCENEVIEW;
     else
         return SCENEMODE_SHAPES;
 }
 
-int Settings::getCameraMode() {
+int Settings::getCameraMode()
+{
     if (this->useOrbitCamera)
         return CAMERAMODE_ORBIT;
     else

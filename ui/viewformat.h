@@ -9,11 +9,9 @@
  * reasons.
  ***/
 
-class ViewFormat : public QGLFormat
-{
+class ViewFormat : public QGLFormat {
 public:
     ViewFormat();
 };
-
 
 #endif // VIEWFORMAT_H

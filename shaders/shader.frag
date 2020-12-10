@@ -11,7 +11,7 @@ in vec3 fragPos;
 in vec3 fragNormal;
 
 
-//uniform sampler2D tex;
+uniform sampler2D tex;
 uniform sampler2D shadowMap;
 uniform sampler2D texProj;
 
@@ -31,6 +31,8 @@ uniform float shininess;
 uniform mat3 normalMatrix;
 
 uniform vec3 mylightColor;
+
+uniform int hasTexture;
 
 
 bool shadowCalculation(in vec4 fragpos)
@@ -57,29 +59,43 @@ bool shadowCalculation(in vec4 fragpos)
 
 void main() {
 
+
     vec3 normal = normalize( normalMatrix * fragNormal);
 
     float visibility = 1.0;
     bool inShadow = shadowCalculation(fragPosLightSpace);
+
+    vec4 textureColor =  texture(tex, texCoord);
+
 
     vec3 result = ambient_color;
      for (int i = 0; i < MAX_LIGHTS; i++) {
           vec4 vertexToLight = vec4(0);
           vertexToLight = normalize( vec4(lightPositions[i], 1.0) - vec4(fragPos,1.0));
           float diffuseIntensity = max(0.0, dot(vertexToLight.xyz, normal));
-          vec3 diffColor= max(vec3(0), lightColors[i] * diffuse_color * diffuseIntensity);
+
+          vec3 my_diffuse_color = diffuse_color;
+          if(hasTexture == 1)
+          {
+               my_diffuse_color = textureColor.rgb ;
+          }
+
+          vec3 diffColor= max(vec3(0), lightColors[i] * my_diffuse_color * diffuseIntensity);
 
           if(inShadow)
           {
             visibility = 0.25;
           }
-           result += ( diffColor *visibility) ;
+          result += ( diffColor *visibility) ;
 
-          vec4 lightReflection = normalize(-reflect(vertexToLight, vec4(normal,0.0)));
-          vec4 eyeDirection = normalize(vec4(lightPositions[i],1.0) - vec4(fragPos,1.0));
-          float specIntensity = pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
-          vec3 specularColor = (vec3(0), lightColors[i] * specular_color * specIntensity);
-         result += specularColor;
+
+
+
+//          vec4 lightReflection = normalize(-reflect(vertexToLight, vec4(normal,0.0)));
+//          vec4 eyeDirection = normalize(vec4(lightPositions[i],1.0) - vec4(fragPos,1.0));
+//          float specIntensity = pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
+//          vec3 specularColor = (vec3(0), lightColors[i] * specular_color * specIntensity);
+//         result += specularColor;
 
 
     }
@@ -96,6 +112,7 @@ void main() {
      {
          prjTextVisibility = 0.0;
      }
+
     fragColor = vec4(result,1.0) + textureColorProj * prjTextVisibility;// textureColorProj;
 
 

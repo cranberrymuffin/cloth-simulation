@@ -66,7 +66,6 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
             lightType = 0;
             name = "lightPositions";
             setUniformArrayByIndex(name, light.pos.xyz(), light.id);
-            //std::cout<<"CS123Shader::setLight 0" << std::endl;
             checkError();
            // if (!settings.usePointLights) ignoreLight = true;
             break;
@@ -85,7 +84,6 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
 
     CS123SceneColor color = light.color;
    // if (ignoreLight) color.r = color.g = color.b = 0;
-    std::cout<<"CS123Shader::setLight 1" << std::endl;
     checkError();
     //setUniformArrayByIndex("lightTypes", lightType, light.id);
     std::cout<<"CS123Shader::setLight 2" << std::endl;
@@ -93,7 +91,6 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
     //GLint l = glGetUniformLocation(getID(),"mylightColor");
     //glUniform3fv(l, 1, glm::value_ptr(glm::vec3(color.r, color.g,color.b)));
     setUniformArrayByIndex("lightColors", glm::vec3(color.r, color.g, color.b), light.id);
-    std::cout<<"CS123Shader::setLight 3" << std::endl;
     checkError();
 //    setUniformArrayByIndex("lightAttenuations", light.function, light.id);
 }

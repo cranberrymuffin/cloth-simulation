@@ -3,7 +3,6 @@
 
 #include "Camera.h"
 
-
 /**
  * @class CamtransCamera
  *.2
@@ -49,13 +48,13 @@ public:
 
     // Move this camera to a new eye position, and orient the camera's axes given look and up
     // vectors.
-    void orientLook(const glm::vec4 &eye, const glm::vec4 &look, const glm::vec4 &up);
+    void orientLook(const glm::vec4& eye, const glm::vec4& look, const glm::vec4& up);
 
     // Sets the height angle of this camera.
     void setHeightAngle(float h);
 
     // Translates the camera along a given vector.
-    void translate(const glm::vec4 &v);
+    void translate(const glm::vec4& v);
 
     // Rotates the camera about the U axis by a specified number of degrees.
     void rotateU(float degrees);
@@ -94,8 +93,6 @@ public:
     glm::vec4 getU() const;
     glm::vec4 getV() const;
     glm::vec4 getW() const;
-
-
 };
 
 #endif // CAMTRANSCAMERA_H

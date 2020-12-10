@@ -5,14 +5,15 @@
 
 #include <memory>
 
-
-namespace CS123 { namespace GL {
+namespace CS123 {
+namespace GL {
 
     class Shader;
     class CS123Shader;
     class Texture2D;
     class FBO;
-}}
+}
+}
 using namespace CS123::GL;
 /**
  *
@@ -35,11 +36,10 @@ public:
     virtual ~SceneviewScene();
 
     virtual void render(Camera*) override;
-    void renderNormalsPass ();
+    void renderNormalsPass();
     void renderGeometryAsWireframe();
-    void renderSceneViewObjects( const std::vector<SceneObject*>& s);
-    void renderDepthSceneViewObjects( const std::vector<SceneObject*>& s);
-
+    void renderSceneViewObjects(const std::vector<SceneObject*>& s);
+    void renderDepthSceneViewObjects(const std::vector<SceneObject*>& s);
 
 
 
@@ -51,8 +51,6 @@ public:
     void setSelection(int x, int y);
 
     void update(float deltaTime);
-
-
 
 private:
     void shadowPass();
@@ -72,15 +70,15 @@ private:
 
     void initializeSceneLight();
     void loadPhongShader();
-    void loadDepthgShader();
+    void loadDepthShader();
     void loadQuadShader();
 
     void loadWireframeShader();
     void loadNormalsShader();
     void loadNormalsArrowShader();
 
-    void setSceneUniforms(Camera& );
-    void setMatrixUniforms(CS123::GL::Shader *shader,Camera&);
+    void setSceneUniforms(Camera&);
+    void setMatrixUniforms(CS123::GL::Shader* shader, Camera&);
     void setLights();
     void renderGeometry();
 
@@ -89,12 +87,15 @@ private:
     std::unique_ptr<Camera> m_camera;
 
     std::unique_ptr<CS123::GL::CS123Shader> m_phongShader;
-    std::unique_ptr<CS123::GL::CS123Shader> m_depthshader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_depthShader;
     std::unique_ptr<CS123::GL::CS123Shader> m_quadShader;
 
     std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
+
+    unsigned int clothTexture;
+
     glm::mat4x4 m_lookat;
     glm::mat4x4 m_projection;
     SceneObject* m_cloth;

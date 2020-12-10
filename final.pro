@@ -25,8 +25,6 @@ SOURCES += ui/mainwindow.cpp \
     camera/CamtransCamera.cpp \
     camera/OrbitingCamera.cpp \
     camera/QuaternionCamera.cpp \
-    cloth/solver.cpp \
-    cloth/state.cpp \
     gl/GLDebug.cpp \
     gl/datatype/FBO.cpp \
     gl/datatype/IBO.cpp \
@@ -47,28 +45,20 @@ SOURCES += ui/mainwindow.cpp \
     lib/ResourceLoader.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
-    models/cube.cpp \
-    particle/Particle.cpp \
-    particle/particle.cpp \
-    scenegraph/DynamicSceneObject.cpp \
     scenegraph/OpenGLScene.cpp \
     scenegraph/Scene.cpp \
     scenegraph/SceneObject.cpp \
     scenegraph/SceneObjectMaterial.cpp \
     scenegraph/SceneviewScene.cpp \
     scenegraph/Shapebuilder.cpp \
-    shapes/Cap.cpp \
     shapes/Cloth.cpp \
     shapes/ClothParticle.cpp \
-    shapes/Cone.cpp \
-    shapes/Cylinder.cpp \
     shapes/LoadedShape.cpp \
     shapes/Plane.cpp \
-    shapes/PlaneShape.cpp \
     shapes/Shape.cpp \
     shapes/Sphere.cpp \
-    shapes/Surface.cpp \
     shapes/cubeshape.cpp \
+    ui/Databinding.cpp \
     ui/Settings.cpp \
     ui/SupportCanvas3D.cpp \
     ui/view.cpp \
@@ -79,8 +69,6 @@ HEADERS += ui/mainwindow.h \
     camera/CamtransCamera.h \
     camera/OrbitingCamera.h \
     camera/QuaternionCamera.h \
-    cloth/solver.h \
-    cloth/state.h \
     common/common.h \
     gl/GLDebug.h \
     gl/datatype/FBO.h \
@@ -103,29 +91,20 @@ HEADERS += ui/mainwindow.h \
     lib/CS123XmlSceneParser.h \
     lib/RGBA.h \
     lib/ResourceLoader.h \
-    models/cube.h \
-    particle/Particle.h \
-    particle/particle.h \
-    scenegraph/DynamicSceneObject.h \
     scenegraph/OpenGLScene.h \
     scenegraph/Scene.h \
     scenegraph/SceneObject.h \
     scenegraph/SceneObjectMaterial.h \
     scenegraph/SceneviewScene.h \
     scenegraph/Shapebuilder.h \
-    shapes/Cap.h \
     shapes/Cloth.h \
     shapes/ClothParticle.h \
-    shapes/Cone.h \
-    shapes/Cylinder.h \
     shapes/LoadedShape.h \
     shapes/Plane.h \
-    shapes/PlaneShape.h \
     shapes/Shape.h \
     shapes/Sphere.h \
-    shapes/Surface.h \
-    shapes/cubeshape.h \
     tinyobjloader/tiny_obj_loader.h \
+    ui/Databinding.h \
     ui/Settings.h \
     ui/SupportCanvas3D.h \
     ui_mainwindow.h \
@@ -168,6 +147,8 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
+    images/brown-university.png \
+    images/fur1.jpg \
     resources/models/cornell_box.mtl \
     resources/models/cube.mtl \
     shaders/depth.frag \

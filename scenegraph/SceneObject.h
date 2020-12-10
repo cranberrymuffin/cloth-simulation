@@ -1,18 +1,15 @@
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 
-#include "../shapes/Shape.h"
-#include <memory>
 #include "../lib/CS123SceneData.h"
+#include "../shapes/Shape.h"
 #include "SceneObjectMaterial.h"
+#include <memory>
 
-
-class SceneObject
-{
+class SceneObject {
 public:
     SceneObject();
-    SceneObject(Shape* shape, PrimitiveType,Material&);
-
+    SceneObject(Shape* shape, PrimitiveType, Material&);
 
     SceneObject(SceneObject&);
     ~SceneObject();
@@ -22,7 +19,7 @@ public:
     void setScale(Transformation scale);
     void setMaterial(Material scale);
     void setPrimitiveType(PrimitiveType primitiveType);
-
+    void settingsChanged();
     Transformation& getPosition() const;
     Transformation& getOrientation() const;
     Transformation& getScale() const;
@@ -44,48 +41,33 @@ public:
     const glm::mat4x4 getToWorldMatrix();
     const glm::mat4x4& getLocalMatrix();
 
-//    glm::vec4 getPointWorldIntersection( HitPoint& h);
-//    glm::vec4 getNormalWorldIntersection( glm::vec4& point);
-//    void getPointWorldIntersection( HitPoint& h,glm::vec4& point,glm::vec4& normal);
-    //void getWorldIntersection(HitPoint& h, glm::vec4& point, glm::vec4& normal);
-
     void setShape(Shape* shape);
     Shape& getShape();
 
-
     virtual void step(float deltaT);
-
 
     SceneObjectMaterial& getObjectMaterial();
 
+    bool hasTexture();
 
-
+    bool setHasTexture(bool hastext);
 
 protected:
-
     void updateBBV();
 
-    Shape*  m_Shape;
-
-
+    Shape* m_Shape;
 
     Transformation m_localTransformation;
     Transformation m_parenTransformation;
 
-
     PrimitiveType m_type;
-
-
 
     SceneObjectMaterial m_Material;
 
     Transformation* m_parent;
     std::vector<SceneObject*> children;
 
-
-
-    //std::vector<float> bbv_vertices;
-
+    bool m_hasTexture;
 };
 
 #endif // SCENEOBJECT_H

@@ -1,15 +1,14 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "SceneObject.h"
 #include "lib/CS123SceneData.h"
-#include <memory>
 #include "shapes/Shape.h"
 #include <map>
-#include "SceneObject.h"
+#include <memory>
 
 class Camera;
 class CS123ISceneParser;
-
 
 /**
  * @class Scene
@@ -24,63 +23,55 @@ typedef CS123ScenePrimitive Primitive;
 typedef CS123SceneGlobalData GlobalData;
 typedef CS123SceneNode SceneNode;
 
-
 class Scene {
 public:
     Scene();
-    Scene(Scene &scene);
+    Scene(Scene& scene);
     virtual ~Scene();
 
-    virtual void settingsChanged() {}
+    virtual void settingsChanged() { }
 
-    static void parse(Scene *sceneToFill, CS123ISceneParser *parser);
+    static void parse(Scene* sceneToFill, CS123ISceneParser* parser);
 
-    virtual void update(float deltaTime){};
+    virtual void update(float deltaTime) {};
 
     int m_height;
     int m_width;
     float m_aspect;
 
 protected:
-
     // Adds a primitive to the scene.
-    virtual void addPrimitive(const CS123ScenePrimitive &scenePrimitive, const glm::mat4x4 &l_matrix, const glm::mat4x4 &w_matrix);
+    virtual void addPrimitive(const CS123ScenePrimitive& scenePrimitive, const glm::mat4x4& l_matrix, const glm::mat4x4& w_matrix);
 
     // Adds a light to the scene.
-    virtual void addLight(const CS123SceneLightData &sceneLight);
+    virtual void addLight(const CS123SceneLightData& sceneLight);
 
     // Sets the global data for the scene.
-    virtual void setGlobal(const CS123SceneGlobalData &global);
+    virtual void setGlobal(const CS123SceneGlobalData& global);
 
-
-    void addSceneObject(Shape *shape,PrimitiveType type,Material material,
-                                         const glm::mat4x4 &l_matrix,
-                                         const glm::mat4x4 &w_matrix);
+    void addSceneObject(Shape* shape, PrimitiveType type, Material material,
+        const glm::mat4x4& l_matrix,
+        const glm::mat4x4& w_matrix);
 
     void loadMeshfile(const std::string& meshFile,
-                      PrimitiveType,Material,const glm::mat4x4 &l_matrix,
-                      const glm::mat4x4 &w_matrix);
+        PrimitiveType, Material, const glm::mat4x4& l_matrix,
+        const glm::mat4x4& w_matrix);
 
-   std::map<PrimitiveType,Shape*> m_shapes;
+    std::map<PrimitiveType, Shape*> m_shapes;
 
-   std::vector<SceneObject*> m_sceneObjects;
-   std::vector<LightData> m_lights;
+    std::vector<SceneObject*> m_sceneObjects;
+    std::vector<LightData> m_lights;
 
-   CS123SceneGlobalData m_globalData;
+    CS123SceneGlobalData m_globalData;
 
+    std::vector<SceneObject*> m_kdtree;
 
-   std::vector<SceneObject*> m_kdtree;
+    void createKdTree();
 
-
-
-   void createKdTree();
-
-
-   bool m_enableKdtree;
+    bool m_enableKdtree;
 
 private:
-   void traverseSceneGraph(Scene * sceneToFill , SceneNode* node, glm::mat4 parent);
-
+    void traverseSceneGraph(Scene* sceneToFill, SceneNode* node, glm::mat4 parent);
 };
 
 #endif // SCENE_H

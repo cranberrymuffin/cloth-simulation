@@ -5,19 +5,22 @@
 
 #include <GL/glew.h>
 
-namespace CS123 { namespace GL {
+namespace CS123 {
+namespace GL {
 
-void checkError() {
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-        std::cerr << "GL is in an error state before painting." << std::endl;
-        printGLErrorCodeInEnglish(err);
+    void checkError()
+    {
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR) {
+            std::cerr << "GL is in an error state before painting." << std::endl;
+            printGLErrorCodeInEnglish(err);
+        }
     }
-}
 
-void printGLErrorCodeInEnglish(GLenum err) {
-    std::cerr << "GL error code " << err << ":" << std::endl;
-    switch(err) {
+    void printGLErrorCodeInEnglish(GLenum err)
+    {
+        std::cerr << "GL error code " << err << ":" << std::endl;
+        switch (err) {
         case GL_INVALID_ENUM:
             std::cerr << "GL_INVALID_ENUM" << std::endl;
             std::cerr << "An unacceptable value is specified for an enumerated argument. The offending command is ignored and has no other side effect than to set the error flag." << std::endl;
@@ -48,21 +51,23 @@ void printGLErrorCodeInEnglish(GLenum err) {
             break;
         default:
             std::cerr << "Unknown GL error code" << std::endl;
+        }
     }
-}
 
-void checkFramebufferStatus() {
-    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    if (status != GL_FRAMEBUFFER_COMPLETE) {
-        std::cerr << "Framebuffer is incomplete." << std::endl;
-        printFramebufferErrorCodeInEnglish(status);
+    void checkFramebufferStatus()
+    {
+        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE) {
+            std::cerr << "Framebuffer is incomplete." << std::endl;
+            printFramebufferErrorCodeInEnglish(status);
+        }
     }
-}
 
-void printFramebufferErrorCodeInEnglish(GLenum err) {
-    switch(err) {
+    void printFramebufferErrorCodeInEnglish(GLenum err)
+    {
+        switch (err) {
         case GL_FRAMEBUFFER_UNDEFINED:
-            std:: cerr << "GL_FRAMEBUFFER_UNDEFINED is returned if the specified framebuffer is the default read or draw framebuffer, but the default framebuffer does not exist." << std::endl;
+            std::cerr << "GL_FRAMEBUFFER_UNDEFINED is returned if the specified framebuffer is the default read or draw framebuffer, but the default framebuffer does not exist." << std::endl;
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
             std::cerr << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT is returned if any of the framebuffer attachment points are framebuffer incomplete." << std::endl;
@@ -86,36 +91,39 @@ void printFramebufferErrorCodeInEnglish(GLenum err) {
         case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
             std::cerr << "GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS is returned if any framebuffer attachment is layered, and any populated attachment is not layered, or if all populated color attachments are not from textures of the same target." << std::endl;
             break;
+        }
     }
-}
 
-void checkShaderCompilationStatus(GLuint shaderID) {
-    GLint status;
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE) {
-        std::cerr << "Error: Could not compile shader."  << std::endl;
+    void checkShaderCompilationStatus(GLuint shaderID)
+    {
+        GLint status;
+        glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
+        if (status == GL_FALSE) {
+            std::cerr << "Error: Could not compile shader." << std::endl;
 
-        GLint maxLength = 0;
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
+            GLint maxLength = 0;
+            glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
 
-        // The maxLength includes the null character
-        std::vector<GLchar> errorLog(maxLength);
-        glGetShaderInfoLog(shaderID, maxLength, &maxLength, &errorLog[0]);
+            // The maxLength includes the null character
+            std::vector<GLchar> errorLog(maxLength);
+            glGetShaderInfoLog(shaderID, maxLength, &maxLength, &errorLog[0]);
 
-        std::cerr << &errorLog[0] << std::endl;
-    } else {
-        std::cerr << "Shader compiled." << std::endl;
+            std::cerr << &errorLog[0] << std::endl;
+        } else {
+            std::cerr << "Shader compiled." << std::endl;
+        }
     }
-}
 
-void checkShaderLinkStatus(GLuint shaderProgramID) {
-    GLint linked;
-    glGetProgramiv(shaderProgramID, GL_LINK_STATUS, &linked);
-    if (linked == GL_FALSE) {
-        std::cerr << "Shader failed to link" << std::endl;
-    } else {
-        std::cerr << "Shader linked successfully." << std::endl;
+    void checkShaderLinkStatus(GLuint shaderProgramID)
+    {
+        GLint linked;
+        glGetProgramiv(shaderProgramID, GL_LINK_STATUS, &linked);
+        if (linked == GL_FALSE) {
+            std::cerr << "Shader failed to link" << std::endl;
+        } else {
+            std::cerr << "Shader linked successfully." << std::endl;
+        }
     }
-}
 
-}}
+}
+}

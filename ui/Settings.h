@@ -8,8 +8,8 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <QObject>
 #include "lib/RGBA.h"
+#include <QObject>
 
 // Enumeration values for the Brush types from which the user can choose in the GUI.
 enum BrushType {
@@ -83,67 +83,74 @@ struct Settings {
     void saveSettings();
 
     // Brush
-    int brushType;      // The user's selected brush @see BrushType
-    int brushRadius;    // The brush radius
+    int brushType; // The user's selected brush @see BrushType
+    int brushRadius; // The brush radius
     RGBA brushColor;
     bool fixAlphaBlending;
     int textureIndex;
     float gaussianSigma;
 
     // Filter
-    int filterType;               // The selected filter @see FilterType
-    float edgeDetectSensitivity;  // Edge detection sensitivity, from 0 to 1.
-    int blurRadius;               // Selected blur radius
-    float scaleX;                 // Horizontal scale factor
-    float scaleY;                 // Vertical scale factor
-    int rotateAngle;              // Rotation angle in degrees
+    int filterType; // The selected filter @see FilterType
+    float edgeDetectSensitivity; // Edge detection sensitivity, from 0 to 1.
+    int blurRadius; // Selected blur radius
+    float scaleX; // Horizontal scale factor
+    float scaleY; // Vertical scale factor
+    int rotateAngle; // Rotation angle in degrees
     int scalefilterType;
 
     // Shapes
     bool useSceneviewScene;
-    int shapeType;              // Selected shape type
+    int shapeType; // Selected shape type
     int shapeParameter1;
     int shapeParameter2;
     float shapeParameter3;
-    bool useLighting;           // Enable default lighting
-    bool drawWireframe;         // Draw wireframe only
-    bool drawNormals;           // Turn normals on and off
+    bool useLighting; // Enable default lighting
+    bool drawWireframe; // Draw wireframe only
+    bool drawNormals; // Turn normals on and off
 
     // Camtrans
-    bool useOrbitCamera;        // Use the built-in orbiting camera instead of the Camtrans camera
+    bool useOrbitCamera; // Use the built-in orbiting camera instead of the Camtrans camera
     float cameraPosX;
     float cameraPosY;
     float cameraPosZ;
     float cameraRotU;
     float cameraRotV;
     float cameraRotN;
-    float cameraFov;            // The camera's field of view, which is twice the height angle.
-    float cameraNear;           // The distance from the camera to the near clipping plane.
-    float cameraFar;            // The distance from the camera to the far clipping plane.
+    float cameraFov; // The camera's field of view, which is twice the height angle.
+    float cameraNear; // The distance from the camera to the near clipping plane.
+    float cameraFar; // The distance from the camera to the far clipping plane.
 
     // Modeler
-    int objTool;                // The currently selected modeler tool.
+    int objTool; // The currently selected modeler tool.
 
     // Ray
-    bool useSuperSampling;      // Enable or disable super-sampling.
-    int numSuperSamples;        // Controls the number of samples per pixel.
-    bool useAntiAliasing;       // Enable or disable anti-aliasing.
-    bool useShadows;            // Enable or disable shadows.
-    bool useTextureMapping;     // Enable or disable texture mapping.
-    bool useReflection;         // Enable or disable reflection.
-    bool useRefraction;         // Enable or disable refraction (this is extra credit).
-    bool useMultiThreading;     // Enable or disable multi-threading (extra credit).
-    bool usePointLights;        // Enable or disable point lighting.
-    bool useDirectionalLights;  // Enable or disable directional lighting (extra credit).
-    bool useSpotLights;         // Enable or disable spot lights (extra credit).
+    bool useSuperSampling; // Enable or disable super-sampling.
+    int numSuperSamples; // Controls the number of samples per pixel.
+    bool useAntiAliasing; // Enable or disable anti-aliasing.
+    bool useShadows; // Enable or disable shadows.
+    bool useTextureMapping; // Enable or disable texture mapping.
+    bool useReflection; // Enable or disable reflection.
+    bool useRefraction; // Enable or disable refraction (this is extra credit).
+    bool useMultiThreading; // Enable or disable multi-threading (extra credit).
+    bool usePointLights; // Enable or disable point lighting.
+    bool useDirectionalLights; // Enable or disable directional lighting (extra credit).
+    bool useSpotLights; // Enable or disable spot lights (extra credit).
     bool useKDTree;
     int lightDepth;
 
+    // Cloth
+    float particleMass = 5;
+    float structural = 25000;
+    float shear = 25000;
+    float bend = 25000;
+    float damping = 0.5;
+    float viscous = 0.5;
+    bool hasGravity = false;
     int getSceneMode();
     int getCameraMode();
 
     int currentTab;
-
 };
 
 // The global Settings object, will be initialized by MainWindow

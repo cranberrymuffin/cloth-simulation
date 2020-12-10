@@ -3,7 +3,6 @@
 
 #include "Camera.h"
 
-
 /**
  * @class OrbitingCamera
  *
@@ -17,8 +16,14 @@
  */
 class OrbitingCamera : public Camera {
 public:
-    OrbitingCamera() : m_aspectRatio(1), m_angleX(0), m_angleY(0), m_zoomZ(-5) {}
-    ~OrbitingCamera() {}
+    OrbitingCamera()
+        : m_aspectRatio(1)
+        , m_angleX(0)
+        , m_angleY(0)
+        , m_zoomZ(-5)
+    {
+    }
+    ~OrbitingCamera() { }
 
     virtual void setAspectRatio(float aspectRatio);
 
