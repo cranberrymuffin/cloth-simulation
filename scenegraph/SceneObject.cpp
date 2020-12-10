@@ -8,6 +8,7 @@ SceneObject::SceneObject()
     , m_type(PrimitiveType::PRIMITIVE_CUBE)
     , m_Material()
     , m_parent(nullptr)
+    , m_hasTexture(false)
 {
 }
 
@@ -16,6 +17,7 @@ SceneObject::SceneObject(Shape* shape, PrimitiveType type, Material& material)
     , m_type(type)
     , m_Material(this, material)
     , m_parent(nullptr)
+    , m_hasTexture(false)
 {
 }
 
@@ -29,6 +31,7 @@ SceneObject::SceneObject(SceneObject& other)
     , m_type(other.m_type)
     , m_parent(other.m_parent)
     , m_Material(other.m_Material)
+    , m_hasTexture(false)
 {
     setModelMatrix(other.getLocalMatrix());
     setWorldMatrix(other.getToWorldMatrix());
@@ -161,4 +164,14 @@ void SceneObject::step(float deltaT)
 SceneObjectMaterial& SceneObject::getObjectMaterial()
 {
     return m_Material;
+}
+
+bool SceneObject::hasTexture()
+{
+    return m_hasTexture;
+}
+
+bool SceneObject::setHasTexture(bool hastext)
+{
+    m_hasTexture = hastext;
 }

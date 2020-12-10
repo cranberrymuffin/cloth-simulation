@@ -48,6 +48,10 @@ public:
 
     SceneObjectMaterial& getObjectMaterial();
 
+    bool hasTexture();
+
+    bool setHasTexture(bool hastext);
+
 protected:
     void updateBBV();
 
@@ -62,6 +66,8 @@ protected:
 
     Transformation* m_parent;
     std::vector<SceneObject*> children;
+
+    bool m_hasTexture;
 };
 
 #endif // SCENEOBJECT_H

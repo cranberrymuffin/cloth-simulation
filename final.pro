@@ -147,6 +147,8 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
+    images/brown-university.png \
+    images/fur1.jpg \
     resources/models/cornell_box.mtl \
     resources/models/cube.mtl \
     shaders/depth.frag \

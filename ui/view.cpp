@@ -158,6 +158,7 @@ void View::tick()
         update();
         tick_counter = 0;
     }
+
 }
 
 void View::loadSceneviewSceneFromParser(CS123XmlSceneParser& parser)
