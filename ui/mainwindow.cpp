@@ -96,6 +96,8 @@ void MainWindow::dataBind()
         ui->viscousSlider, ui->viscousTextbox, settings.viscous, 0, 15))
     BIND(BoolBinding::bindCheckbox(ui->gravityCheckbox, settings.hasGravity))
     BIND(BoolBinding::bindCheckbox(ui->shadowsCheckbox, settings.hasShadows))
+    BIND(BoolBinding::bindCheckbox(ui->brownCheckbox, settings.brownTexture))
+    BIND(BoolBinding::bindCheckbox(ui->smileyCheckbox, settings.smileyTexture))
 
 #undef BIND
 }

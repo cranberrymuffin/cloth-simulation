@@ -85,8 +85,10 @@ void Settings::loadSettingsOrDefaults()
     bend = s.value("bend", 25000.f).toDouble();
     damping = s.value("damping", 0.5f).toDouble();
     viscous = s.value("viscous", 0.5f).toDouble();
-    hasGravity = s.value("hasGravity", false).toBool();
+    hasGravity = s.value("hasGravity", true).toBool();
     hasShadows = s.value("hasShadows", true).toBool();
+    brownTexture = s.value("brownTexture", true).toBool();
+    smileyTexture = s.value("smileyTexture", true).toBool();
 
     // These are for computing deltas and the values don't matter, so start all dials in the up
     // position

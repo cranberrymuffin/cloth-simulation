@@ -148,6 +148,8 @@ struct Settings {
     float viscous = 0.5;
     bool hasGravity = true;
     bool hasShadows = true;
+    bool brownTexture = true;
+    bool smileyTexture = true;
     int getSceneMode();
     int getCameraMode();
 
