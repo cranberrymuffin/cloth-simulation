@@ -50,9 +50,11 @@ public:
   QGridLayout *constantsGrid;
   // empty
   QWidget *emptySpace;
+  // constants
+  QGroupBox *textures;
+  QGridLayout *texturesGrid;
 
   // particle mass
-
   QSlider *particleMassSlider;
   QLabel *particleMassLabel;
   QLineEdit *particleMassTextbox;
@@ -85,6 +87,16 @@ public:
   // gravity checkbox
   QCheckBox *gravityCheckbox;
   QLabel *gravityLabel;
+
+  // shadows checkbox
+  QCheckBox *shadowsCheckbox;
+  QLabel *shadowsLabel;
+
+  // textures checkbox
+  QCheckBox *brownCheckbox;
+  QLabel *brownLabel;
+  QCheckBox *smileyCheckbox;
+  QLabel *smileyLabel;
 
   void setupUi(QMainWindow *MainWindow) {
     if (MainWindow->objectName().isEmpty())
@@ -337,6 +349,46 @@ public:
     gravityCheckbox->setText(
         QCoreApplication::translate("MainWindow", "has gravity", nullptr));
 
+    // ------------------------------- SHADOWS
+    // ------------------------------------- //
+    shadowsCheckbox = new QCheckBox(clothDockContents);
+    shadowsCheckbox->setObjectName(QString::fromUtf8("shadowsCheckbox"));
+    shadowsCheckbox->setChecked(true);
+    shadowsCheckbox->setText(
+        QCoreApplication::translate("MainWindow", "has shadows", nullptr));
+
+    // ------------------------------- TEXTURES
+    // ------------------------------------- //
+    textures = new QGroupBox(clothDockContents);
+    textures->setObjectName(QString::fromUtf8("textures"));
+    texturesGrid = new QGridLayout(textures);
+    texturesGrid->setSpacing(6);
+    texturesGrid->setContentsMargins(11, 11, 11, 11);
+    texturesGrid->setObjectName(QString::fromUtf8("texturesGrid"));
+    texturesGrid->setVerticalSpacing(5);
+    texturesGrid->setContentsMargins(-1, 5, -1, 5);
+
+    textures->setTitle(
+        QCoreApplication::translate("MainWindow", "Textures", nullptr));
+
+    // brown
+    brownCheckbox = new QCheckBox(textures);
+    brownCheckbox->setObjectName(QString::fromUtf8("brownCheckbox"));
+    brownCheckbox->setChecked(true);
+    brownCheckbox->setText(
+        QCoreApplication::translate("MainWindow", "Brown texture", nullptr));
+
+    texturesGrid->addWidget(brownCheckbox, 1, 3, 1, 1);
+
+    // smiley
+    smileyCheckbox = new QCheckBox(textures);
+    smileyCheckbox->setObjectName(QString::fromUtf8("smileyCheckbox"));
+    smileyCheckbox->setChecked(true);
+    smileyCheckbox->setText(
+        QCoreApplication::translate("MainWindow", "smiley texture", nullptr));
+
+    texturesGrid->addWidget(smileyCheckbox, 2, 3, 1, 1);
+
     // ------------------------------- EMPTY SPACE
     // ------------------------------------- //
 
@@ -350,8 +402,11 @@ public:
 
     verticalLayout->addWidget(springForces);
     verticalLayout->addWidget(constants);
+    verticalLayout->addWidget(textures);
     verticalLayout->addWidget(gravityCheckbox);
+    verticalLayout->addWidget(shadowsCheckbox);
     verticalLayout->addWidget(emptySpace);
+
 
     clothDock->setWidget(clothDockContents);
     MainWindow->addDockWidget(Qt::LeftDockWidgetArea, clothDock);

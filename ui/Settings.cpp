@@ -86,6 +86,7 @@ void Settings::loadSettingsOrDefaults()
     damping = s.value("damping", 0.5f).toDouble();
     viscous = s.value("viscous", 0.5f).toDouble();
     hasGravity = s.value("hasGravity", false).toBool();
+    hasShadows = s.value("hasShadows", true).toBool();
 
     // These are for computing deltas and the values don't matter, so start all dials in the up
     // position

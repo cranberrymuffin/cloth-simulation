@@ -146,7 +146,8 @@ struct Settings {
     float bend = 25000;
     float damping = 0.5;
     float viscous = 0.5;
-    bool hasGravity = false;
+    bool hasGravity = true;
+    bool hasShadows = true;
     int getSceneMode();
     int getCameraMode();
 

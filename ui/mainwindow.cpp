@@ -69,8 +69,6 @@ void MainWindow::openFileScene()
 
 void MainWindow::settingsChanged()
 {
-    //ui->canvas2D->settingsChanged();
-    //float checkp = settings.particleMass;
     ui->view->settingsChanged();
 }
 
@@ -97,6 +95,7 @@ void MainWindow::dataBind()
     BIND(FloatBinding::bindSliderAndTextbox(
         ui->viscousSlider, ui->viscousTextbox, settings.viscous, 0, 15))
     BIND(BoolBinding::bindCheckbox(ui->gravityCheckbox, settings.hasGravity))
+    BIND(BoolBinding::bindCheckbox(ui->shadowsCheckbox, settings.hasShadows))
 
 #undef BIND
 }
