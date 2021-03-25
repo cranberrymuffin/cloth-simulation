@@ -2,7 +2,7 @@
 
 In our simulation, we treat a cloth as a mesh of particles held together by spring forces. In addition to spring forces, each particle is impacted by the forces of gravity, damping, and vicosity (wind). Force affects the velocity of each particle, which in turn affects its position.
 
-Where a particle is at any time t, is affected by it's posiiton, velocity, and force at any previous time. We can generalize this problem as a numerical integration of ordinary differential equation. We solve it using euler's method.
+Where a particle is at any time t, is affected by it's position, velocity, and force at any previous time. We can generalize this problem as a numerical integration of ordinary differential equation. We solve it using euler's method.
 
 ## Computing Force
   For every step of t seconds, we compute total force as follows:
